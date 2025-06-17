@@ -51,7 +51,7 @@ function App() {
     <Router>
       <div className="app-container">
         <nav className="nav">
-          <Link to="/dashboard" className="nav-brand">TripPlanner</Link>
+          <Link to={isLoggedIn ? "/dashboard" : "/login"} className="nav-brand" style={{ textDecoration: 'none' }}>TripPlanner</Link>
           <div className="nav-links">
             {!isLoggedIn ? (
               <>
