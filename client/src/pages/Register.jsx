@@ -14,6 +14,7 @@ export default function Register() {
     try {
       const response = await axios.post('http://localhost:5000/api/register', { name, email, password });
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('username', response.data.name);
       alert('Registered and logged in!');
       navigate('/dashboard');
     } catch (err) {
@@ -23,12 +24,41 @@ export default function Register() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="container">
-      <h1 className="page-title">Register</h1>
-      <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} className="input" required />
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="input" required />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="input" required />
-      <button type="submit" className="button">Register</button>
-    </form>
+    <div className="auth-container">
+      <form onSubmit={handleSubmit} className="auth-form">
+        <h1 className="page-title">Register</h1>
+        <div className="form-group">
+          <input 
+            type="text" 
+            placeholder="Name" 
+            value={name} 
+            onChange={(e) => setName(e.target.value)} 
+            className="input" 
+            required 
+          />
+        </div>
+        <div className="form-group">
+          <input 
+            type="email" 
+            placeholder="Email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            className="input" 
+            required 
+          />
+        </div>
+        <div className="form-group">
+          <input 
+            type="password" 
+            placeholder="Password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            className="input" 
+            required 
+          />
+        </div>
+        <button type="submit" className="button">Register</button>
+      </form>
+    </div>
   );
 }

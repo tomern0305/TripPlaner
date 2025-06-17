@@ -215,8 +215,8 @@ body {
 
 .auth-form .form-group input {
   width: 100%;
-  max-width: 300px; /* Constrain width */
-  margin: 0 auto; /* Explicitly center the input box */
+  max-width: 300px;
+  margin: 0 auto;
   padding: 0.75rem;
   border: 2px solid var(--border-color);
   border-radius: 0.75rem;
@@ -224,20 +224,33 @@ body {
   color: var(--text-color);
   font-size: 1rem;
   transition: all 0.3s ease;
-  display: block; /* Ensure it takes full width of its container and allows margin auto */
-  box-sizing: border-box; /* Ensures padding doesn't increase width */
-  text-align: center; /* Explicitly center text within input */
+  display: block;
+  box-sizing: border-box;
+  text-align: center;
 }
 
-.auth-form .form-group input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+.auth-form .form-group input::placeholder {
+  color: #b3b3b3;
 }
 
 .auth-form .button {
   width: 100%;
-  margin-top: 1rem;
+  max-width: 300px;
+  margin: 1rem auto 0;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.auth-form .button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
 }
 
 /* General form styles (for TripPlanner, etc.) */
