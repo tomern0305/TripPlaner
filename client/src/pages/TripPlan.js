@@ -14,6 +14,7 @@ L.Icon.Default.mergeOptions({
 function TripPlan() {
   const [location, setLocation] = useState('');
   const [tripType, setTripType] = useState('');
+  const [tripDate, setTripDate] = useState('');
   const [mapCenter, setMapCenter] = useState([31.7683, 35.2137]); // Default to Jerusalem
   const [markers, setMarkers] = useState([]);
 
@@ -23,7 +24,7 @@ function TripPlan() {
     // For now, we'll just add a marker at the center
     setMarkers([{
       position: mapCenter,
-      title: `${location} - ${tripType} Trip`
+      title: `${location} - ${tripType} Trip - ${tripDate}`
     }]);
   };
 
@@ -58,6 +59,18 @@ function TripPlan() {
             <option value="trek">Trek</option>
             <option value="bike">Bike</option>
           </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="tripDate">Trip Date</label>
+          <input
+            type="date"
+            id="tripDate"
+            className="input"
+            value={tripDate}
+            onChange={(e) => setTripDate(e.target.value)}
+            required
+          />
         </div>
 
         <button type="submit" className="button">
