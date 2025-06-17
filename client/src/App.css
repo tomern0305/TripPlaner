@@ -1,49 +1,117 @@
+:root {
+  --primary-color: #6c5ce7; /* A vibrant, rich purple */
+  --primary-hover: #5a4bcf; /* Darker shade for hover */
+  --text-color: #2c3e50; /* Dark blue-grey for main text */
+  --bg-color: #f5f7fa; /* Light grey background */
+  --card-bg: #ffffff; /* White for cards/containers */
+  --border-color: #e0e6ed; /* Soft grey border */
+  --shadow-color: rgba(0, 0, 0, 0.15); /* Moderate shadow */
+  --input-bg: #ffffff; /* White input background */
+  --form-bg: #ffffff; /* White form background */
+  --card-hover-bg: #f8f9fa; /* Very light grey for hover effect */
+  --nav-bg: #ffffff; /* White nav background */
+  --nav-hover: #eef2ff; /* Light lavender for nav hover */
+  --auth-form-bg: #ffffff; /* White auth form background */
+  --auth-input-bg: #ffffff; /* White auth input background */
+  --accent-color: #3498db; /* Bright blue accent for highlights */
+}
+
+.dark-mode {
+  --primary-color: #9f7aea; /* Lighter purple for dark mode */
+  --primary-hover: #805ad5; /* Darker purple for dark mode hover */
+  --text-color: #e0e6ed; /* Light grey for text */
+  --bg-color: #1a202c; /* Deep dark blue-grey background */
+  --card-bg: #2d3748; /* Darker blue-grey for cards */
+  --border-color: #4a5568; /* Muted grey border */
+  --shadow-color: rgba(0, 0, 0, 0.4); /* Stronger dark shadow */
+  --input-bg: #2b394d; /* Dark input background */
+  --form-bg: #2d3748; /* Dark form background */
+  --card-hover-bg: #3c4c62; /* Slightly lighter dark for hover */
+  --nav-bg: #2d3748; /* Dark nav background */
+  --nav-hover: #3c4c62; /* Dark nav hover */
+  --auth-form-bg: #2d3748; /* Dark auth form background */
+  --auth-input-bg: #2b394d; /* Dark auth input background */
+  --accent-color: #6d9ee8; /* Muted blue accent */
+}
+
+/* Base styles and utilities */
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
   min-height: 100vh;
-  color: #2d3748;
+  display: flex;
+  flex-direction: column;
 }
 
-.container {
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 1rem;
   max-width: 1200px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: white;
-  border-radius: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin: 0 auto;
+  width: 100%;
 }
 
+.content {
+  flex-grow: 1;
+  padding: 1rem;
+  background: var(--bg-color);
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align content at the top */
+  padding-top: 2rem; /* Add some padding from the top */
+}
+
+/* Navigation styles */
 .nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start; /* Align items to the start (left) */
   align-items: center;
   gap: 2rem;
   padding: 1.5rem;
-  background: white;
+  background: var(--nav-bg);
   border-radius: 1rem;
   margin-bottom: 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px var(--shadow-color);
+  transition: all 0.3s ease;
 }
 
-.logo h1 {
-  margin: 0;
+.nav-brand {
   font-size: 1.75rem;
-  color: #2b6cb0;
+  color: var(--primary-color);
   font-weight: 700;
   letter-spacing: -0.5px;
+  margin-right: 2rem; /* Add some space between brand and links */
 }
 
 .nav-links {
   display: flex;
   gap: 1rem;
+  align-items: center;
+  flex-grow: 1;
+  justify-content: flex-end; /* Push items to the right by default */
+}
+
+.nav-links-left {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-right: auto; /* Push this group to the left */
 }
 
 .nav-link {
   text-decoration: none;
-  color: #4a5568;
+  color: var(--text-color);
   font-weight: 500;
   padding: 0.75rem 1.5rem;
   border-radius: 0.75rem;
@@ -52,88 +120,305 @@ body {
 }
 
 .nav-link:hover {
-  color: #2b6cb0;
-  background-color: #ebf8ff;
+  color: var(--primary-color);
+  background-color: var(--nav-hover);
 }
 
 .nav-link.active {
-  color: #2b6cb0;
-  background-color: #ebf8ff;
+  color: var(--primary-color);
+  background-color: var(--input-bg);
 }
 
-.input {
-  padding: 0.75rem 1rem;
-  border: 2px solid #e2e8f0;
+.dark-mode-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color); /* Ensure icon color changes with theme */
+}
+
+.dark-mode-toggle:hover {
+  background-color: var(--nav-hover);
+}
+
+/* User section in navigation */
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--nav-hover);
   border-radius: 0.75rem;
+}
+
+.username {
+  color: var(--text-color);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.logout-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color); /* Use primary color */
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: var(--primary-hover); /* Use primary hover color */
+  transform: translateY(-1px);
+}
+
+/* Auth styles */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 4rem); /* Adjust based on nav height */
+  padding: 2rem;
+}
+
+.auth-form {
+  background: var(--auth-form-bg);
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -1px var(--shadow-color);
   width: 100%;
+  max-width: 400px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+
+.auth-form .page-title {
+  text-align: center;
+  color: var(--text-color);
+  margin-bottom: 2rem;
+}
+
+.auth-form .form-group {
+  margin-bottom: 1.5rem;
+  display: flex; /* Use flexbox */
+  justify-content: center; /* Center horizontally */
+  width: 100%;
+}
+
+.auth-form .form-group input {
+  width: 100%;
+  max-width: 300px; /* Constrain width */
+  margin: 0 auto; /* Explicitly center the input box */
+  padding: 0.75rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.75rem;
+  background-color: var(--auth-input-bg);
+  color: var(--text-color);
   font-size: 1rem;
   transition: all 0.3s ease;
-  background-color: #f8fafc;
+  display: block; /* Ensure it takes full width of its container and allows margin auto */
+  box-sizing: border-box; /* Ensures padding doesn't increase width */
+  text-align: center; /* Explicitly center text within input */
 }
 
-.input:focus {
+.auth-form .form-group input:focus {
   outline: none;
-  border-color: #4299e1;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
 }
 
-.button {
-  padding: 0.75rem 1.5rem;
-  background-color: #4299e1;
-  color: white;
-  border: none;
-  border-radius: 0.75rem;
-  cursor: pointer;
+.auth-form .button {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* General form styles (for TripPlanner, etc.) */
+.trip-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--form-bg);
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
   font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+  width: 80%; /* Adjusted for better appearance with centering */
+  margin: 0 auto; /* Center inputs within form-group */
+  padding: 0.75rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.75rem;
+  background-color: var(--input-bg);
+  color: var(--text-color);
   font-size: 1rem;
   transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  display: block;
+  box-sizing: border-box; /* Ensures padding doesn't increase width */
+  text-align: left; /* Default text alignment for general forms */
 }
 
-.button:hover {
-  background-color: #3182ce;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
 }
 
-.button:active {
-  transform: translateY(0);
+.trip-history {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
 }
 
-main {
-  background: white;
-  padding: 2rem;
+.trip-card {
+  background: var(--card-bg);
   border-radius: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+  text-align: left;
 }
 
-/* Add responsive design */
+.trip-card:hover {
+  background: var(--card-hover-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.trip-card h3 {
+  color: var(--text-color);
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.trip-details {
+  margin-bottom: 1.5rem;
+}
+
+.trip-details p {
+  margin: 0.5rem 0;
+  color: var(--text-color);
+}
+
+.map-container {
+  height: 500px;
+  width: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+  margin-top: 1rem;
+  border: 2px solid var(--border-color);
+  background: var(--card-bg);
+}
+
+/* Dark mode specific styles */
+.dark-mode .map-container {
+  border-color: var(--border-color);
+}
+
+.dark-mode .trip-form,
+.dark-mode .auth-form {
+  background: var(--form-bg);
+  border: 1px solid var(--border-color);
+}
+
+.dark-mode .form-group select,
+.dark-mode .form-group input {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.dark-mode .trip-card {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.dark-mode .trip-card:hover {
+  background: var(--card-hover-bg);
+}
+
+.dark-mode .user-section {
+  background: var(--nav-hover);
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .container {
-    margin: 1rem;
-    padding: 1rem;
+  .app-container {
+    padding: 0.5rem;
   }
-  
+
   .nav {
     flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem;
   }
-  
+
+  .nav-brand {
+    margin-right: 0; /* Remove margin on small screens */
+    margin-bottom: 0.5rem; /* Add some space below brand */
+  }
+
   .nav-links {
     flex-direction: column;
+    gap: 0.5rem;
     width: 100%;
+    justify-content: center; /* Center items on small screens */
   }
-  
+
+  .nav-links-left {
+    flex-direction: column;
+    width: 100%;
+    margin-right: 0;
+  }
+
   .nav-link {
     width: 100%;
     text-align: center;
+    padding: 0.5rem 1rem;
   }
-  
-  main {
-    padding: 1rem;
+
+  .user-section {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .dark-mode-toggle {
+    margin-top: 0.5rem;
+    align-self: center;
+  }
+
+  .auth-form {
+    padding: 1.5rem;
+  }
+
+  .trip-form {
+    padding: 1.5rem;
   }
 }
