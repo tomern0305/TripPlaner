@@ -12,7 +12,8 @@ L.Icon.Default.mergeOptions({
 });
 
 function TripPlan() {
-  const [location, setLocation] = useState('');
+  const [country, setCountry] = useState('');
+  const [city, setCity] = useState('');
   const [tripType, setTripType] = useState('');
   const [tripDate, setTripDate] = useState('');
   const [mapCenter, setMapCenter] = useState([31.7683, 35.2137]); // Default to Jerusalem
@@ -24,7 +25,7 @@ function TripPlan() {
     // For now, we'll just add a marker at the center
     setMarkers([{
       position: mapCenter,
-      title: `${location} - ${tripType} Trip - ${tripDate}`
+      title: `${city}, ${country} - ${tripType} Trip - ${tripDate}`
     }]);
   };
 
@@ -34,14 +35,27 @@ function TripPlan() {
       
       <form className="trip-form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="location">Location (Country/City)</label>
+          <label htmlFor="country">Country</label>
           <input
             type="text"
-            id="location"
+            id="country"
             className="input"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Enter location..."
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            placeholder="Enter country..."
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="city">City</label>
+          <input
+            type="text"
+            id="city"
+            className="input"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            placeholder="Enter city..."
             required
           />
         </div>
