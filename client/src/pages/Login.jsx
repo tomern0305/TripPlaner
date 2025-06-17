@@ -6,19 +6,27 @@ import '../App.css';
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(''); // Clear any previous errors
     try {
       const response = await axios.post('http://localhost:5000/api/login', { email, password });
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('username', response.data.name); // Store the name from the response
-      onLogin(response.data.name); // Call onLogin with the username
-      navigate('/dashboard'); // Redirect to dashboard after successful login
+      localStorage.setItem('username', response.data.name);
+      onLogin(response.data.name);
+      navigate('/dashboard');
     } catch (err) {
-      console.error('Login error:', err.response?.data || err.message);
-      alert('Login failed. Please check your credentials and try again.');
+      const errorMessage = err.response?.data?.message;
+      if (errorMessage === 'Email not found') {
+        setError('Email does not exist. Please check your email or register.');
+      } else if (errorMessage === 'Invalid password') {
+        setError('Incorrect password. Please try again.');
+      } else {
+        setError('An error occurred. Please try again.');
+      }
     }
   };
 
@@ -46,6 +54,7 @@ export default function Login({ onLogin }) {
             required 
           />
         </div>
+        {error && <div className="error-message">{error}</div>}
         <button type="submit" className="button">Login</button>
       </form>
     </div>
