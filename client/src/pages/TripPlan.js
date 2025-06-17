@@ -11,7 +11,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-function TripPlanner() {
+function TripPlan() {
   const [location, setLocation] = useState('');
   const [tripType, setTripType] = useState('');
   const [mapCenter, setMapCenter] = useState([31.7683, 35.2137]); // Default to Jerusalem
@@ -88,4 +88,4 @@ function TripPlanner() {
   );
 }
 
-export default TripPlanner; 
+export default TripPlan; 

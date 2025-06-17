@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import TripPlanner from './pages/TripPlanner';
+import TripPlan from './pages/TripPlan';
 import TripHistory from './pages/TripHistory';
 import './App.css';
 import PrivateRoute from './components/PrivateRoute';
@@ -51,7 +51,7 @@ function App() {
     <Router>
       <div className="app-container">
         <nav className="nav">
-          <div className="nav-brand">TripPlanner</div>
+          <Link to="/dashboard" className="nav-brand">TripPlanner</Link>
           <div className="nav-links">
             {!isLoggedIn ? (
               <>
@@ -61,8 +61,7 @@ function App() {
             ) : (
               <>
                 <div className="nav-links-left">
-                  <Link to="/dashboard" className="nav-link">Dashboard</Link>
-                  <Link to="/trip-planner" className="nav-link">Trip Planner</Link>
+                  <Link to="/trip-plan" className="nav-link">Trip Plan</Link>
                   <Link to="/trip-history" className="nav-link">Trip History</Link>
                 </div>
                 <div className="user-section">
@@ -80,7 +79,7 @@ function App() {
           <Routes>
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
-            <Route path="/trip-planner" element={<PrivateRoute><TripPlanner /></PrivateRoute>} />
+            <Route path="/trip-plan" element={<PrivateRoute><TripPlan /></PrivateRoute>} />
             <Route path="/trip-history" element={<PrivateRoute><TripHistory /></PrivateRoute>} />
             <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
             <Route path="/" element={<Login onLogin={handleLogin} />} />
