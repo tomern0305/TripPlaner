@@ -7,19 +7,24 @@ export default function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(''); // Clear any previous errors
     try {
       const response = await axios.post('http://localhost:5000/api/register', { name, email, password });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('username', response.data.name);
-      alert('Registered and logged in!');
       navigate('/dashboard');
     } catch (err) {
-      console.error('Register error:', err.response?.data || err.message);
-      alert('Registration failed.');
+      const errorMessage = err.response?.data?.message;
+      if (errorMessage === 'Email already exists') {
+        setError('This email is already registered. Please use a different email or try logging in.');
+      } else {
+        setError('Registration failed. Please try again.');
+      }
     }
   };
 
@@ -57,6 +62,7 @@ export default function Register() {
             required 
           />
         </div>
+        {error && <div className="error-message">{error}</div>}
         <button type="submit" className="button">Register</button>
       </form>
     </div>
