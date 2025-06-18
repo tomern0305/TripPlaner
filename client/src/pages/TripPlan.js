@@ -33,6 +33,10 @@ function TripPlan() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [countryFlag, setCountryFlag] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  const [saveSuccess, setSaveSuccess] = useState('');
+  const [tripSaved, setTripSaved] = useState(false);
   
   // Store submitted values separately from form state
   const [submittedCountry, setSubmittedCountry] = useState('');
@@ -149,6 +153,9 @@ function TripPlan() {
     setTripData(null);
     setMarkers([]);
     setPolylines([]);
+    setTripSaved(false);
+    setSaveError('');
+    setSaveSuccess('');
 
     try {
       // First validate the country
@@ -246,6 +253,67 @@ function TripPlan() {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Function to save trip to database
+  const handleSaveTrip = async () => {
+    if (!tripData) {
+      setSaveError('No trip to save. Please create a trip first.');
+      return;
+    }
+
+    setSaving(true);
+    setSaveError('');
+    setSaveSuccess('');
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setSaveError('You must be logged in to save trips.');
+        setSaving(false);
+        return;
+      }
+
+      const saveData = {
+        country: submittedCountry,
+        city: submittedCity,
+        tripType: submittedTripType,
+        tripDate: submittedTripDate,
+        countryFlag,
+        tripData
+      };
+
+      console.log('Saving trip data:', saveData);
+      console.log('Token exists:', !!token);
+
+      const response = await axios.post('http://localhost:5000/api/trip/save', saveData, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      console.log('Save response:', response.data);
+
+      if (response.data.success) {
+        setSaveSuccess('Trip saved successfully!');
+        setTripSaved(true);
+      }
+    } catch (error) {
+      console.error('Error saving trip:', error);
+      console.error('Error response:', error.response?.data);
+      if (error.response?.data?.error) {
+        const errorMessage = error.response.data.error;
+        if (errorMessage.includes('Invalid token structure')) {
+          setSaveError('Your session has expired. Please log out and log back in, then try saving again.');
+        } else {
+          setSaveError(errorMessage);
+        }
+      } else {
+        setSaveError('Failed to save trip. Please try again.');
+      }
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -397,6 +465,21 @@ function TripPlan() {
           ))}
         </MapContainer>
       </div>
+      
+      {/* Save Trip Button - Below Map */}
+      {tripData && (
+        <div className="save-trip-section">
+          <button 
+            onClick={handleSaveTrip} 
+            className="save-trip-button"
+            disabled={saving || tripSaved}
+          >
+            {saving ? 'Saving Trip...' : tripSaved ? 'Trip Saved' : 'Save Trip'}
+          </button>
+          {saveError && <div className="error-message">{saveError}</div>}
+          {saveSuccess && <div className="success-message">{saveSuccess}</div>}
+        </div>
+      )}
     </div>
   );
 }

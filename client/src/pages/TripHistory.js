@@ -1,37 +1,67 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function TripHistory() {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    // Here you would typically fetch trips from your database
-    // For now, we'll use some dummy data
-    const dummyTrips = [
-      {
-        id: 1,
-        location: 'Jerusalem',
-        type: 'Trek',
-        date: '2024-03-15',
-        duration: '3 hours',
-        difficulty: 'Medium'
-      },
-      {
-        id: 2,
-        location: 'Tel Aviv',
-        type: 'Bike',
-        date: '2024-03-10',
-        duration: '2 hours',
-        difficulty: 'Easy'
-      }
-    ];
-
-    setTrips(dummyTrips);
-    setLoading(false);
+    fetchTripHistory();
   }, []);
+
+  const fetchTripHistory = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('You must be logged in to view trip history.');
+        setLoading(false);
+        return;
+      }
+
+      const response = await axios.get('http://localhost:5000/api/trip/history', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.data.success) {
+        setTrips(response.data.trips);
+      } else {
+        setError('Failed to fetch trip history.');
+      }
+    } catch (error) {
+      console.error('Error fetching trip history:', error);
+      if (error.response?.data?.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('Failed to fetch trip history. Please try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
 
   if (loading) {
     return <div className="loading">Loading trips...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="trip-history-page">
+        <h2>Trip History</h2>
+        <div className="error-message">{error}</div>
+      </div>
+    );
   }
 
   return (
@@ -40,15 +70,25 @@ function TripHistory() {
       
       <div className="trip-history">
         {trips.map(trip => (
-          <div key={trip.id} className="trip-card">
-            <h3>{trip.location}</h3>
-            <div className="trip-details">
-              <p><strong>Type:</strong> {trip.type}</p>
-              <p><strong>Date:</strong> {trip.date}</p>
-              <p><strong>Duration:</strong> {trip.duration}</p>
-              <p><strong>Difficulty:</strong> {trip.difficulty}</p>
+          <div key={trip.tripId} className="trip-card">
+            <div className="trip-header">
+              {trip.countryFlag && (
+                <img 
+                  src={trip.countryFlag} 
+                  alt={`${trip.country} flag`} 
+                  className="country-flag-small"
+                />
+              )}
+              <div className="trip-info">
+                <h3>{trip.city}, {trip.country}</h3>
+                <div className="trip-details">
+                  <p><strong>Type:</strong> {trip.tripType}</p>
+                  <p><strong>Date:</strong> {trip.tripDate}</p>
+                  <p><strong>Created:</strong> {formatDate(trip.createdAt)}</p>
+                </div>
+              </div>
             </div>
-            <button className="button" onClick={() => window.location.href = `/trip-planner?trip=${trip.id}`}>
+            <button className="button" onClick={() => window.location.href = `/trip-planner?trip=${trip.tripId}`}>
               View Trip
             </button>
           </div>
@@ -57,7 +97,7 @@ function TripHistory() {
 
       {trips.length === 0 && (
         <div className="no-trips">
-          <p>No trips found in history</p>
+          <p>No trips found in history. Create your first trip!</p>
         </div>
       )}
     </div>

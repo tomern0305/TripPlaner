@@ -17,7 +17,12 @@ router.post('/register', async (req, res) => {
     const hashed = await bcrypt.hash(password, 10);
     const user = new User({ name, email, password: hashed });
     await user.save();
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '2h' });
+    const jwtSecret = process.env.JWT_SECRET || 'fallback-secret-key';
+    const token = jwt.sign({ 
+      id: user._id, 
+      userId: user._id, 
+      email: user.email 
+    }, jwtSecret, { expiresIn: '2h' });
     res.status(201).json({ token, name: user.name });
   } catch (err) {
     res.status(500).json({ message: 'Registration failed' });
@@ -33,7 +38,12 @@ router.post('/login', async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(401).json({ message: 'Invalid password' });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '2h' });
+    const jwtSecret = process.env.JWT_SECRET || 'fallback-secret-key';
+    const token = jwt.sign({ 
+      id: user._id, 
+      userId: user._id, 
+      email: user.email 
+    }, jwtSecret, { expiresIn: '2h' });
     res.json({ token, name: user.name });
   } catch {
     res.status(500).json({ message: 'Server error' });

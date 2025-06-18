@@ -1,9 +1,207 @@
 const express = require('express');
 const router = express.Router();
 const Groq = require('groq-sdk');
+const Trip = require('../models/Trip');
+const jwt = require('jsonwebtoken');
 
 const groq = new Groq({
   apiKey: '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'
+});
+
+// Middleware to verify JWT token
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Access token required' });
+  }
+
+  const jwtSecret = process.env.JWT_SECRET || 'fallback-secret-key';
+  
+  jwt.verify(token, jwtSecret, (err, user) => {
+    if (err) {
+      console.error('JWT verification error:', err);
+      return res.status(403).json({ error: 'Invalid token' });
+    }
+    
+    // Ensure we have the required user data
+    if (!user.userId || !user.email) {
+      console.error('JWT token missing required fields:', user);
+      return res.status(403).json({ 
+        error: 'Invalid token structure. Please log out and log back in to get a new token.',
+        tokenStructure: user,
+        missingFields: {
+          userId: !user.userId,
+          email: !user.email
+        }
+      });
+    }
+    
+    req.user = {
+      userId: user.userId,
+      email: user.email,
+      id: user.id || user.userId
+    };
+    
+    console.log('Authenticated user:', req.user);
+    next();
+  });
+};
+
+// Test route to verify authentication
+router.get('/test-auth', authenticateToken, (req, res) => {
+  res.json({
+    success: true,
+    message: 'Authentication working',
+    user: req.user
+  });
+});
+
+// Test route to decode JWT token
+router.get('/decode-token', (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
+
+  try {
+    const jwtSecret = process.env.JWT_SECRET || 'fallback-secret-key';
+    const decoded = jwt.verify(token, jwtSecret);
+    res.json({
+      success: true,
+      decoded,
+      hasUserId: !!decoded.userId,
+      hasEmail: !!decoded.email,
+      hasId: !!decoded.id
+    });
+  } catch (error) {
+    res.status(400).json({ error: 'Invalid token', details: error.message });
+  }
+});
+
+// Save trip to database
+router.post('/save', authenticateToken, async (req, res) => {
+  try {
+    const { country, city, tripType, tripDate, countryFlag, tripData } = req.body;
+    const { email, userId } = req.user;
+
+    console.log('Save trip request:', { country, city, tripType, tripDate, hasCountryFlag: !!countryFlag, hasTripData: !!tripData });
+    console.log('User info:', { email, userId });
+
+    // Fallback: if userId or email is missing, try to get from token
+    if (!userId || !email) {
+      console.log('Missing userId or email, attempting to extract from token...');
+      const authHeader = req.headers['authorization'];
+      const token = authHeader && authHeader.split(' ')[1];
+      
+      if (token) {
+        try {
+          const jwtSecret = process.env.JWT_SECRET || 'fallback-secret-key';
+          const decoded = jwt.verify(token, jwtSecret);
+          console.log('Decoded token:', decoded);
+          
+          // Use whatever fields are available
+          const fallbackUserId = userId || decoded.userId || decoded.id;
+          const fallbackEmail = email || decoded.email;
+          
+          if (fallbackUserId && fallbackEmail) {
+            console.log('Using fallback values:', { fallbackUserId, fallbackEmail });
+            req.user.userId = fallbackUserId;
+            req.user.email = fallbackEmail;
+          } else {
+            return res.status(400).json({ error: 'Unable to determine user information from token' });
+          }
+        } catch (tokenError) {
+          console.error('Error decoding token:', tokenError);
+          return res.status(400).json({ error: 'Invalid token structure' });
+        }
+      }
+    }
+
+    if (!country || !city || !tripType || !tripDate || !tripData) {
+      console.log('Missing required fields:', { country, city, tripType, tripDate, hasTripData: !!tripData });
+      return res.status(400).json({ error: 'All required fields must be provided' });
+    }
+
+    // Generate unique trip ID
+    const tripId = `${req.user.email}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+    const newTrip = new Trip({
+      userId: req.user.userId,
+      userEmail: req.user.email,
+      tripId,
+      country,
+      city,
+      tripType,
+      tripDate,
+      countryFlag,
+      tripData
+    });
+
+    console.log('Saving trip with ID:', tripId);
+    await newTrip.save();
+    console.log('Trip saved successfully');
+
+    res.json({
+      success: true,
+      message: 'Trip saved successfully',
+      tripId
+    });
+
+  } catch (error) {
+    console.error('Error saving trip:', error);
+    console.error('Error details:', error.message);
+    if (error.name === 'ValidationError') {
+      console.error('Validation errors:', error.errors);
+    }
+    res.status(500).json({ error: 'Failed to save trip: ' + error.message });
+  }
+});
+
+// Get user's trip history
+router.get('/history', authenticateToken, async (req, res) => {
+  try {
+    const { email } = req.user;
+
+    const trips = await Trip.find({ userEmail: email })
+      .sort({ createdAt: -1 }) // Most recent first
+      .select('tripId country city tripType tripDate countryFlag createdAt');
+
+    res.json({
+      success: true,
+      trips
+    });
+
+  } catch (error) {
+    console.error('Error fetching trip history:', error);
+    res.status(500).json({ error: 'Failed to fetch trip history' });
+  }
+});
+
+// Get specific trip details
+router.get('/trip/:tripId', authenticateToken, async (req, res) => {
+  try {
+    const { tripId } = req.params;
+    const { email } = req.user;
+
+    const trip = await Trip.findOne({ tripId, userEmail: email });
+
+    if (!trip) {
+      return res.status(404).json({ error: 'Trip not found' });
+    }
+
+    res.json({
+      success: true,
+      trip
+    });
+
+  } catch (error) {
+    console.error('Error fetching trip:', error);
+    res.status(500).json({ error: 'Failed to fetch trip' });
+  }
 });
 
 router.post('/plan', async (req, res) => {

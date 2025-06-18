@@ -295,12 +295,58 @@ body {
 
 .trip-card {
   background: var(--card-bg);
+  padding: 1.5rem;
   border-radius: 1rem;
-  padding: 2rem;
+  margin-bottom: 1rem;
   box-shadow: 0 2px 4px var(--shadow-color);
-  transition: all 0.3s ease;
   border: 1px solid var(--border-color);
-  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.trip-card .trip-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.country-flag-small {
+  width: 40px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.trip-card .trip-info {
+  flex: 1;
+}
+
+.trip-card h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--primary-color);
+  font-size: 1.25rem;
+}
+
+.trip-card .trip-details {
+  margin: 0;
+}
+
+.trip-card .trip-details p {
+  margin: 0.25rem 0;
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+.trip-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.trip-card h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
 }
 
 .form-group {
@@ -488,16 +534,48 @@ body {
 }
 
 .map-container {
-  height: 500px;
-  width: 100%;
+  position: relative;
+  height: 400px;
   border-radius: 1rem;
   overflow: hidden;
-  margin-top: 1rem;
-  border: 2px solid var(--border-color);
-  background: var(--card-bg);
+  box-shadow: 0 2px 4px var(--shadow-color);
+  border: 1px solid var(--border-color);
+  margin-bottom: 1rem;
 }
 
-/* Dark mode specific styles */
+.save-trip-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.save-trip-button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.save-trip-button:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.save-trip-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Dark mode styles for map container */
 .dark-mode .map-container {
   border-color: var(--border-color);
 }
@@ -613,20 +691,37 @@ body {
 }
 
 .error-message {
-  color: #dc2626;
-  background-color: #fee2e2;
+  color: #e74c3c;
+  background-color: #fdf2f2;
   border: 1px solid #fecaca;
-  border-radius: 0.5rem;
   padding: 0.75rem;
-  margin: 0.5rem auto 1rem;
-  text-align: center;
-  font-size: 0.875rem;
-  width: 100%;
-  max-width: 300px;
-  display: block;
-  box-sizing: border-box;
-  text-align: center;
-  word-wrap: break-word;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.success-message {
+  color: #059669;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Dark mode styles for messages */
+.dark-mode .error-message {
+  background-color: #2d1b1b;
+  border-color: #7f1d1d;
+  color: #fca5a5;
+}
+
+.dark-mode .success-message {
+  background-color: #1b2d1b;
+  border-color: #1d7f1d;
+  color: #a5fca5;
 }
 
 /* Password reveal button styles */
