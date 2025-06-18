@@ -21,7 +21,10 @@ router.post('/plan', async (req, res) => {
 Requirements:
 - Day 1: 10-60km route, must pass through at least 3-4 different points (cities, towns, streets, landmarks, or notable locations)
 - Day 2: 10-60km route back to starting point, also passing through at least 3-4 different points
-- STRICT DISTANCE LIMITS: Day 1 must be between 10-60km total, Day 2 must be between 10-60km total
+- DISTANCE LIMITS: EACH DAY CAN BE UP TO 60KM INDEPENDENTLY
+- Day 1: 10-60km (up to 60km)
+- Day 2: 10-60km (up to 60km)
+- Total possible: Up to 120km over 2 days (60km + 60km)
 - The trip must start and end in ${city} (same coordinates)
 - Include estimated trip time for each day
 - Include distance from each point to the next point
@@ -56,7 +59,7 @@ Return the response as a JSON object with this exact structure:
     }
   ]
 }
-IMPORTANT: Respect the distance limits - Day 1: 10-60km, Day 2: 10-60km. Create a realistic bike route that passes through multiple interesting points each day. The trip must end back in ${city} with the same coordinates as the starting point. Include realistic distances between each consecutive point.`;
+CRITICAL: EACH DAY IS INDEPENDENT! Day 1 can be 10-60km AND Day 2 can be 10-60km. This means you can have Day 1 = 50km and Day 2 = 55km (total 105km). Each day can reach the full 60km limit independently. Create a realistic bike route that passes through multiple interesting points each day. The trip must end back in ${city} with the same coordinates as the starting point. Include realistic distances between each consecutive point.`;
     } else if (tripType === 'trek') {
       prompt = `Plan a 1-day trek trip starting and ending in ${city}, ${country}.
 Requirements:
