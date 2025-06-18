@@ -354,15 +354,25 @@ body {
   position: static;
   z-index: 2;
   margin: 0 0 0.5rem 0;
-  color: var(--primary-color);
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 800;
   word-break: break-word;
   text-align: left;
-  background: rgba(255,255,255,0.7);
-  padding: 0.25rem 0.75rem;
-  border-radius: 0.5rem;
+  padding: 0.35rem 1.1rem;
+  border-radius: 0.7rem;
   display: inline-block;
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  border: 2px solid var(--primary-color);
+  letter-spacing: 0.01em;
+  transition: background 0.3s, color 0.3s;
+}
+
+.dark-mode .trip-card h3 {
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
+  color: #fff;
+  border-color: var(--accent-color);
 }
 
 .trip-card .trip-details {
@@ -1446,5 +1456,64 @@ body {
   
   .no-trips-card {
     padding: 2rem 1rem;
+  }
+}
+
+/* Trip History Filters Styling */
+.trip-history-filters {
+  background: var(--card-bg);
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  border: 1px solid var(--border-color);
+  padding: 1.2rem 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.trip-history-filters label {
+  color: var(--text-color);
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.trip-history-filters select,
+.trip-history-filters input[type="text"] {
+  padding: 0.6rem 1rem;
+  border-radius: 0.75rem;
+  border: 1.5px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  min-width: 140px;
+  box-shadow: 0 1px 3px var(--shadow-color);
+}
+
+.trip-history-filters select:focus,
+.trip-history-filters input[type="text"]:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.12);
+}
+
+.trip-history-filters > div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .trip-history-filters {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  .trip-history-filters > div {
+    width: 100%;
+    justify-content: flex-start;
   }
 }
