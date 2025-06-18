@@ -340,8 +340,8 @@ body {
   top: unset;
   transform: none;
   z-index: 1;
-  width: 48px;
-  height: 36px;
+  width: 100px;
+  height: 54px;
   object-fit: cover;
   border-radius: 0.25rem;
   border: 1px solid var(--border-color);
