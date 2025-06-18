@@ -32,6 +32,12 @@ function TripPlan() {
   const [tripData, setTripData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  
+  // Store submitted values separately from form state
+  const [submittedCountry, setSubmittedCountry] = useState('');
+  const [submittedCity, setSubmittedCity] = useState('');
+  const [submittedTripType, setSubmittedTripType] = useState('');
+  const [submittedTripDate, setSubmittedTripDate] = useState('');
 
   // Helper to normalize strings for comparison
   function normalize(str) {
@@ -146,6 +152,12 @@ function TripPlan() {
       if (response.data.success) {
         const trip = response.data.tripData;
         setTripData(trip);
+        
+        // Store the submitted values for display
+        setSubmittedCountry(country);
+        setSubmittedCity(city);
+        setSubmittedTripType(tripType);
+        setSubmittedTripDate(tripDate);
 
         // Process the trip data to create markers and polylines
         const allMarkers = [];
@@ -277,9 +289,9 @@ function TripPlan() {
         <div className="trip-details">
           <h3>Trip Details</h3>
           <div className="trip-summary">
-            <p><strong>Starting City:</strong> {city}, {country}</p>
-            <p><strong>Trip Type:</strong> {tripType}</p>
-            <p><strong>Date:</strong> {tripDate}</p>
+            <p><strong>Starting City:</strong> {submittedCity}, {submittedCountry}</p>
+            <p><strong>Trip Type:</strong> {submittedTripType}</p>
+            <p><strong>Date:</strong> {submittedTripDate}</p>
           </div>
           
           {tripData.days.map((day, index) => (
