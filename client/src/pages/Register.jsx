@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../App.css';
 
-export default function Register() {
+export default function Register({ onLogin }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,6 +26,7 @@ export default function Register() {
       const response = await axios.post('http://localhost:5000/api/register', { name, email, password });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('username', response.data.name);
+      if (onLogin) onLogin(response.data.name);
       navigate('/dashboard');
     } catch (err) {
       const errorMessage = err.response?.data?.message;

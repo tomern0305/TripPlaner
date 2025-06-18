@@ -85,7 +85,7 @@ function App() {
         </nav>
         <div className="content">
           <Routes>
-            <Route path="/register" element={<Register />} />
+            <Route path="/register" element={<Register onLogin={handleLogin} />} />
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route path="/trip-plan" element={<PrivateRoute><TripPlan /></PrivateRoute>} />
             <Route path="/trip-history" element={<PrivateRoute><TripHistory /></PrivateRoute>} />
