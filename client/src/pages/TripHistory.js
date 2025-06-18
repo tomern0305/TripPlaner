@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function TripHistory() {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchTripHistory();
@@ -85,7 +87,7 @@ function TripHistory() {
               <p><strong>Date:</strong> {trip.tripDate}</p>
               <p><strong>Created:</strong> {formatDate(trip.createdAt)}</p>
             </div>
-            <button className="button" onClick={() => window.location.href = `/trip-planner?trip=${trip.tripId}`}>
+            <button className="button" onClick={() => navigate(`/trip/${trip.tripId}`)}>
               View Trip
             </button>
           </div>

@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import TripPlan from './pages/TripPlan';
 import TripHistory from './pages/TripHistory';
+import TripView from './pages/TripView';
 import './App.css';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -82,6 +83,7 @@ function App() {
             <Route path="/trip-plan" element={<PrivateRoute><TripPlan /></PrivateRoute>} />
             <Route path="/trip-history" element={<PrivateRoute><TripHistory /></PrivateRoute>} />
             <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+            <Route path="/trip/:tripId" element={<PrivateRoute><TripView /></PrivateRoute>} />
             <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
           </Routes>
         </div>
