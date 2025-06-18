@@ -351,12 +351,116 @@ body {
 }
 
 .trip-details {
-  margin-bottom: 1.5rem;
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  border: 1px solid var(--border-color);
 }
 
-.trip-details p {
+.trip-details h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.trip-summary {
+  background: var(--bg-color);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.trip-summary p {
   margin: 0.5rem 0;
   color: var(--text-color);
+}
+
+.day-route {
+  background: var(--bg-color);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--primary-color);
+}
+
+.day-route h4 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.route-info {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.route-info p {
+  margin: 0;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.cities-list {
+  margin-top: 1rem;
+}
+
+.cities-list strong {
+  color: var(--text-color);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.cities-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cities-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+.cities-list li:last-child {
+  border-bottom: none;
+}
+
+.distance-info {
+  color: var(--accent-color);
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+
+/* Loading state styles */
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Dark mode styles for trip details */
+.dark-mode .trip-details {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.dark-mode .trip-summary,
+.dark-mode .day-route {
+  background: var(--input-bg);
+  border-color: var(--border-color);
+}
+
+.dark-mode .cities-list li {
+  border-color: var(--border-color);
 }
 
 .map-container {
