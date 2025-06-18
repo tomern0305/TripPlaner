@@ -3,6 +3,7 @@ const router = express.Router();
 const Groq = require('groq-sdk');
 const Trip = require('../models/Trip');
 const jwt = require('jsonwebtoken');
+const axios = require('axios');
 
 const groq = new Groq({
   apiKey: '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'
@@ -330,6 +331,108 @@ IMPORTANT: Respect the distance limit - Total route must be 5-15km. Create a rea
   } catch (error) {
     console.error('Error planning trip:', error);
     res.status(500).json({ error: 'Failed to plan trip' });
+  }
+});
+
+// Get weather forecast for trip
+router.post('/weather', async (req, res) => {
+  try {
+    const { city, country, tripDate } = req.body;
+
+    if (!city || !country || !tripDate) {
+      return res.status(400).json({ error: 'City, country, and trip date are required' });
+    }
+
+    // WeatherAPI.com configuration
+    const WEATHER_API_KEY = 'ef37f3a7d99a4efaace143948251806';
+    const baseUrl = 'https://api.weatherapi.com/v1';
+
+    // Calculate the date difference to get the forecast day
+    const tripDateObj = new Date(tripDate);
+    const today = new Date();
+    const diffTime = tripDateObj.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    // WeatherAPI.com provides 3-day forecast for free
+    if (diffDays >= 0 && diffDays <= 3) {
+      const weatherUrl = `${baseUrl}/forecast.json?key=${WEATHER_API_KEY}&q=${encodeURIComponent(city)},${encodeURIComponent(country)}&days=3&aqi=no`;
+      
+      const weatherResponse = await axios.get(weatherUrl);
+      
+      if (weatherResponse.data.error) {
+        return res.status(400).json({ error: weatherResponse.data.error.message });
+      }
+
+      // Find the forecast for the trip date
+      const tripDateStr = tripDateObj.toISOString().split('T')[0];
+      const dayForecast = weatherResponse.data.forecast.forecastday.find(day => 
+        day.date === tripDateStr
+      );
+
+      if (dayForecast) {
+        const weatherData = {
+          date: tripDateStr,
+          temperature: Math.round(dayForecast.day.avgtemp_c),
+          description: dayForecast.day.condition.text,
+          icon: dayForecast.day.condition.icon,
+          humidity: Math.round(dayForecast.day.avghumidity),
+          windSpeed: Math.round(dayForecast.day.maxwind_kph),
+          city: weatherResponse.data.location.name,
+          country: weatherResponse.data.location.country,
+          maxTemp: Math.round(dayForecast.day.maxtemp_c),
+          minTemp: Math.round(dayForecast.day.mintemp_c),
+          precipitation: Math.round(dayForecast.day.totalprecip_mm),
+          uvIndex: dayForecast.day.uv
+        };
+
+        res.json({
+          success: true,
+          weather: weatherData
+        });
+      } else {
+        res.status(400).json({ error: 'Weather forecast not available for this date' });
+      }
+    } else if (diffDays >= 4 && diffDays <= 14) {
+      // For longer trips, provide current weather as reference
+      const currentWeatherUrl = `${baseUrl}/current.json?key=${WEATHER_API_KEY}&q=${encodeURIComponent(city)},${encodeURIComponent(country)}&aqi=no`;
+      
+      const currentResponse = await axios.get(currentWeatherUrl);
+      
+      if (currentResponse.data.error) {
+        return res.status(400).json({ error: currentResponse.data.error.message });
+      }
+
+      const weatherData = {
+        date: tripDate,
+        message: `Weather forecast for ${tripDate} is not available in the free tier. Here's the current weather in ${city} as a reference:`,
+        city: currentResponse.data.location.name,
+        country: currentResponse.data.location.country,
+        currentTemperature: Math.round(currentResponse.data.current.temp_c),
+        currentDescription: currentResponse.data.current.condition.text,
+        currentIcon: currentResponse.data.current.condition.icon,
+        currentHumidity: Math.round(currentResponse.data.current.humidity),
+        currentWindSpeed: Math.round(currentResponse.data.current.wind_kph)
+      };
+
+      res.json({
+        success: true,
+        weather: weatherData
+      });
+    } else {
+      return res.status(400).json({ 
+        error: 'Weather forecast is only available for trips within the next 14 days' 
+      });
+    }
+
+  } catch (error) {
+    console.error('Error fetching weather:', error);
+    if (error.response?.status === 401) {
+      res.status(500).json({ error: 'Weather API key is invalid or missing' });
+    } else if (error.response?.status === 400) {
+      res.status(400).json({ error: 'City not found or invalid location' });
+    } else {
+      res.status(500).json({ error: 'Failed to fetch weather data' });
+    }
   }
 });
 
