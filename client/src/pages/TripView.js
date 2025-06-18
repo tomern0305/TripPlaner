@@ -250,7 +250,7 @@ export default function TripView() {
               )}
               {weatherData && weatherData.message && (
                 <div className="weather-message">
-                  <p>{weatherData.message}</p>
+                  <p>Weather for {trip.tripDate} is not available yet, you may try again closer to the trip date. Here is the current weather in {trip.city} as reference.</p>
                   {weatherData.currentTemperature && (
                     <div className="current-weather-info">
                       <div className="current-weather-main">

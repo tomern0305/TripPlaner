@@ -557,7 +557,7 @@ function TripPlan() {
             
             {weatherData && weatherData.message && (
               <div className="weather-message">
-                <p>{weatherData.message}</p>
+                <p>Weather for {submittedTripDate} is not available yet, you may try again closer to the trip date. Here is the current weather in {submittedCity} as reference.</p>
                 {weatherData.currentTemperature && (
                   <div className="current-weather-info">
                     <div className="current-weather-main">
@@ -567,7 +567,7 @@ function TripPlan() {
                         className="current-weather-icon"
                       />
                       <div className="current-weather-details">
-                        <span className="current-temperature">{weatherData.currentTemperature}°C</span>
+                        <span className="current-temperature">{weatherData.currentTemperature}&deg;C</span>
                         <span className="current-description">{weatherData.currentDescription}</span>
                       </div>
                     </div>
