@@ -52,6 +52,14 @@ function TripPlan() {
   // Unsplash API configuration
   const UNSPLASH_ACCESS_KEY = 'iF8jdg69v6YjZOZgn73hfj4_GVdyyjoHnwwStC5wwVc';
 
+  // Fetch weather forecast when all required info is set and tripData is available
+  useEffect(() => {
+    if (submittedCity && submittedCountry && submittedTripDate && tripData) {
+      fetchWeatherForecast();
+    }
+    // eslint-disable-next-line
+  }, [submittedCity, submittedCountry, submittedTripDate, tripData]);
+
   // Function to fetch country flag from Unsplash
   const fetchCountryFlag = async (countryName) => {
     try {
@@ -246,9 +254,6 @@ function TripPlan() {
         // Fetch country flag
         const flag = await fetchCountryFlag(country);
         setCountryFlag(flag);
-
-        // Fetch weather forecast for the trip
-        await fetchWeatherForecast();
       } else {
         setError('Failed to generate trip plan. Please try again.');
       }

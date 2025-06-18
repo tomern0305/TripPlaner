@@ -30,11 +30,22 @@ export default function TripView() {
   const [mapCenter, setMapCenter] = useState([31.7683, 35.2137]);
   const [markers, setMarkers] = useState([]);
   const [polylines, setPolylines] = useState([]);
+  const [weatherData, setWeatherData] = useState(null);
+  const [weatherLoading, setWeatherLoading] = useState(false);
+  const [weatherError, setWeatherError] = useState('');
 
   useEffect(() => {
     fetchTrip();
     // eslint-disable-next-line
   }, [tripId]);
+
+  // Fetch weather forecast when trip is loaded
+  useEffect(() => {
+    if (trip && trip.city && trip.country && trip.tripDate) {
+      fetchWeatherForecast();
+    }
+    // eslint-disable-next-line
+  }, [trip]);
 
   const fetchTrip = async () => {
     setLoading(true);
@@ -100,6 +111,36 @@ export default function TripView() {
     }
   };
 
+  const fetchWeatherForecast = async () => {
+    if (!trip || !trip.city || !trip.country || !trip.tripDate) {
+      setWeatherError('Trip information is required to fetch weather forecast.');
+      return;
+    }
+    setWeatherLoading(true);
+    setWeatherError('');
+    setWeatherData(null);
+    try {
+      const response = await axios.post('http://localhost:5000/api/trip/weather', {
+        city: trip.city,
+        country: trip.country,
+        tripDate: trip.tripDate
+      });
+      if (response.data.success) {
+        setWeatherData(response.data.weather);
+      } else {
+        setWeatherError('Failed to fetch weather data.');
+      }
+    } catch (error) {
+      if (error.response?.data?.error) {
+        setWeatherError(error.response.data.error);
+      } else {
+        setWeatherError('Failed to fetch weather forecast. Please try again.');
+      }
+    } finally {
+      setWeatherLoading(false);
+    }
+  };
+
   if (loading) return <div className="loading">Loading trip...</div>;
   if (error) return <div className="error-message">{error}</div>;
   if (!trip) return null;
@@ -141,6 +182,110 @@ export default function TripView() {
               </div>
             </div>
           ))}
+          {/* Weather Forecast Display */}
+          <div className="weather-section">
+            <h3>Weather Forecast</h3>
+            <div className="weather-content">
+              {weatherLoading && (
+                <div className="weather-loading">
+                  <p>Loading weather forecast...</p>
+                </div>
+              )}
+              {weatherError && (
+                <div className="weather-error">
+                  <p>{weatherError}</p>
+                  <button 
+                    onClick={fetchWeatherForecast} 
+                    className="retry-weather-button"
+                    disabled={weatherLoading}
+                  >
+                    Retry
+                  </button>
+                </div>
+              )}
+              {weatherData && !weatherData.message && (
+                <div className="weather-card">
+                  <div className="weather-header">
+                    <h4>{weatherData.city}, {weatherData.country}</h4>
+                    <p className="weather-date">{weatherData.date}</p>
+                  </div>
+                  <div className="weather-main">
+                    <div className="weather-icon">
+                      <img 
+                        src={`https:${weatherData.icon}`} 
+                        alt={weatherData.description}
+                      />
+                    </div>
+                    <div className="weather-temp">
+                      <span className="temperature">{weatherData.temperature}&deg;C</span>
+                      <span className="description">{weatherData.description}</span>
+                      {weatherData.maxTemp && weatherData.minTemp && (
+                        <span className="temp-range">
+                          H: {weatherData.maxTemp}&deg;C L: {weatherData.minTemp}&deg;C
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="weather-item">
+                    <span className="label">Humidity:</span>
+                    <span className="value">{weatherData.humidity}%</span>
+                  </div>
+                  <div className="weather-item">
+                    <span className="label">Wind Speed:</span>
+                    <span className="value">{weatherData.windSpeed} km/h</span>
+                  </div>
+                  {weatherData.precipitation !== undefined && (
+                    <div className="weather-item">
+                      <span className="label">Precipitation:</span>
+                      <span className="value">{weatherData.precipitation} mm</span>
+                    </div>
+                  )}
+                  {weatherData.uvIndex !== undefined && (
+                    <div className="weather-item">
+                      <span className="label">UV Index:</span>
+                      <span className="value">{weatherData.uvIndex}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+              {weatherData && weatherData.message && (
+                <div className="weather-message">
+                  <p>{weatherData.message}</p>
+                  {weatherData.currentTemperature && (
+                    <div className="current-weather-info">
+                      <div className="current-weather-main">
+                        <img 
+                          src={`https:${weatherData.currentIcon}`} 
+                          alt={weatherData.currentDescription}
+                          className="current-weather-icon"
+                        />
+                        <div className="current-weather-details">
+                          <span className="current-temperature">{weatherData.currentTemperature}&deg;C</span>
+                          <span className="current-description">{weatherData.currentDescription}</span>
+                        </div>
+                      </div>
+                      <div className="current-weather-stats">
+                        <span>Humidity: {weatherData.currentHumidity}%</span>
+                        <span>Wind: {weatherData.currentWindSpeed} km/h</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              {!weatherData && !weatherLoading && !weatherError && (
+                <div className="weather-placeholder">
+                  <p>Weather forecast will be displayed here once available.</p>
+                  <button 
+                    onClick={fetchWeatherForecast} 
+                    className="fetch-weather-button"
+                    disabled={weatherLoading}
+                  >
+                    Get Weather Forecast
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
         <div className="map-container" style={{ marginTop: 24 }}>
           <MapContainer
