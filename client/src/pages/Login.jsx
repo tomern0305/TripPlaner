@@ -6,6 +6,7 @@ import '../App.css';
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -38,6 +39,10 @@ export default function Login({ onLogin }) {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="auth-container">
       <form onSubmit={handleSubmit} className="auth-form">
@@ -52,15 +57,24 @@ export default function Login({ onLogin }) {
             required 
           />
         </div>
-        <div className="form-group">
+        <div className="form-group password-group">
           <input 
-            type="password" 
+            type={showPassword ? "text" : "password"}
             placeholder="Password" 
             value={password} 
             onChange={(e) => setPassword(e.target.value)} 
-            className="input" 
+            className="input password-input" 
             required 
           />
+          {password && (
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? '👁️' : '👁️‍🗨️'}
+            </button>
+          )}
         </div>
         {error && <div className="error-message">{error}</div>}
         <button type="submit" className="button">Login</button>
