@@ -52,7 +52,14 @@ function App() {
     <Router>
       <div className="app-container">
         <nav className="nav">
-          <Link to={isLoggedIn ? "/dashboard" : "/login"} className="nav-brand" style={{ textDecoration: 'none' }}>TripPlanner</Link>
+          <Link to={isLoggedIn ? "/dashboard" : "/login"} className="nav-brand" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <img 
+              src="https://png.pngtree.com/png-clipart/20210502/original/pngtree-trip-traveler-man-take-map-png-image_6260059.jpg" 
+              alt="Trip Logo" 
+              style={{ width: '32px', height: '32px', borderRadius: '6px', marginRight: '4px' }}
+            />
+            <span style={{ fontWeight: 700, fontSize: '1.7rem', color: '#6c63ff', letterSpacing: '0.5px' }}>TripPlanner</span>
+          </Link>
           <div className="nav-links">
             {!isLoggedIn ? (
               <>
