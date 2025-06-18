@@ -299,7 +299,7 @@ body {
   margin-left: calc(2rem - 3vw);
   display: grid;
   grid-template-columns: 35% 8% 35%;
-  row-gap: 6.5rem;
+  row-gap: 5.5rem;
   align-items: stretch;
   justify-content: center;
 }
@@ -325,9 +325,9 @@ body {
 
 .trip-card {
   background: var(--card-bg);
-  padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+  padding: 1.2rem 1.2rem 0.2rem 1.2rem;
   border-radius: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.2rem;
   box-shadow: 0 2px 4px var(--shadow-color);
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
@@ -348,7 +348,7 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.7rem;
   min-height: 48px;
   gap: 1rem;
 }
@@ -389,8 +389,8 @@ body {
   max-width: 320px;
   background: rgba(0,0,0,0.07);
   border-radius: 0.75rem;
-  padding: 1rem 1.25rem;
-  margin: 0 auto 1.25rem auto;
+  padding: 0.7rem 1rem;
+  margin: 0 auto 0.7rem auto;
   box-shadow: 0 1px 4px var(--shadow-color);
   border: 1px solid var(--border-color);
   display: flex;
