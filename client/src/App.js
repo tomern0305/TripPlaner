@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -82,7 +82,7 @@ function App() {
             <Route path="/trip-plan" element={<PrivateRoute><TripPlan /></PrivateRoute>} />
             <Route path="/trip-history" element={<PrivateRoute><TripHistory /></PrivateRoute>} />
             <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-            <Route path="/" element={<Login onLogin={handleLogin} />} />
+            <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
           </Routes>
         </div>
       </div>
