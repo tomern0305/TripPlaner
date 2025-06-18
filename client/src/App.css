@@ -374,6 +374,30 @@ body {
   border: 1px solid var(--border-color);
 }
 
+.trip-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.country-flag {
+  width: 60px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.trip-info {
+  flex: 1;
+}
+
+.trip-info p {
+  margin: 0.5rem 0;
+  color: var(--text-color);
+}
+
 .trip-summary p {
   margin: 0.5rem 0;
   color: var(--text-color);
@@ -502,6 +526,11 @@ body {
 
 .dark-mode .user-section {
   background: var(--nav-hover);
+}
+
+/* Dark mode styles for country flag */
+.dark-mode .country-flag {
+  border-color: var(--border-color);
 }
 
 /* Responsive adjustments */

@@ -32,12 +32,38 @@ function TripPlan() {
   const [tripData, setTripData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [countryFlag, setCountryFlag] = useState(null);
   
   // Store submitted values separately from form state
   const [submittedCountry, setSubmittedCountry] = useState('');
   const [submittedCity, setSubmittedCity] = useState('');
   const [submittedTripType, setSubmittedTripType] = useState('');
   const [submittedTripDate, setSubmittedTripDate] = useState('');
+
+  // Unsplash API configuration
+  const UNSPLASH_ACCESS_KEY = 'iF8jdg69v6YjZOZgn73hfj4_GVdyyjoHnwwStC5wwVc';
+
+  // Function to fetch country flag from Unsplash
+  const fetchCountryFlag = async (countryName) => {
+    try {
+      const response = await axios.get(
+        `https://api.unsplash.com/search/photos?query=${encodeURIComponent(countryName + ' flag')}&per_page=1`,
+        {
+          headers: {
+            'Authorization': `Client-ID ${UNSPLASH_ACCESS_KEY}`
+          }
+        }
+      );
+      
+      if (response.data.results && response.data.results.length > 0) {
+        return response.data.results[0].urls.small;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching country flag:', error);
+      return null;
+    }
+  };
 
   // Helper to normalize strings for comparison
   function normalize(str) {
@@ -204,6 +230,10 @@ function TripPlan() {
         if (trip.days[0] && trip.days[0].cities[0]) {
           setMapCenter(trip.days[0].cities[0].coordinates);
         }
+
+        // Fetch country flag
+        const flag = await fetchCountryFlag(country);
+        setCountryFlag(flag);
       } else {
         setError('Failed to generate trip plan. Please try again.');
       }
@@ -289,9 +319,20 @@ function TripPlan() {
         <div className="trip-details">
           <h3>Trip Details</h3>
           <div className="trip-summary">
-            <p><strong>Starting City:</strong> {submittedCity}, {submittedCountry}</p>
-            <p><strong>Trip Type:</strong> {submittedTripType}</p>
-            <p><strong>Date:</strong> {submittedTripDate}</p>
+            <div className="trip-header">
+              {countryFlag && (
+                <img 
+                  src={countryFlag} 
+                  alt={`${submittedCountry} flag`} 
+                  className="country-flag"
+                />
+              )}
+              <div className="trip-info">
+                <p><strong>Starting City:</strong> {submittedCity}, {submittedCountry}</p>
+                <p><strong>Trip Type:</strong> {submittedTripType}</p>
+                <p><strong>Date:</strong> {submittedTripDate}</p>
+              </div>
+            </div>
           </div>
           
           {tripData.days.map((day, index) => (
