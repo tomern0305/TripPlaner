@@ -67,26 +67,23 @@ function TripHistory() {
   return (
     <div className="trip-history-page">
       <h2>Trip History</h2>
-      
-      <div className="trip-history">
+      <div className="trip-history-grid">
         {trips.map(trip => (
           <div key={trip.tripId} className="trip-card">
-            <div className="trip-header">
+            <div className="flag-title-group">
               {trip.countryFlag && (
-                <img 
-                  src={trip.countryFlag} 
-                  alt={`${trip.country} flag`} 
+                <img
+                  src={trip.countryFlag}
+                  alt={`${trip.country} flag`}
                   className="country-flag-small"
                 />
               )}
-              <div className="trip-info">
-                <h3>{trip.city}, {trip.country}</h3>
-                <div className="trip-details">
-                  <p><strong>Type:</strong> {trip.tripType}</p>
-                  <p><strong>Date:</strong> {trip.tripDate}</p>
-                  <p><strong>Created:</strong> {formatDate(trip.createdAt)}</p>
-                </div>
-              </div>
+              <h3>{trip.city}, {trip.country}</h3>
+            </div>
+            <div className="trip-details">
+              <p><strong>Type:</strong> {trip.tripType}</p>
+              <p><strong>Date:</strong> {trip.tripDate}</p>
+              <p><strong>Created:</strong> {formatDate(trip.createdAt)}</p>
             </div>
             <button className="button" onClick={() => window.location.href = `/trip-planner?trip=${trip.tripId}`}>
               View Trip
@@ -94,7 +91,6 @@ function TripHistory() {
           </div>
         ))}
       </div>
-
       {trips.length === 0 && (
         <div className="no-trips">
           <p>No trips found in history. Create your first trip!</p>
