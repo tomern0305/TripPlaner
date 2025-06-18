@@ -7,15 +7,16 @@ const router = express.Router();
 
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
+  const normalizedEmail = email.toLowerCase();
   try {
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    // Check if user already exists (case-insensitive)
+    const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
       return res.status(400).json({ message: 'Email already exists' });
     }
 
     const hashed = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashed });
+    const user = new User({ name, email: normalizedEmail, password: hashed });
     await user.save();
     const jwtSecret = process.env.JWT_SECRET || 'fallback-secret-key';
     const token = jwt.sign({ 
@@ -31,8 +32,9 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+  const normalizedEmail = email.toLowerCase();
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) return res.status(401).json({ message: 'Email not found' });
 
     const match = await bcrypt.compare(password, user.password);

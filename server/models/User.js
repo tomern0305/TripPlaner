@@ -6,4 +6,12 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
 });
 
+// Ensure email is always saved in lowercase
+userSchema.pre('save', function(next) {
+  if (this.email) {
+    this.email = this.email.toLowerCase();
+  }
+  next();
+});
+
 module.exports = mongoose.model('User', userSchema);
