@@ -95,7 +95,10 @@ function TripHistory() {
       </div>
       {trips.length === 0 && (
         <div className="no-trips">
-          <p>No trips found in history. Create your first trip!</p>
+          <p>No trips found in history.</p>
+          <button className="button" onClick={() => navigate('/trip-plan')}>
+            Create your first trip
+          </button>
         </div>
       )}
     </div>
