@@ -1,6 +1,6 @@
 :root {
-  --primary-color: #6c5ce7; /* A vibrant, rich purple */
-  --primary-hover: #5a4bcf; /* Darker shade for hover */
+  --primary-color: #4fc3f7; /* Light blue */
+  --primary-hover: #039be5; /* Slightly darker blue for hover */
   --text-color: #2c3e50; /* Dark blue-grey for main text */
   --bg-color: #f5f7fa; /* Light grey background */
   --card-bg: #ffffff; /* White for cards/containers */
@@ -17,8 +17,8 @@
 }
 
 .dark-mode {
-  --primary-color: #9f7aea; /* Lighter purple for dark mode */
-  --primary-hover: #805ad5; /* Darker purple for dark mode hover */
+  --primary-color: #81d4fa; /* Lighter blue for dark mode */
+  --primary-hover: #0288d1; /* Darker blue for dark mode hover */
   --text-color: #e0e6ed; /* Light grey for text */
   --bg-color: #1a202c; /* Deep dark blue-grey background */
   --card-bg: #2d3748; /* Darker blue-grey for cards */

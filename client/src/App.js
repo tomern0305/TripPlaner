@@ -58,7 +58,7 @@ function App() {
               alt="Trip Logo" 
               style={{ width: '32px', height: '32px', borderRadius: '6px', marginRight: '4px' }}
             />
-            <span style={{ fontWeight: 700, fontSize: '1.7rem', color: '#6c63ff', letterSpacing: '0.5px' }}>TripPlanner</span>
+            <span style={{ fontWeight: 700, fontSize: '1.7rem', color: 'var(--primary-color)', letterSpacing: '0.5px' }}>TripPlanner</span>
           </Link>
           <div className="nav-links">
             {!isLoggedIn ? (
