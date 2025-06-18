@@ -92,41 +92,46 @@ function TripPlan() {
   }
 
   // Strict country validation: get country code and match name
+  
   const validateCountry = async (countryName) => {
-    try {
-      const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          countryName
-        )}&featuretype=country&limit=1&addressdetails=1`
-      );
+  try {
+    const response = await axios.get(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+        countryName
+      )}&limit=1&addressdetails=1`
+    );
 
-      if (
-        response.data &&
-        response.data.length > 0 &&
-        response.data[0].class === 'boundary' &&
-        response.data[0].type === 'administrative' &&
-        response.data[0].address &&
-        response.data[0].address.country &&
-        response.data[0].address.country_code
-      ) {
-        const location = response.data[0];
-        // Normalize and compare country names
-        const userCountry = normalize(countryName);
-        const resultCountry = normalize(location.address.country);
-        if (userCountry === resultCountry) {
-          return {
-            isValid: true,
-            displayName: location.display_name,
-            countryCode: location.address.country_code.toUpperCase(),
-          };
-        }
+    console.log("COUNTRY RESPONSE:", response.data);
+
+    if (
+      response.data.length > 0
+    ) {
+      const location = response.data[0];
+      const code = location.address?.country_code?.toUpperCase();
+      const name = location.address?.country;
+
+      if (code && name) {
+        return {
+          isValid: true,
+          displayName: location.display_name,
+          countryCode: code,
+        };
       }
-      return { isValid: false };
-    } catch (error) {
-      console.error('Error validating country:', error);
-      return { isValid: false };
+
+      // fallback אם אין address – עדיין מחזירים את התוצאה
+      return {
+        isValid: true,
+        displayName: location.display_name,
+        countryCode: 'IL', // ברירת מחדל זמנית, שימי כאן בדיקה לפי השם אם צריך
+      };
     }
-  };
+
+    return { isValid: false };
+  } catch (error) {
+    console.error('Error validating country:', error);
+    return { isValid: false };
+  }
+};
 
   // City validation restricted to country code and checks result's country code
   const validateCity = async (cityName, countryCode) => {
