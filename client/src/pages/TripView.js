@@ -186,92 +186,169 @@ export default function TripView() {
           <div className="weather-section">
             <h3>Weather Forecast</h3>
             <div className="weather-content">
-              {weatherLoading && (
-                <div className="weather-loading">
-                  <p>Loading weather forecast...</p>
-                </div>
-              )}
-              {weatherError && (
-                <div className="weather-error">
-                  <p>{weatherError}</p>
-                  <button 
-                    onClick={fetchWeatherForecast} 
-                    className="retry-weather-button"
-                    disabled={weatherLoading}
-                  >
-                    Retry
-                  </button>
-                </div>
-              )}
-              {weatherData && !weatherData.message && (
-                <div className="weather-card">
-                  <div className="weather-header">
-                    <h4>{weatherData.city}, {weatherData.country}</h4>
-                    <p className="weather-date">{weatherData.date}</p>
-                  </div>
-                  <div className="weather-main">
-                    <div className="weather-icon">
-                      <img 
-                        src={`https:${weatherData.icon}`} 
-                        alt={weatherData.description}
-                      />
+              {(() => {
+                if (!trip || !trip.tripDate) return null;
+                const today = new Date();
+                const tripDateObj = new Date(trip.tripDate);
+                const daysDiff = Math.ceil((tripDateObj - today) / (1000 * 60 * 60 * 24));
+                // Only show loading spinner for daysDiff >= 0
+                if (weatherLoading && daysDiff >= 0) {
+                  return (
+                    <div className="weather-loading">
+                      <p>Loading weather forecast...</p>
                     </div>
-                    <div className="weather-temp">
-                      <span className="temperature">{weatherData.temperature}&deg;C</span>
-                      <span className="description">{weatherData.description}</span>
-                      {weatherData.maxTemp && weatherData.minTemp && (
-                        <span className="temp-range">
-                          H: {weatherData.maxTemp}&deg;C L: {weatherData.minTemp}&deg;C
-                        </span>
-                      )}
+                  );
+                }
+                // Only show error/retry for 0-3 days
+                if (weatherError && daysDiff >= 0 && daysDiff <= 3) {
+                  return (
+                    <div className="weather-error">
+                      <p>{weatherError}</p>
+                      <button 
+                        onClick={fetchWeatherForecast} 
+                        className="retry-weather-button"
+                        disabled={weatherLoading}
+                      >
+                        Retry
+                      </button>
                     </div>
-                  </div>
-                  <div className="weather-item">
-                    <span className="label">Humidity:</span>
-                    <span className="value">{weatherData.humidity}%</span>
-                  </div>
-                  <div className="weather-item">
-                    <span className="label">Wind Speed:</span>
-                    <span className="value">{weatherData.windSpeed} km/h</span>
-                  </div>
-                  {weatherData.precipitation !== undefined && (
-                    <div className="weather-item">
-                      <span className="label">Precipitation:</span>
-                      <span className="value">{weatherData.precipitation} mm</span>
-                    </div>
-                  )}
-                  {weatherData.uvIndex !== undefined && (
-                    <div className="weather-item">
-                      <span className="label">UV Index:</span>
-                      <span className="value">{weatherData.uvIndex}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-              {weatherData && weatherData.message && (
-                <div className="weather-message">
-                  <p>Weather for {trip.tripDate} is not available yet, you may try again closer to the trip date. Here is the current weather in {trip.city} as reference.</p>
-                  {weatherData.currentTemperature && (
-                    <div className="current-weather-info">
-                      <div className="current-weather-main">
-                        <img 
-                          src={`https:${weatherData.currentIcon}`} 
-                          alt={weatherData.currentDescription}
-                          className="current-weather-icon"
-                        />
-                        <div className="current-weather-details">
-                          <span className="current-temperature">{weatherData.currentTemperature}&deg;C</span>
-                          <span className="current-description">{weatherData.currentDescription}</span>
+                  );
+                }
+                // 0-3 days: show actual forecast
+                if (weatherData && !weatherData.message && daysDiff >= 0 && daysDiff <= 3) {
+                  return (
+                    <div className="weather-card">
+                      <div className="weather-header">
+                        <h4>{weatherData.city}, {weatherData.country}</h4>
+                        <p className="weather-date">{weatherData.date}</p>
+                      </div>
+                      <div className="weather-main">
+                        <div className="weather-icon">
+                          <img 
+                            src={`https:${weatherData.icon}`} 
+                            alt={weatherData.description}
+                          />
+                        </div>
+                        <div className="weather-temp">
+                          <span className="temperature">{weatherData.temperature}&deg;C</span>
+                          <span className="description">{weatherData.description}</span>
+                          {weatherData.maxTemp && weatherData.minTemp && (
+                            <span className="temp-range">
+                              H: {weatherData.maxTemp}&deg;C L: {weatherData.minTemp}&deg;C
+                            </span>
+                          )}
                         </div>
                       </div>
-                      <div className="current-weather-stats">
-                        <span>Humidity: {weatherData.currentHumidity}%</span>
-                        <span>Wind: {weatherData.currentWindSpeed} km/h</span>
+                      <div className="weather-item">
+                        <span className="label">Humidity:</span>
+                        <span className="value">{weatherData.humidity}%</span>
                       </div>
+                      <div className="weather-item">
+                        <span className="label">Wind Speed:</span>
+                        <span className="value">{weatherData.windSpeed} km/h</span>
+                      </div>
+                      {weatherData.precipitation !== undefined && (
+                        <div className="weather-item">
+                          <span className="label">Precipitation:</span>
+                          <span className="value">{weatherData.precipitation} mm</span>
+                        </div>
+                      )}
+                      {weatherData.uvIndex !== undefined && (
+                        <div className="weather-item">
+                          <span className="label">UV Index:</span>
+                          <span className="value">{weatherData.uvIndex}</span>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              )}
+                  );
+                }
+                // 4+ days: always show current weather as reference (no error)
+                if (daysDiff >= 4) {
+                  return (
+                    <div className="weather-message">
+                      <p>Weather for {trip.tripDate} is not available yet, you may try again closer to the trip date. Here is the current weather in {trip.city} as reference.</p>
+                      {weatherData && weatherData.currentTemperature && (
+                        <div className="current-weather-info">
+                          <div className="current-weather-main">
+                            <img 
+                              src={`https:${weatherData.currentIcon}`} 
+                              alt={weatherData.currentDescription}
+                              className="current-weather-icon"
+                            />
+                            <div className="current-weather-details">
+                              <span className="current-temperature">{weatherData.currentTemperature}&deg;C</span>
+                              <span className="current-description">{weatherData.currentDescription}</span>
+                            </div>
+                          </div>
+                          <div className="current-weather-stats">
+                            <span>Humidity: {weatherData.currentHumidity}%</span>
+                            <span>Wind: {weatherData.currentWindSpeed} km/h</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+                // Past dates: only show historical weather if available, else only show unavailable message
+                if (daysDiff < 0) {
+                  if (weatherData && !weatherData.message) {
+                    // If API provides historical weather
+                    return (
+                      <div className="weather-card">
+                        <div className="weather-header">
+                          <h4>{weatherData.city}, {weatherData.country}</h4>
+                          <p className="weather-date">{weatherData.date}</p>
+                        </div>
+                        <div className="weather-main">
+                          <div className="weather-icon">
+                            <img 
+                              src={`https:${weatherData.icon}`} 
+                              alt={weatherData.description}
+                            />
+                          </div>
+                          <div className="weather-temp">
+                            <span className="temperature">{weatherData.temperature}&deg;C</span>
+                            <span className="description">{weatherData.description}</span>
+                            {weatherData.maxTemp && weatherData.minTemp && (
+                              <span className="temp-range">
+                                H: {weatherData.maxTemp}&deg;C L: {weatherData.minTemp}&deg;C
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="weather-item">
+                          <span className="label">Humidity:</span>
+                          <span className="value">{weatherData.humidity}%</span>
+                        </div>
+                        <div className="weather-item">
+                          <span className="label">Wind Speed:</span>
+                          <span className="value">{weatherData.windSpeed} km/h</span>
+                        </div>
+                        {weatherData.precipitation !== undefined && (
+                          <div className="weather-item">
+                            <span className="label">Precipitation:</span>
+                            <span className="value">{weatherData.precipitation} mm</span>
+                          </div>
+                        )}
+                        {weatherData.uvIndex !== undefined && (
+                          <div className="weather-item">
+                            <span className="label">UV Index:</span>
+                            <span className="value">{weatherData.uvIndex}</span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  } else {
+                    // Only show this message for past dates if no historical weather
+                    return (
+                      <div className="weather-error">
+                        <p>Date has already passed, weather forecast unavailable.</p>
+                      </div>
+                    );
+                  }
+                }
+                return null;
+              })()}
               {!weatherData && !weatherLoading && !weatherError && (
                 <div className="weather-placeholder">
                   <p>Weather forecast will be displayed here once available.</p>

@@ -392,19 +392,18 @@ router.post('/weather', async (req, res) => {
       } else {
         res.status(400).json({ error: 'Weather forecast not available for this date' });
       }
-    } else if (diffDays >= 4 && diffDays <= 14) {
-      // For longer trips, provide current weather as reference
+    } else if (diffDays >= 4) {
+      // For any trip 4+ days in the future, provide current weather as reference
       const currentWeatherUrl = `${baseUrl}/current.json?key=${WEATHER_API_KEY}&q=${encodeURIComponent(city)},${encodeURIComponent(country)}&aqi=no`;
-      
       const currentResponse = await axios.get(currentWeatherUrl);
-      
+
       if (currentResponse.data.error) {
         return res.status(400).json({ error: currentResponse.data.error.message });
       }
 
       const weatherData = {
         date: tripDate,
-        message: `Weather forecast for ${tripDate} is not available in the free tier. Here's the current weather in ${city} as a reference:`,
+        message: `Weather for ${tripDate} is not available yet, you may try again closer to the trip date. Here is the current weather in ${city} as reference.`,
         city: currentResponse.data.location.name,
         country: currentResponse.data.location.country,
         currentTemperature: Math.round(currentResponse.data.current.temp_c),
@@ -417,10 +416,6 @@ router.post('/weather', async (req, res) => {
       res.json({
         success: true,
         weather: weatherData
-      });
-    } else {
-      return res.status(400).json({ 
-        error: 'Weather forecast is only available for trips within the next 14 days' 
       });
     }
 
