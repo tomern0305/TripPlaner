@@ -731,43 +731,76 @@ function TripPlan() {
         </div>
       )}
 
-      <div className="map-container">
-        <MapContainer
-          center={mapCenter}
-          zoom={13}
-          style={{ height: '100%', width: '100%' }}
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-          <ChangeMapView center={mapCenter} />
-          
-          {/* Render polylines for routes */}
-          {polylines.map((polyline, index) => (
-            <Polyline
-              key={index}
-              positions={polyline.positions}
-              color={polyline.color}
-              weight={polyline.weight}
-              opacity={polyline.opacity}
+      {/* Only show the map after a trip is created */}
+      {tripData && (
+        <div className="map-container" style={{ position: 'relative' }}>
+          {/* Legend for multi-day trips */}
+          {tripData.days && tripData.days.length > 1 && (
+            <div style={{
+              position: 'absolute',
+              top: 12,
+              right: 12,
+              background: 'rgba(255,255,255,0.95)',
+              borderRadius: 8,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+              padding: '8px 16px',
+              zIndex: 1000,
+              fontSize: 14,
+              border: '1px solid #ccc'
+            }}>
+              <strong>Route Colors:</strong>
+              <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+                {tripData.days.map((day, idx) => (
+                  <li key={day.day} style={{ display: 'flex', alignItems: 'center', marginTop: idx === 0 ? 4 : 2 }}>
+                    <span style={{
+                      display: 'inline-block',
+                      width: 18,
+                      height: 6,
+                      background: idx === 0 ? '#ff4444' : '#4444ff',
+                      borderRadius: 3,
+                      marginRight: 8
+                    }}></span>
+                    Day {day.day}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <MapContainer
+            center={mapCenter}
+            zoom={13}
+            style={{ height: '100%', width: '100%' }}
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-          ))}
-          
-          {/* Render markers for cities */}
-          {markers.map((marker, index) => (
-            <Marker key={index} position={marker.position}>
-              <Popup>
-                <div>
-                  <strong>{marker.title}</strong>
-                  <br />
-                  Coordinates: {marker.position[0].toFixed(4)}, {marker.position[1].toFixed(4)}
-                </div>
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
-      </div>
+            <ChangeMapView center={mapCenter} />
+            {/* Render polylines for routes */}
+            {polylines.map((polyline, index) => (
+              <Polyline
+                key={index}
+                positions={polyline.positions}
+                color={polyline.color}
+                weight={polyline.weight}
+                opacity={polyline.opacity}
+              />
+            ))}
+            {/* Render markers for cities */}
+            {markers.map((marker, index) => (
+              <Marker key={index} position={marker.position}>
+                <Popup>
+                  <div>
+                    <strong>{marker.title}</strong>
+                    <br />
+                    Coordinates: {marker.position[0].toFixed(4)}, {marker.position[1].toFixed(4)}
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
+        </div>
+      )}
       
       {/* Save Trip Button - Below Map */}
       {tripData && (

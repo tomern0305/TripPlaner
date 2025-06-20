@@ -435,7 +435,39 @@ export default function TripView() {
             </div>
           </div>
         </div>
-        <div className="map-container" style={{ marginTop: 24 }}>
+        <div className="map-container" style={{ position: 'relative', marginTop: 24 }}>
+          {/* Legend for multi-day trips */}
+          {trip && trip.tripData && trip.tripData.days && trip.tripData.days.length > 1 && (
+            <div style={{
+              position: 'absolute',
+              top: 12,
+              right: 12,
+              background: 'rgba(255,255,255,0.95)',
+              borderRadius: 8,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+              padding: '8px 16px',
+              zIndex: 1000,
+              fontSize: 14,
+              border: '1px solid #ccc'
+            }}>
+              <strong>Route Colors:</strong>
+              <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+                {trip.tripData.days.map((day, idx) => (
+                  <li key={day.day} style={{ display: 'flex', alignItems: 'center', marginTop: idx === 0 ? 4 : 2 }}>
+                    <span style={{
+                      display: 'inline-block',
+                      width: 18,
+                      height: 6,
+                      background: idx === 0 ? '#ff4444' : '#4444ff',
+                      borderRadius: 3,
+                      marginRight: 8
+                    }}></span>
+                    Day {day.day}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           <MapContainer
             center={mapCenter}
             zoom={13}
