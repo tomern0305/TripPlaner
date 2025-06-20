@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import axios from 'axios';
+import polyline from 'polyline';
 
 // Fix for default marker icons in Leaflet with React
 delete L.Icon.Default.prototype._getIconUrl;
@@ -42,10 +43,26 @@ async function fetchORSRoute(start, end, profile = 'foot-walking') {
         }
       }
     );
-    // Decode polyline geometry
-    return response.data.features[0].geometry.coordinates.map(([lon, lat]) => [lat, lon]);
+    console.log('ORS API response:', response.data);
+    if (
+      response.data &&
+      response.data.routes &&
+      response.data.routes[0] &&
+      response.data.routes[0].geometry
+    ) {
+      // Decode the polyline geometry
+      const coords = polyline.decode(response.data.routes[0].geometry);
+      return coords;
+    } else {
+      console.error('ORS API unexpected response:', response.data);
+      return [start, end];
+    }
   } catch (err) {
-    console.error('ORS route error', err);
+    if (err.response) {
+      console.error('ORS route error', err.response.data);
+    } else {
+      console.error('ORS route error', err);
+    }
     return [start, end]; // fallback to straight line
   }
 }
