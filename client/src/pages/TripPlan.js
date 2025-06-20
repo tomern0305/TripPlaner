@@ -557,8 +557,8 @@ function TripPlan() {
                   </div>
                 );
               }
-              // Only show error/retry for 0-3 days
-              if (weatherError && daysDiff >= 0 && daysDiff <= 3) {
+              // Only show error for past dates
+              if (weatherError && daysDiff < 0) {
                 return (
                   <div className="weather-error">
                     <p>{weatherError}</p>
@@ -624,11 +624,11 @@ function TripPlan() {
                   </div>
                 );
               }
-              // 4+ days: always show current weather as reference (no error)
-              if (daysDiff >= 4) {
+              // For future dates (daysDiff >= 0) with no forecast, show reference message and current weather if available
+              if (daysDiff >= 0) {
                 return (
                   <div className="weather-message">
-                    <p>Weather for {submittedTripDate} is not available yet, you may try again closer to the trip date. Here is the current weather in {submittedCity} as reference.</p>
+                    <p>Weather forecast for {submittedTripDate} is not available yet. Here is the current weather in {submittedCity} as reference.</p>
                     {weatherData && weatherData.currentTemperature && (
                       <div className="current-weather-info">
                         <div className="current-weather-main">
