@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from 'react-
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import axios from 'axios';
+import polyline from 'polyline';
 
 // Fix for default marker icons in Leaflet with React
 delete L.Icon.Default.prototype._getIconUrl;
@@ -51,6 +52,9 @@ function TripPlan() {
 
   // Unsplash API configuration
   const UNSPLASH_ACCESS_KEY = 'iF8jdg69v6YjZOZgn73hfj4_GVdyyjoHnwwStC5wwVc';
+
+  // OpenRouteService API configuration
+  const ORS_API_KEY = '5b3ce3597851110001cf62483581bb6eecd44fca82594cc3a6b2cd7f';
 
   // Fetch weather forecast when all required info is set and tripData is available
   useEffect(() => {
@@ -155,6 +159,49 @@ function TripPlan() {
     }
   };
 
+  // Utility to fetch route from OpenRouteService
+  async function fetchORSRoute(start, end, profile = 'foot-walking') {
+    const url = `https://api.openrouteservice.org/v2/directions/${profile}`;
+    try {
+      const response = await axios.post(
+        url,
+        {
+          coordinates: [
+            [start[1], start[0]], // [lon, lat]
+            [end[1], end[0]]
+          ]
+        },
+        {
+          headers: {
+            'Authorization': ORS_API_KEY,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      console.log('ORS API response:', response.data);
+      if (
+        response.data &&
+        response.data.routes &&
+        response.data.routes[0] &&
+        response.data.routes[0].geometry
+      ) {
+        // Decode the polyline geometry
+        const coords = polyline.decode(response.data.routes[0].geometry);
+        return coords;
+      } else {
+        console.error('ORS API unexpected response:', response.data);
+        return [start, end];
+      }
+    } catch (err) {
+      if (err.response) {
+        console.error('ORS route error', err.response.data);
+      } else {
+        console.error('ORS route error', err);
+      }
+      return [start, end]; // fallback to straight line
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -205,40 +252,61 @@ function TripPlan() {
         const allMarkers = [];
         const allPolylines = [];
 
-        trip.days.forEach((day, dayIndex) => {
-          const dayMarkers = day.cities.map((cityData, cityIndex) => {
-            // Check if this is the start/end point (same coordinates as first city)
-            const isStartEnd = cityIndex === 0 || 
-              (cityIndex === day.cities.length - 1 && 
-               cityData.coordinates[0] === day.cities[0].coordinates[0] && 
-               cityData.coordinates[1] === day.cities[0].coordinates[1]);
-            
-            return {
-              position: cityData.coordinates,
-              title: isStartEnd ? 
-                `Day ${day.day} - ${cityData.name} (Start/End)` : 
-                `Day ${day.day} - ${cityData.name}`,
-              day: day.day,
-              cityIndex: cityIndex,
-              isStartEnd: isStartEnd
-            };
-          });
+        // Helper to get ORS profile
+        const getProfile = () => (tripType === 'bike' ? 'cycling-regular' : 'foot-walking');
 
-          allMarkers.push(...dayMarkers);
+        // Build all polylines for all days using actual routes from OpenRouteService
+        async function buildRoutes() {
+          for (const [dayIndex, day] of trip.days.entries()) {
+            // Only pin start and end
+            const dayMarkers = [];
+            if (day.cities.length > 0) {
+              dayMarkers.push({
+                position: day.cities[0].coordinates,
+                title: `Day ${day.day} - ${day.cities[0].name} (Start)`,
+                day: day.day,
+                cityIndex: 0,
+                isStartEnd: true
+              });
+              if (day.cities.length > 1) {
+                const lastIdx = day.cities.length - 1;
+                dayMarkers.push({
+                  position: day.cities[lastIdx].coordinates,
+                  title: `Day ${day.day} - ${day.cities[lastIdx].name} (End)`,
+                  day: day.day,
+                  cityIndex: lastIdx,
+                  isStartEnd: true
+                });
+              }
+            }
+            allMarkers.push(...dayMarkers);
 
-          // Create polyline for this day's route
-          if (day.cities.length > 1) {
-            const positions = day.cities.map(cityData => cityData.coordinates);
-            allPolylines.push({
-              positions,
-              color: dayIndex === 0 ? '#ff4444' : '#4444ff',
-              weight: 3,
-              opacity: 0.7,
-              day: day.day
-            });
+            // Build the full route polyline for the day by combining all segments
+            let fullRoute = [];
+            for (let i = 0; i < day.cities.length - 1; i++) {
+              const start = day.cities[i].coordinates;
+              const end = day.cities[i + 1].coordinates;
+              // Fetch the actual route from OpenRouteService for each segment
+              const segment = await fetchORSRoute(start, end, getProfile());
+              // Avoid duplicate points between segments
+              if (fullRoute.length > 0 && segment.length > 0 && fullRoute[fullRoute.length - 1][0] === segment[0][0] && fullRoute[fullRoute.length - 1][1] === segment[0][1]) {
+                fullRoute = fullRoute.concat(segment.slice(1));
+              } else {
+                fullRoute = fullRoute.concat(segment);
+              }
+            }
+            if (fullRoute.length > 1) {
+              allPolylines.push({
+                positions: fullRoute,
+                color: dayIndex === 0 ? '#ff4444' : '#4444ff',
+                weight: 3,
+                opacity: 0.7,
+                day: day.day
+              });
+            }
           }
-        });
-
+        }
+        await buildRoutes();
         setMarkers(allMarkers);
         setPolylines(allPolylines);
 
