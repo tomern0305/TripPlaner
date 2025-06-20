@@ -208,9 +208,15 @@ router.get('/trip/:tripId', authenticateToken, async (req, res) => {
 });
 
 // Helper to check if all legs of a trip are routable via OpenRouteService
-async function validateORSRoutes(tripData, tripType) {
+async function validateORSRoutesAndDistances(tripData, tripType) {
   const profile = tripType === 'bike' ? 'cycling-regular' : 'foot-walking';
+  // Real validation range
+  const dayDistanceLimits = tripType === 'bike' ? { min: 10000, max: 60000 } : { min: 5000, max: 15000 }; // meters
+  let allORSData = [];
   for (const day of tripData.days) {
+    let dayDistance = 0;
+    let dayDuration = 0;
+    let orsSegments = [];
     for (let i = 0; i < day.cities.length - 1; i++) {
       const start = day.cities[i].coordinates;
       const end = day.cities[i + 1].coordinates;
@@ -232,14 +238,31 @@ async function validateORSRoutes(tripData, tripType) {
           }
         );
         if (!response.data || !response.data.routes || !response.data.routes[0] || !response.data.routes[0].geometry) {
-          return false;
+          return { valid: false };
+        }
+        const summary = response.data.routes[0].summary;
+        // Only add if both are numbers
+        if (typeof summary.distance === 'number' && typeof summary.duration === 'number') {
+          dayDistance += summary.distance;
+          dayDuration += summary.duration;
+          orsSegments.push({
+            distance: summary.distance,
+            duration: summary.duration
+          });
+        } else {
+          orsSegments.push({ distance: null, duration: null });
         }
       } catch (err) {
-        return false;
+        return { valid: false };
       }
     }
+    // Check if day distance is within limits
+    if (dayDistance < dayDistanceLimits.min || dayDistance > dayDistanceLimits.max) {
+      return { valid: false };
+    }
+    allORSData.push({ dayDistance, dayDuration, orsSegments });
   }
-  return true;
+  return { valid: true, allORSData };
 }
 
 router.post('/plan', async (req, res) => {
@@ -335,6 +358,7 @@ IMPORTANT: Respect the distance limit - Total route must be 5-15km. Create a rea
     let lastRawResponse = null;
     let maxRetries = 5;
     let foundValid = false;
+    let orsData = null;
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       const completion = await groq.chat.completions.create({
         model: "llama-3.3-70b-versatile",
@@ -360,16 +384,24 @@ IMPORTANT: Respect the distance limit - Total route must be 5-15km. Create a rea
         console.error('Error parsing LLM response:', parseError);
         continue; // Try again
       }
-      // Validate all legs with OpenRouteService
-      const valid = await validateORSRoutes(tripData, tripType);
-      if (valid) {
+      // Validate all legs and distances with OpenRouteService
+      const validation = await validateORSRoutesAndDistances(tripData, tripType);
+      if (validation.valid) {
         foundValid = true;
+        orsData = validation.allORSData;
         break;
       }
     }
     if (!foundValid) {
-      return res.status(500).json({ error: 'LLM Failed to generate a valid trip with routable segments after several attempts.', rawResponse: lastRawResponse });
+      return res.status(500).json({ error: 'LLM Failed to generate a valid trip with routable segments and correct distances after several attempts.', rawResponse: lastRawResponse });
     }
+    // Overwrite tripData distances and durations with ORS values
+    tripData.days.forEach((day, idx) => {
+      day.totalDistance = (typeof orsData[idx].dayDistance === 'number' ? (orsData[idx].dayDistance / 1000).toFixed(2) + ' km' : 'N/A');
+      day.estimatedTime = (typeof orsData[idx].dayDuration === 'number' ? (orsData[idx].dayDuration / 3600).toFixed(2) + ' hours' : 'N/A');
+      day.distances = orsData[idx].orsSegments.map(seg => (typeof seg.distance === 'number' ? (seg.distance / 1000).toFixed(2) + ' km' : 'N/A'));
+      day.durations = orsData[idx].orsSegments.map(seg => (typeof seg.duration === 'number' ? (seg.duration / 60).toFixed(1) + ' min' : 'N/A'));
+    });
     res.json({
       success: true,
       tripData,
