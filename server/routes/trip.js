@@ -9,6 +9,8 @@ const groq = new Groq({
   apiKey: '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'
 });
 
+const ORS_API_KEY = '5b3ce3597851110001cf62483581bb6eecd44fca82594cc3a6b2cd7f';
+
 // Middleware to verify JWT token
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -205,6 +207,41 @@ router.get('/trip/:tripId', authenticateToken, async (req, res) => {
   }
 });
 
+// Helper to check if all legs of a trip are routable via OpenRouteService
+async function validateORSRoutes(tripData, tripType) {
+  const profile = tripType === 'bike' ? 'cycling-regular' : 'foot-walking';
+  for (const day of tripData.days) {
+    for (let i = 0; i < day.cities.length - 1; i++) {
+      const start = day.cities[i].coordinates;
+      const end = day.cities[i + 1].coordinates;
+      const url = `https://api.openrouteservice.org/v2/directions/${profile}`;
+      try {
+        const response = await axios.post(
+          url,
+          {
+            coordinates: [
+              [start[1], start[0]], // [lon, lat]
+              [end[1], end[0]]
+            ]
+          },
+          {
+            headers: {
+              'Authorization': ORS_API_KEY,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        if (!response.data || !response.data.routes || !response.data.routes[0] || !response.data.routes[0].geometry) {
+          return false;
+        }
+      } catch (err) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 router.post('/plan', async (req, res) => {
   try {
     const { country, city, tripType, tripDate } = req.body;
@@ -292,36 +329,45 @@ IMPORTANT: Respect the distance limit - Total route must be 5-15km. Create a rea
       return res.status(400).json({ error: 'Invalid trip type. Must be "bike" or "trek"' });
     }
 
-    const completion = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-      messages: [
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-    });
-
-    const response = completion.choices[0]?.message?.content;
-    
-    // Try to parse the JSON response
     let tripData;
-    try {
-      // Extract JSON from the response (in case there's extra text)
-      const jsonMatch = response.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        tripData = JSON.parse(jsonMatch[0]);
-      } else {
-        tripData = JSON.parse(response);
-      }
-    } catch (parseError) {
-      console.error('Error parsing LLM response:', parseError);
-      return res.status(500).json({ 
-        error: 'Failed to parse trip data from LLM response',
-        rawResponse: response 
+    let lastRawResponse = null;
+    let maxRetries = 5;
+    let foundValid = false;
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      const completion = await groq.chat.completions.create({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
       });
+      const response = completion.choices[0]?.message?.content;
+      lastRawResponse = response;
+      // Try to parse the JSON response
+      try {
+        // Extract JSON from the response (in case there's extra text)
+        const jsonMatch = response.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          tripData = JSON.parse(jsonMatch[0]);
+        } else {
+          tripData = JSON.parse(response);
+        }
+      } catch (parseError) {
+        console.error('Error parsing LLM response:', parseError);
+        continue; // Try again
+      }
+      // Validate all legs with OpenRouteService
+      const valid = await validateORSRoutes(tripData, tripType);
+      if (valid) {
+        foundValid = true;
+        break;
+      }
     }
-
+    if (!foundValid) {
+      return res.status(500).json({ error: 'LLM Failed to generate a valid trip with routable segments after several attempts.', rawResponse: lastRawResponse });
+    }
     res.json({
       success: true,
       tripData,
