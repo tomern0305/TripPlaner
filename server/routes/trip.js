@@ -255,8 +255,9 @@ router.post('/plan', async (req, res) => {
     if (tripType === 'bike') {
       prompt = `Plan a 2-day bike trip starting and ending in ${city}, ${country}.
 Requirements:
-- Day 1: 10-60km route, must pass through at least 3-4 different points (cities, towns, streets, landmarks, or notable locations)
-- Day 2: 10-60km route back to starting point, also passing through at least 3-4 different points
+- Day 1: 10-60km route, must pass through 3-8 different points (cities, towns, streets, landmarks, or notable locations)
+- Day 2: 10-60km route back to starting point, also passing through 3-8 different points
+- ***CRITICAL: UNDER NO CIRCUMSTANCES CAN ANY POINT BE IN WATER (SEA, LAKE, RIVER, ETC.). ALL POINTS MUST BE ON LAND. THIS IS A HARD REQUIREMENT.***
 - DISTANCE LIMITS: EACH DAY CAN BE UP TO 60KM INDEPENDENTLY
 - Day 1: 10-60km (up to 60km)
 - Day 2: 10-60km (up to 60km)
@@ -300,7 +301,8 @@ CRITICAL: EACH DAY IS INDEPENDENT! Day 1 can be 10-60km AND Day 2 can be 10-60km
       prompt = `Plan a 1-day trek trip starting and ending in ${city}, ${country}.
 Requirements:
 - 5-15km circular route
-- The route must pass through at least 4-5 different points (landmarks, viewpoints, parks, streets, or interesting locations)
+- The route must pass through 3-8 different points (landmarks, viewpoints, parks, streets, or interesting locations)
+- ***CRITICAL: UNDER NO CIRCUMSTANCES CAN ANY POINT BE IN WATER (SEA, LAKE, RIVER, ETC.). ALL POINTS MUST BE ON LAND. THIS IS A HARD REQUIREMENT.***
 - STRICT DISTANCE LIMIT: Total route must be between 5-15km
 - The trip must start and end in ${city} (same coordinates)
 - Include estimated trip time
