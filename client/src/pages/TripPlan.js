@@ -255,32 +255,43 @@ function TripPlan() {
         // Helper to get ORS profile
         const getProfile = () => (tripType === 'bike' ? 'cycling-regular' : 'foot-walking');
 
+        // Find main start/end location
+        const mainStart = trip.days[0].cities[0];
+        const mainEnd = trip.days[trip.days.length - 1].cities[trip.days[trip.days.length - 1].cities.length - 1];
+        const isCircular = mainStart.coordinates[0] === mainEnd.coordinates[0] && mainStart.coordinates[1] === mainEnd.coordinates[1];
+
+        // Add main start-end pin
+        allMarkers.push({
+          position: mainStart.coordinates,
+          title: 'Start-End Location',
+          isMain: true
+        });
+
+        // Add stopping point pins for each day (except last if circular)
+        trip.days.forEach((day, dayIndex) => {
+          // Last city of the day
+          const lastCity = day.cities[day.cities.length - 1];
+          // Only add if not the main start/end (for circular trips, skip last day)
+          if (
+            dayIndex !== trip.days.length - 1 || !isCircular
+          ) {
+            // Don't add if it's the same as main start/end
+            if (
+              lastCity.coordinates[0] !== mainStart.coordinates[0] ||
+              lastCity.coordinates[1] !== mainStart.coordinates[1]
+            ) {
+              allMarkers.push({
+                position: lastCity.coordinates,
+                title: `Stopping point - end of day ${day.day}`,
+                isMain: false
+              });
+            }
+          }
+        });
+
         // Build all polylines for all days using actual routes from OpenRouteService
         async function buildRoutes() {
           for (const [dayIndex, day] of trip.days.entries()) {
-            // Only pin start and end
-            const dayMarkers = [];
-            if (day.cities.length > 0) {
-              dayMarkers.push({
-                position: day.cities[0].coordinates,
-                title: `Day ${day.day} - ${day.cities[0].name} (Start)`,
-                day: day.day,
-                cityIndex: 0,
-                isStartEnd: true
-              });
-              if (day.cities.length > 1) {
-                const lastIdx = day.cities.length - 1;
-                dayMarkers.push({
-                  position: day.cities[lastIdx].coordinates,
-                  title: `Day ${day.day} - ${day.cities[lastIdx].name} (End)`,
-                  day: day.day,
-                  cityIndex: lastIdx,
-                  isStartEnd: true
-                });
-              }
-            }
-            allMarkers.push(...dayMarkers);
-
             // Build the full route polyline for the day by combining all segments
             let fullRoute = [];
             for (let i = 0; i < day.cities.length - 1; i++) {
