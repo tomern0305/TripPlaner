@@ -15,7 +15,7 @@ Welcome to **Trip Planner**, a full-stack travel planning application featuring:
 TripPlanner/
 ├── client/       # React frontend
 ├── server/       # Node.js + Express backend
-└── README.md     # You're here, mortal.
+└── README.md     # You're here.
 ```
 
 ---
