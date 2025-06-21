@@ -149,10 +149,20 @@ function TripHistory() {
       </div>
       {filteredTrips.length === 0 && (
         <div className="no-trips">
-          <p>No trips found in history.</p>
-          <button className="button" onClick={() => navigate('/trip-plan')}>
-            Create your first trip
-          </button>
+          <p>{trips.length === 0 ? 'No trips found in history.' : 'No trips match your current filters.'}</p>
+          {trips.length === 0 ? (
+            <button className="button" onClick={() => navigate('/trip-plan')}>
+              Create your first trip
+            </button>
+          ) : (
+            <button className="button" onClick={() => {
+              setTripTypeFilter('all');
+              setDateFilter('all');
+              setCountrySearch('');
+            }}>
+              Clear Filters
+            </button>
+          )}
         </div>
       )}
     </div>
