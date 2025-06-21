@@ -80,7 +80,7 @@ WEATHER_API_KEY=your_weather_api_key
 ### Start the server:
 
 ```bash
-npm start
+node server.js
 ```
 
 Server runs by default at: [http://localhost:5000](http://localhost:5000)
