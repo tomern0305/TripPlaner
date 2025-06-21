@@ -6,10 +6,10 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 
 const groq = new Groq({
-  apiKey: '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'
+  apiKey: process.env.GROQ_API_KEY
 });
 
-const ORS_API_KEY = '5b3ce3597851110001cf62483581bb6eecd44fca82594cc3a6b2cd7f';
+const ORS_API_KEY = process.env.ORS_API_KEY;
 
 // Middleware to verify JWT token
 const authenticateToken = (req, res, next) => {
@@ -424,7 +424,7 @@ router.post('/weather', async (req, res) => {
     }
 
     // WeatherAPI.com configuration
-    const WEATHER_API_KEY = 'ef37f3a7d99a4efaace143948251806';
+    const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
     const baseUrl = 'https://api.weatherapi.com/v1';
 
     // Calculate the date difference to get the forecast day
@@ -511,5 +511,36 @@ router.post('/weather', async (req, res) => {
   }
 });
 
-module.exports = router; 
+router.post('/ors-route', async (req, res) => {
+  const { start, end, profile } = req.body;
+
+  if (!start || !end || !profile) {
+    return res.status(400).json({ error: 'Missing required parameters: start, end, profile' });
+  }
+
+  const url = `https://api.openrouteservice.org/v2/directions/${profile}`;
+  
+  try {
+    const response = await axios.post(
+      url,
+      {
+        coordinates: [
+          [start[1], start[0]],
+          [end[1], end[0]]
+        ]
+      },
+      {
+        headers: {
+          'Authorization': process.env.ORS_API_KEY,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error('ORS proxy error:', error.response ? error.response.data : error.message);
+    res.status(error.response?.status || 500).json({ error: 'Failed to fetch route from ORS', details: error.response?.data });
+  }
+});
+
 module.exports = router; 

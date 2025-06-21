@@ -22,26 +22,19 @@ function ChangeMapView({ center }) {
   return null;
 }
 
-const ORS_API_KEY = '5b3ce3597851110001cf62483581bb6eecd44fca82594cc3a6b2cd7f';
+const ORS_API_KEY = process.env.REACT_APP_ORS_API_KEY;
 
 // Utility to fetch route from OpenRouteService
 async function fetchORSRoute(start, end, profile = 'foot-walking') {
-  const url = `https://api.openrouteservice.org/v2/directions/${profile}`;
+  const url = `http://localhost:5000/api/trip/ors-route`;
   try {
     const response = await axios.post(
       url,
       {
-        coordinates: [
-          [start[1], start[0]], // [lon, lat]
-          [end[1], end[0]]
-        ]
+        start,
+        end,
+        profile
       },
-      {
-        headers: {
-          'Authorization': ORS_API_KEY,
-          'Content-Type': 'application/json'
-        }
-      }
     );
     console.log('ORS API response:', response.data);
     if (

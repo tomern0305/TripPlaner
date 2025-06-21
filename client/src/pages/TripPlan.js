@@ -50,11 +50,8 @@ function TripPlan() {
   const [weatherLoading, setWeatherLoading] = useState(false);
   const [weatherError, setWeatherError] = useState('');
 
-  // Unsplash API configuration
-  const UNSPLASH_ACCESS_KEY = 'iF8jdg69v6YjZOZgn73hfj4_GVdyyjoHnwwStC5wwVc';
-
   // OpenRouteService API configuration
-  const ORS_API_KEY = '5b3ce3597851110001cf62483581bb6eecd44fca82594cc3a6b2cd7f';
+  const ORS_API_KEY = process.env.REACT_APP_ORS_API_KEY;
 
   // Fetch weather forecast when all required info is set and tripData is available
   useEffect(() => {
@@ -71,7 +68,7 @@ function TripPlan() {
         `https://api.unsplash.com/search/photos?query=${encodeURIComponent(countryName + ' flag')}&per_page=1`,
         {
           headers: {
-            'Authorization': `Client-ID ${UNSPLASH_ACCESS_KEY}`
+            'Authorization': `Client-ID ${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}`
           }
         }
       );
@@ -161,22 +158,15 @@ function TripPlan() {
 
   // Utility to fetch route from OpenRouteService
   async function fetchORSRoute(start, end, profile = 'foot-walking') {
-    const url = `https://api.openrouteservice.org/v2/directions/${profile}`;
+    const url = `http://localhost:5000/api/trip/ors-route`;
     try {
       const response = await axios.post(
         url,
         {
-          coordinates: [
-            [start[1], start[0]], // [lon, lat]
-            [end[1], end[0]]
-          ]
+          start,
+          end,
+          profile
         },
-        {
-          headers: {
-            'Authorization': ORS_API_KEY,
-            'Content-Type': 'application/json'
-          }
-        }
       );
       console.log('ORS API response:', response.data);
       if (
