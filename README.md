@@ -62,6 +62,9 @@ cd trip-planner
 ```bash
 cd server
 npm install
+npm install axios
+npm install groq-sdk
+npm install polyline
 ```
 
 ### Create `.env` in `/server` with the following:
@@ -94,6 +97,9 @@ Server runs by default at: [http://localhost:5000](http://localhost:5000)
 ```bash
 cd ../client
 npm install
+npm install axios
+npm install polyline
+npm install react-leaflet
 ```
 
 ### Create `.env` in `/client` with the following:
