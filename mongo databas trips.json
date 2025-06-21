@@ -1,0 +1,1507 @@
+[{
+  "_id": {
+    "$oid": "68560c103350180479ed1e90"
+  },
+  "userId": {
+    "$oid": "685181fe20acf99360c24b0e"
+  },
+  "userEmail": "almogtest@gmail.com",
+  "tripId": "almogtest@gmail.com_1750469648637_annvvgam6",
+  "country": "Israel",
+  "city": "Tel Aviv",
+  "tripType": "bike",
+  "tripDate": "2025-06-13",
+  "countryFlag": "https://images.unsplash.com/photo-1621874098652-168c080d322f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxJc3JhZWwlMjBmbGFnfGVufDB8fHx8MTc1MDQzMjM0MHww&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Tel Aviv",
+            "coordinates": [
+              32.0853,
+              34.7818
+            ],
+            "_id": {
+              "$oid": "68560c103350180479ed1e92"
+            }
+          },
+          {
+            "name": "Jaffa Clock Tower",
+            "coordinates": [
+              32.0534,
+              34.7585
+            ],
+            "_id": {
+              "$oid": "68560c103350180479ed1e93"
+            }
+          },
+          {
+            "name": "Bat Yam",
+            "coordinates": [
+              32.0267,
+              34.7506
+            ],
+            "_id": {
+              "$oid": "68560c103350180479ed1e94"
+            }
+          },
+          {
+            "name": "Holon",
+            "coordinates": [
+              32.0133,
+              34.7719
+            ],
+            "_id": {
+              "$oid": "68560c103350180479ed1e95"
+            }
+          },
+          {
+            "name": "Azor",
+            "coordinates": [
+              32.0167,
+              34.8064
+            ],
+            "_id": {
+              "$oid": "68560c103350180479ed1e96"
+            }
+          }
+        ],
+        "distances": [
+          "5.09 km",
+          "3.69 km",
+          "3.63 km",
+          "4.84 km"
+        ],
+        "totalDistance": "17.25 km",
+        "estimatedTime": "0.98 hours",
+        "_id": {
+          "$oid": "68560c103350180479ed1e91"
+        }
+      },
+      {
+        "day": 2,
+        "cities": [
+          {
+            "name": "Azor",
+            "coordinates": [
+              32.0167,
+              34.8064
+            ],
+            "_id": {
+              "$oid": "68560c103350180479ed1e98"
+            }
+          },
+          {
+            "name": "Or Yehuda",
+            "coordinates": [
+              32.0333,
+              34.8569
+            ],
+            "_id": {
+              "$oid": "68560c103350180479ed1e99"
+            }
+          },
+          {
+            "name": "Yehud",
+            "coordinates": [
+              32.0356,
+              34.8936
+            ],
+            "_id": {
+              "$oid": "68560c103350180479ed1e9a"
+            }
+          },
+          {
+            "name": "Petah Tikva",
+            "coordinates": [
+              32.0667,
+              34.8833
+            ],
+            "_id": {
+              "$oid": "68560c103350180479ed1e9b"
+            }
+          },
+          {
+            "name": "Ramat Gan",
+            "coordinates": [
+              32.0667,
+              34.8167
+            ],
+            "_id": {
+              "$oid": "68560c103350180479ed1e9c"
+            }
+          },
+          {
+            "name": "Tel Aviv",
+            "coordinates": [
+              32.0853,
+              34.7818
+            ],
+            "_id": {
+              "$oid": "68560c103350180479ed1e9d"
+            }
+          }
+        ],
+        "distances": [
+          "8.20 km",
+          "5.43 km",
+          "4.74 km",
+          "8.95 km",
+          "4.80 km"
+        ],
+        "totalDistance": "32.11 km",
+        "estimatedTime": "1.87 hours",
+        "_id": {
+          "$oid": "68560c103350180479ed1e97"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-06-21T01:34:08.643Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68560c6c3350180479ed1ea1"
+  },
+  "userId": {
+    "$oid": "685181fe20acf99360c24b0e"
+  },
+  "userEmail": "almogtest@gmail.com",
+  "tripId": "almogtest@gmail.com_1750469740898_nz2rldm1q",
+  "country": "Spain",
+  "city": "Barcelona",
+  "tripType": "trek",
+  "tripDate": "2025-06-22",
+  "countryFlag": "https://images.unsplash.com/photo-1632504102568-fb9282ec920f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxTcGFpbiUyMGZsYWd8ZW58MHx8fHwxNzUwNDMxMDU0fDA&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Barcelona",
+            "coordinates": [
+              41.3879,
+              2.169
+            ],
+            "_id": {
+              "$oid": "68560c6c3350180479ed1ea3"
+            }
+          },
+          {
+            "name": "Parc de la Ciutadella",
+            "coordinates": [
+              41.3874,
+              2.1843
+            ],
+            "_id": {
+              "$oid": "68560c6c3350180479ed1ea4"
+            }
+          },
+          {
+            "name": "Arc de Triomf",
+            "coordinates": [
+              41.3913,
+              2.1811
+            ],
+            "_id": {
+              "$oid": "68560c6c3350180479ed1ea5"
+            }
+          },
+          {
+            "name": "Park Güell",
+            "coordinates": [
+              41.4143,
+              2.1524
+            ],
+            "_id": {
+              "$oid": "68560c6c3350180479ed1ea6"
+            }
+          },
+          {
+            "name": "Carrer de Verdi",
+            "coordinates": [
+              41.4033,
+              2.1539
+            ],
+            "_id": {
+              "$oid": "68560c6c3350180479ed1ea7"
+            }
+          },
+          {
+            "name": "Barcelona",
+            "coordinates": [
+              41.3879,
+              2.169
+            ],
+            "_id": {
+              "$oid": "68560c6c3350180479ed1ea8"
+            }
+          }
+        ],
+        "distances": [
+          "1.66 km",
+          "0.62 km",
+          "3.77 km",
+          "1.68 km",
+          "2.37 km"
+        ],
+        "totalDistance": "10.10 km",
+        "estimatedTime": "2.02 hours",
+        "_id": {
+          "$oid": "68560c6c3350180479ed1ea2"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-06-21T01:35:40.900Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68560cd23350180479ed1eaa"
+  },
+  "userId": {
+    "$oid": "685181fe20acf99360c24b0e"
+  },
+  "userEmail": "almogtest@gmail.com",
+  "tripId": "almogtest@gmail.com_1750469842927_w6mksw01q",
+  "country": "France",
+  "city": "paris",
+  "tripType": "trek",
+  "tripDate": "2025-06-23",
+  "countryFlag": "https://images.unsplash.com/photo-1551866442-64e75e911c23?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxGcmFuY2UlMjBmbGFnfGVufDB8fHx8MTc1MDQ2OTgyNXww&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Paris",
+            "coordinates": [
+              48.8567,
+              2.3508
+            ],
+            "_id": {
+              "$oid": "68560cd23350180479ed1eac"
+            }
+          },
+          {
+            "name": "Montmartre",
+            "coordinates": [
+              48.8867,
+              2.3408
+            ],
+            "_id": {
+              "$oid": "68560cd23350180479ed1ead"
+            }
+          },
+          {
+            "name": "Sacré-Cœur Basilica",
+            "coordinates": [
+              48.8864,
+              2.3429
+            ],
+            "_id": {
+              "$oid": "68560cd23350180479ed1eae"
+            }
+          },
+          {
+            "name": "Parc des Buttes-Chaumont",
+            "coordinates": [
+              48.8804,
+              2.3653
+            ],
+            "_id": {
+              "$oid": "68560cd23350180479ed1eaf"
+            }
+          },
+          {
+            "name": "Place de la République",
+            "coordinates": [
+              48.8647,
+              2.3619
+            ],
+            "_id": {
+              "$oid": "68560cd23350180479ed1eb0"
+            }
+          },
+          {
+            "name": "Paris",
+            "coordinates": [
+              48.8567,
+              2.3508
+            ],
+            "_id": {
+              "$oid": "68560cd23350180479ed1eb1"
+            }
+          }
+        ],
+        "distances": [
+          "3.92 km",
+          "0.22 km",
+          "2.14 km",
+          "2.09 km",
+          "1.36 km"
+        ],
+        "totalDistance": "9.74 km",
+        "estimatedTime": "1.95 hours",
+        "_id": {
+          "$oid": "68560cd23350180479ed1eab"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-06-21T01:37:22.928Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68560d7d3350180479ed1eb5"
+  },
+  "userId": {
+    "$oid": "685181fe20acf99360c24b0e"
+  },
+  "userEmail": "almogtest@gmail.com",
+  "tripId": "almogtest@gmail.com_1750470013893_9dv5vkxtb",
+  "country": "Thailand",
+  "city": "Bangkok",
+  "tripType": "bike",
+  "tripDate": "2025-06-26",
+  "countryFlag": "https://images.unsplash.com/photo-1707059157836-7e9869c23ebb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxUaGFpbGFuZCUyMGZsYWd8ZW58MHx8fHwxNzUwNDY5ODcxfDA&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Bangkok",
+            "coordinates": [
+              13.7563,
+              100.5018
+            ],
+            "_id": {
+              "$oid": "68560d7d3350180479ed1eb7"
+            }
+          },
+          {
+            "name": "Bang Kapi",
+            "coordinates": [
+              13.7633,
+              100.5383
+            ],
+            "_id": {
+              "$oid": "68560d7d3350180479ed1eb8"
+            }
+          },
+          {
+            "name": "Ramkhamhaeng University",
+            "coordinates": [
+              13.7622,
+              100.6153
+            ],
+            "_id": {
+              "$oid": "68560d7d3350180479ed1eb9"
+            }
+          },
+          {
+            "name": "The Mall Bangkapi",
+            "coordinates": [
+              13.7683,
+              100.6233
+            ],
+            "_id": {
+              "$oid": "68560d7d3350180479ed1eba"
+            }
+          },
+          {
+            "name": "Seri Thai Park",
+            "coordinates": [
+              13.7947,
+              100.6853
+            ],
+            "_id": {
+              "$oid": "68560d7d3350180479ed1ebb"
+            }
+          }
+        ],
+        "distances": [
+          "6.84 km",
+          "12.21 km",
+          "2.29 km",
+          "10.34 km"
+        ],
+        "totalDistance": "31.68 km",
+        "estimatedTime": "1.81 hours",
+        "_id": {
+          "$oid": "68560d7d3350180479ed1eb6"
+        }
+      },
+      {
+        "day": 2,
+        "cities": [
+          {
+            "name": "Seri Thai Park",
+            "coordinates": [
+              13.7947,
+              100.6853
+            ],
+            "_id": {
+              "$oid": "68560d7d3350180479ed1ebd"
+            }
+          },
+          {
+            "name": "Khlong Chan",
+            "coordinates": [
+              13.8158,
+              100.6594
+            ],
+            "_id": {
+              "$oid": "68560d7d3350180479ed1ebe"
+            }
+          },
+          {
+            "name": "Bangkok Festival East",
+            "coordinates": [
+              13.8219,
+              100.6361
+            ],
+            "_id": {
+              "$oid": "68560d7d3350180479ed1ebf"
+            }
+          },
+          {
+            "name": "Nong Bon Lake View",
+            "coordinates": [
+              13.7942,
+              100.5936
+            ],
+            "_id": {
+              "$oid": "68560d7d3350180479ed1ec0"
+            }
+          },
+          {
+            "name": "Bangkok",
+            "coordinates": [
+              13.7563,
+              100.5018
+            ],
+            "_id": {
+              "$oid": "68560d7d3350180479ed1ec1"
+            }
+          }
+        ],
+        "distances": [
+          "9.01 km",
+          "3.72 km",
+          "10.12 km",
+          "15.05 km"
+        ],
+        "totalDistance": "37.91 km",
+        "estimatedTime": "2.15 hours",
+        "_id": {
+          "$oid": "68560d7d3350180479ed1ebc"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-06-21T01:40:13.895Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6856144241bbb843ccafa808"
+  },
+  "userId": {
+    "$oid": "685181fe20acf99360c24b0e"
+  },
+  "userEmail": "almogtest@gmail.com",
+  "tripId": "almogtest@gmail.com_1750471746055_fb9oealtm",
+  "country": "Spain",
+  "city": "Barcelona",
+  "tripType": "bike",
+  "tripDate": "2025-06-22",
+  "countryFlag": "https://images.unsplash.com/photo-1632504102568-fb9282ec920f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxTcGFpbiUyMGZsYWd8ZW58MHx8fHwxNzUwNDMxMDU0fDA&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Barcelona",
+            "coordinates": [
+              41.3879,
+              2.169
+            ],
+            "_id": {
+              "$oid": "6856144241bbb843ccafa80a"
+            }
+          },
+          {
+            "name": "Plaça Catalunya",
+            "coordinates": [
+              41.3874,
+              2.1704
+            ],
+            "_id": {
+              "$oid": "6856144241bbb843ccafa80b"
+            }
+          },
+          {
+            "name": "Park Güell",
+            "coordinates": [
+              41.4144,
+              2.1523
+            ],
+            "_id": {
+              "$oid": "6856144241bbb843ccafa80c"
+            }
+          },
+          {
+            "name": "Tibidabo",
+            "coordinates": [
+              41.4223,
+              2.1324
+            ],
+            "_id": {
+              "$oid": "6856144241bbb843ccafa80d"
+            }
+          },
+          {
+            "name": "Sarrià",
+            "coordinates": [
+              41.3974,
+              2.1265
+            ],
+            "_id": {
+              "$oid": "6856144241bbb843ccafa80e"
+            }
+          }
+        ],
+        "distances": [
+          "0.15 km",
+          "4.26 km",
+          "4.08 km",
+          "5.05 km"
+        ],
+        "totalDistance": "13.53 km",
+        "estimatedTime": "0.88 hours",
+        "_id": {
+          "$oid": "6856144241bbb843ccafa809"
+        }
+      },
+      {
+        "day": 2,
+        "cities": [
+          {
+            "name": "Sarrià",
+            "coordinates": [
+              41.3974,
+              2.1265
+            ],
+            "_id": {
+              "$oid": "6856144241bbb843ccafa810"
+            }
+          },
+          {
+            "name": "Vallvidrera",
+            "coordinates": [
+              41.4131,
+              2.1029
+            ],
+            "_id": {
+              "$oid": "6856144241bbb843ccafa811"
+            }
+          },
+          {
+            "name": "Les Planes",
+            "coordinates": [
+              41.4297,
+              2.0939
+            ],
+            "_id": {
+              "$oid": "6856144241bbb843ccafa812"
+            }
+          },
+          {
+            "name": "Passeig Maragall",
+            "coordinates": [
+              41.4356,
+              2.1631
+            ],
+            "_id": {
+              "$oid": "6856144241bbb843ccafa813"
+            }
+          },
+          {
+            "name": "Barcelona",
+            "coordinates": [
+              41.3879,
+              2.169
+            ],
+            "_id": {
+              "$oid": "6856144241bbb843ccafa814"
+            }
+          }
+        ],
+        "distances": [
+          "3.80 km",
+          "3.29 km",
+          "11.05 km",
+          "7.63 km"
+        ],
+        "totalDistance": "25.77 km",
+        "estimatedTime": "1.49 hours",
+        "_id": {
+          "$oid": "6856144241bbb843ccafa80f"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-06-21T02:09:06.064Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685684786d18deefbb281133"
+  },
+  "userId": {
+    "$oid": "685609d43350180479ed1e79"
+  },
+  "userEmail": "tomernatan1@gmail.com",
+  "tripId": "tomernatan1@gmail.com_1750500472760_cqdrjooyu",
+  "country": "israel",
+  "city": "tel aviv",
+  "tripType": "bike",
+  "tripDate": "2025-06-22",
+  "countryFlag": "https://images.unsplash.com/photo-1621874098652-168c080d322f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxpc3JhZWwlMjBmbGFnfGVufDB8fHx8MTc1MDQzMDY1MHww&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Tel Aviv",
+            "coordinates": [
+              32.0647,
+              34.7763
+            ],
+            "_id": {
+              "$oid": "685684786d18deefbb281135"
+            }
+          },
+          {
+            "name": "Ramat Gan",
+            "coordinates": [
+              32.0864,
+              34.8108
+            ],
+            "_id": {
+              "$oid": "685684786d18deefbb281136"
+            }
+          },
+          {
+            "name": "Bar Ilan University",
+            "coordinates": [
+              32.0653,
+              34.8422
+            ],
+            "_id": {
+              "$oid": "685684786d18deefbb281137"
+            }
+          },
+          {
+            "name": "Petah Tikva",
+            "coordinates": [
+              32.0703,
+              34.8867
+            ],
+            "_id": {
+              "$oid": "685684786d18deefbb281138"
+            }
+          },
+          {
+            "name": "Yarkon Park",
+            "coordinates": [
+              32.1147,
+              34.8145
+            ],
+            "_id": {
+              "$oid": "685684786d18deefbb281139"
+            }
+          }
+        ],
+        "distances": [
+          "5.04 km",
+          "6.89 km",
+          "6.24 km",
+          "11.61 km"
+        ],
+        "totalDistance": "29.78 km",
+        "estimatedTime": "1.71 hours",
+        "_id": {
+          "$oid": "685684786d18deefbb281134"
+        }
+      },
+      {
+        "day": 2,
+        "cities": [
+          {
+            "name": "Yarkon Park",
+            "coordinates": [
+              32.1147,
+              34.8145
+            ],
+            "_id": {
+              "$oid": "685684786d18deefbb28113b"
+            }
+          },
+          {
+            "name": "Herzliya",
+            "coordinates": [
+              32.1653,
+              34.8462
+            ],
+            "_id": {
+              "$oid": "685684786d18deefbb28113c"
+            }
+          },
+          {
+            "name": "Ramat Hasharon",
+            "coordinates": [
+              32.1417,
+              34.9258
+            ],
+            "_id": {
+              "$oid": "685684786d18deefbb28113d"
+            }
+          },
+          {
+            "name": "Hayarkon Street",
+            "coordinates": [
+              32.0792,
+              34.7742
+            ],
+            "_id": {
+              "$oid": "685684786d18deefbb28113e"
+            }
+          },
+          {
+            "name": "Tel Aviv",
+            "coordinates": [
+              32.0647,
+              34.7763
+            ],
+            "_id": {
+              "$oid": "685684786d18deefbb28113f"
+            }
+          }
+        ],
+        "distances": [
+          "8.87 km",
+          "11.98 km",
+          "21.95 km",
+          "2.51 km"
+        ],
+        "totalDistance": "45.31 km",
+        "estimatedTime": "2.75 hours",
+        "_id": {
+          "$oid": "685684786d18deefbb28113a"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-06-21T10:07:52.767Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685684f16d18deefbb281149"
+  },
+  "userId": {
+    "$oid": "685609d43350180479ed1e79"
+  },
+  "userEmail": "tomernatan1@gmail.com",
+  "tripId": "tomernatan1@gmail.com_1750500593738_5chbmd8ss",
+  "country": "france ",
+  "city": "paris",
+  "tripType": "trek",
+  "tripDate": "2025-06-22",
+  "countryFlag": "https://images.unsplash.com/photo-1551866442-64e75e911c23?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxmcmFuY2UlMjAlMjBmbGFnfGVufDB8fHx8MTc1MDUwMDU4N3ww&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Paris",
+            "coordinates": [
+              48.8567,
+              2.3508
+            ],
+            "_id": {
+              "$oid": "685684f16d18deefbb28114b"
+            }
+          },
+          {
+            "name": "Montparnasse Tower",
+            "coordinates": [
+              48.8423,
+              2.3225
+            ],
+            "_id": {
+              "$oid": "685684f16d18deefbb28114c"
+            }
+          },
+          {
+            "name": "Luxembourg Gardens",
+            "coordinates": [
+              48.8462,
+              2.3364
+            ],
+            "_id": {
+              "$oid": "685684f16d18deefbb28114d"
+            }
+          },
+          {
+            "name": "Pantheon",
+            "coordinates": [
+              48.8467,
+              2.3464
+            ],
+            "_id": {
+              "$oid": "685684f16d18deefbb28114e"
+            }
+          },
+          {
+            "name": "Rue Mouffetard",
+            "coordinates": [
+              48.8422,
+              2.3511
+            ],
+            "_id": {
+              "$oid": "685684f16d18deefbb28114f"
+            }
+          },
+          {
+            "name": "Place des Vosges",
+            "coordinates": [
+              48.8566,
+              2.3651
+            ],
+            "_id": {
+              "$oid": "685684f16d18deefbb281150"
+            }
+          },
+          {
+            "name": "Paris",
+            "coordinates": [
+              48.8567,
+              2.3508
+            ],
+            "_id": {
+              "$oid": "685684f16d18deefbb281151"
+            }
+          }
+        ],
+        "distances": [
+          "3.11 km",
+          "1.39 km",
+          "0.89 km",
+          "0.80 km",
+          "2.30 km",
+          "1.30 km"
+        ],
+        "totalDistance": "9.79 km",
+        "estimatedTime": "1.96 hours",
+        "_id": {
+          "$oid": "685684f16d18deefbb28114a"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-06-21T10:09:53.739Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6856852e6d18deefbb281153"
+  },
+  "userId": {
+    "$oid": "685609d43350180479ed1e79"
+  },
+  "userEmail": "tomernatan1@gmail.com",
+  "tripId": "tomernatan1@gmail.com_1750500654909_nfb89hcpu",
+  "country": "Japan",
+  "city": "Tokyo",
+  "tripType": "bike",
+  "tripDate": "2025-06-22",
+  "countryFlag": "https://images.unsplash.com/photo-1627045513738-b30a564a6dd2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxKYXBhbiUyMGZsYWd8ZW58MHx8fHwxNzUwNTAwNjQzfDA&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Tokyo",
+            "coordinates": [
+              35.6895,
+              139.767
+            ],
+            "_id": {
+              "$oid": "6856852e6d18deefbb281155"
+            }
+          },
+          {
+            "name": "Meiji Shrine",
+            "coordinates": [
+              35.6764,
+              139.6992
+            ],
+            "_id": {
+              "$oid": "6856852e6d18deefbb281156"
+            }
+          },
+          {
+            "name": "Yoyogi Park",
+            "coordinates": [
+              35.6653,
+              139.6975
+            ],
+            "_id": {
+              "$oid": "6856852e6d18deefbb281157"
+            }
+          },
+          {
+            "name": "Shibuya Crossing",
+            "coordinates": [
+              35.6594,
+              139.7018
+            ],
+            "_id": {
+              "$oid": "6856852e6d18deefbb281158"
+            }
+          },
+          {
+            "name": "Kichijoji",
+            "coordinates": [
+              35.7028,
+              139.5779
+            ],
+            "_id": {
+              "$oid": "6856852e6d18deefbb281159"
+            }
+          }
+        ],
+        "distances": [
+          "9.17 km",
+          "1.95 km",
+          "0.99 km",
+          "14.29 km"
+        ],
+        "totalDistance": "26.41 km",
+        "estimatedTime": "1.55 hours",
+        "_id": {
+          "$oid": "6856852e6d18deefbb281154"
+        }
+      },
+      {
+        "day": 2,
+        "cities": [
+          {
+            "name": "Kichijoji",
+            "coordinates": [
+              35.7028,
+              139.5779
+            ],
+            "_id": {
+              "$oid": "6856852e6d18deefbb28115b"
+            }
+          },
+          {
+            "name": "Inokashira Park",
+            "coordinates": [
+              35.7056,
+              139.5639
+            ],
+            "_id": {
+              "$oid": "6856852e6d18deefbb28115c"
+            }
+          },
+          {
+            "name": "Mitaka",
+            "coordinates": [
+              35.6833,
+              139.5583
+            ],
+            "_id": {
+              "$oid": "6856852e6d18deefbb28115d"
+            }
+          },
+          {
+            "name": "Nishi-Ogikubo",
+            "coordinates": [
+              35.7042,
+              139.6208
+            ],
+            "_id": {
+              "$oid": "6856852e6d18deefbb28115e"
+            }
+          },
+          {
+            "name": "Tokyo",
+            "coordinates": [
+              35.6895,
+              139.767
+            ],
+            "_id": {
+              "$oid": "6856852e6d18deefbb28115f"
+            }
+          }
+        ],
+        "distances": [
+          "1.71 km",
+          "3.36 km",
+          "7.68 km",
+          "15.85 km"
+        ],
+        "totalDistance": "28.60 km",
+        "estimatedTime": "1.65 hours",
+        "_id": {
+          "$oid": "6856852e6d18deefbb28115a"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-06-21T10:10:54.910Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6856ac1a6d18deefbb28118b"
+  },
+  "userId": {
+    "$oid": "685182225430185ea8f462cc"
+  },
+  "userEmail": "zohar123marciano@gmail.com",
+  "tripId": "zohar123marciano@gmail.com_1750510618259_bwgo9g9xt",
+  "country": "Egypt",
+  "city": "Cairo",
+  "tripType": "trek",
+  "tripDate": "2025-06-22",
+  "countryFlag": "https://images.unsplash.com/photo-1678371839264-8fdb3c514ed8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxFZ3lwdCUyMGZsYWd8ZW58MHx8fHwxNzUwNTEwNjExfDA&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Cairo",
+            "coordinates": [
+              30.0626,
+              31.2497
+            ],
+            "_id": {
+              "$oid": "6856ac1a6d18deefbb28118d"
+            }
+          },
+          {
+            "name": "Al-Azhar Park",
+            "coordinates": [
+              30.0458,
+              31.2633
+            ],
+            "_id": {
+              "$oid": "6856ac1a6d18deefbb28118e"
+            }
+          },
+          {
+            "name": "Citadel of Cairo",
+            "coordinates": [
+              30.0318,
+              31.2589
+            ],
+            "_id": {
+              "$oid": "6856ac1a6d18deefbb28118f"
+            }
+          },
+          {
+            "name": "Mosque of Muhammad Ali Pasha",
+            "coordinates": [
+              30.0294,
+              31.2594
+            ],
+            "_id": {
+              "$oid": "6856ac1a6d18deefbb281190"
+            }
+          },
+          {
+            "name": "Khan el-Khalili",
+            "coordinates": [
+              30.0502,
+              31.2631
+            ],
+            "_id": {
+              "$oid": "6856ac1a6d18deefbb281191"
+            }
+          },
+          {
+            "name": "Cairo",
+            "coordinates": [
+              30.0626,
+              31.2497
+            ],
+            "_id": {
+              "$oid": "6856ac1a6d18deefbb281192"
+            }
+          }
+        ],
+        "distances": [
+          "3.73 km",
+          "2.01 km",
+          "0.77 km",
+          "3.07 km",
+          "2.66 km"
+        ],
+        "totalDistance": "12.24 km",
+        "estimatedTime": "2.45 hours",
+        "_id": {
+          "$oid": "6856ac1a6d18deefbb28118c"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-06-21T12:56:58.262Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6856ac716d18deefbb281194"
+  },
+  "userId": {
+    "$oid": "685182225430185ea8f462cc"
+  },
+  "userEmail": "zohar123marciano@gmail.com",
+  "tripId": "zohar123marciano@gmail.com_1750510705825_ti6f1l9uh",
+  "country": "india",
+  "city": "New Delhi",
+  "tripType": "bike",
+  "tripDate": "2025-06-22",
+  "countryFlag": "https://images.unsplash.com/photo-1709545900940-f86b833d5704?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxpbmRpYSUyMGZsYWd8ZW58MHx8fHwxNzUwNTEwNjg0fDA&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "New Delhi",
+            "coordinates": [
+              28.7041,
+              77.1025
+            ],
+            "_id": {
+              "$oid": "6856ac716d18deefbb281196"
+            }
+          },
+          {
+            "name": "India Gate",
+            "coordinates": [
+              28.6129,
+              77.2295
+            ],
+            "_id": {
+              "$oid": "6856ac716d18deefbb281197"
+            }
+          },
+          {
+            "name": "Hauz Khas",
+            "coordinates": [
+              28.5522,
+              77.2056
+            ],
+            "_id": {
+              "$oid": "6856ac716d18deefbb281198"
+            }
+          },
+          {
+            "name": "Qutub Minar",
+            "coordinates": [
+              28.5244,
+              77.1853
+            ],
+            "_id": {
+              "$oid": "6856ac716d18deefbb281199"
+            }
+          },
+          {
+            "name": "Mehrauli",
+            "coordinates": [
+              28.5139,
+              77.1753
+            ],
+            "_id": {
+              "$oid": "6856ac716d18deefbb28119a"
+            }
+          }
+        ],
+        "distances": [
+          "22.31 km",
+          "10.65 km",
+          "3.87 km",
+          "2.95 km"
+        ],
+        "totalDistance": "39.79 km",
+        "estimatedTime": "2.35 hours",
+        "_id": {
+          "$oid": "6856ac716d18deefbb281195"
+        }
+      },
+      {
+        "day": 2,
+        "cities": [
+          {
+            "name": "Mehrauli",
+            "coordinates": [
+              28.5139,
+              77.1753
+            ],
+            "_id": {
+              "$oid": "6856ac716d18deefbb28119c"
+            }
+          },
+          {
+            "name": "Saket",
+            "coordinates": [
+              28.5294,
+              77.2147
+            ],
+            "_id": {
+              "$oid": "6856ac716d18deefbb28119d"
+            }
+          },
+          {
+            "name": "Lodhi Garden",
+            "coordinates": [
+              28.5922,
+              77.2195
+            ],
+            "_id": {
+              "$oid": "6856ac716d18deefbb28119e"
+            }
+          },
+          {
+            "name": "Khan Market",
+            "coordinates": [
+              28.5934,
+              77.2241
+            ],
+            "_id": {
+              "$oid": "6856ac716d18deefbb28119f"
+            }
+          },
+          {
+            "name": "New Delhi",
+            "coordinates": [
+              28.7041,
+              77.1025
+            ],
+            "_id": {
+              "$oid": "6856ac716d18deefbb2811a0"
+            }
+          }
+        ],
+        "distances": [
+          "6.16 km",
+          "10.19 km",
+          "1.42 km",
+          "24.83 km"
+        ],
+        "totalDistance": "42.59 km",
+        "estimatedTime": "2.40 hours",
+        "_id": {
+          "$oid": "6856ac716d18deefbb28119b"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-06-21T12:58:25.827Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6856aca36d18deefbb2811a2"
+  },
+  "userId": {
+    "$oid": "685182225430185ea8f462cc"
+  },
+  "userEmail": "zohar123marciano@gmail.com",
+  "tripId": "zohar123marciano@gmail.com_1750510755957_o0x648524",
+  "country": "South Korea",
+  "city": "Seoul",
+  "tripType": "bike",
+  "tripDate": "2025-06-22",
+  "countryFlag": "https://images.unsplash.com/photo-1619179834700-7a886aac80cc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxTb3V0aCUyMEtvcmVhJTIwZmxhZ3xlbnwwfHx8fDE3NTA1MTA3NTN8MA&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Seoul",
+            "coordinates": [
+              37.5665,
+              126.9779
+            ],
+            "_id": {
+              "$oid": "6856aca36d18deefbb2811a4"
+            }
+          },
+          {
+            "name": "Gwangjin-gu",
+            "coordinates": [
+              37.5883,
+              127.0828
+            ],
+            "_id": {
+              "$oid": "6856aca36d18deefbb2811a5"
+            }
+          },
+          {
+            "name": "Seongbuk-gu",
+            "coordinates": [
+              37.5917,
+              127.0167
+            ],
+            "_id": {
+              "$oid": "6856aca36d18deefbb2811a6"
+            }
+          },
+          {
+            "name": "Jongno-gu",
+            "coordinates": [
+              37.5739,
+              126.9903
+            ],
+            "_id": {
+              "$oid": "6856aca36d18deefbb2811a7"
+            }
+          },
+          {
+            "name": "Dongdaemun Design Plaza",
+            "coordinates": [
+              37.5683,
+              127.0122
+            ],
+            "_id": {
+              "$oid": "6856aca36d18deefbb2811a8"
+            }
+          }
+        ],
+        "distances": [
+          "11.73 km",
+          "8.09 km",
+          "4.48 km",
+          "2.61 km"
+        ],
+        "totalDistance": "26.91 km",
+        "estimatedTime": "1.53 hours",
+        "_id": {
+          "$oid": "6856aca36d18deefbb2811a3"
+        }
+      },
+      {
+        "day": 2,
+        "cities": [
+          {
+            "name": "Dongdaemun Design Plaza",
+            "coordinates": [
+              37.5683,
+              127.0122
+            ],
+            "_id": {
+              "$oid": "6856aca36d18deefbb2811aa"
+            }
+          },
+          {
+            "name": "Itaewon",
+            "coordinates": [
+              37.5342,
+              126.9939
+            ],
+            "_id": {
+              "$oid": "6856aca36d18deefbb2811ab"
+            }
+          },
+          {
+            "name": "Yongsan-gu",
+            "coordinates": [
+              37.5433,
+              126.9581
+            ],
+            "_id": {
+              "$oid": "6856aca36d18deefbb2811ac"
+            }
+          },
+          {
+            "name": "Mapo-gu",
+            "coordinates": [
+              37.5667,
+              126.9083
+            ],
+            "_id": {
+              "$oid": "6856aca36d18deefbb2811ad"
+            }
+          },
+          {
+            "name": "Seoul",
+            "coordinates": [
+              37.5665,
+              126.9779
+            ],
+            "_id": {
+              "$oid": "6856aca36d18deefbb2811ae"
+            }
+          }
+        ],
+        "distances": [
+          "5.27 km",
+          "4.96 km",
+          "6.56 km",
+          "8.38 km"
+        ],
+        "totalDistance": "25.17 km",
+        "estimatedTime": "1.44 hours",
+        "_id": {
+          "$oid": "6856aca36d18deefbb2811a9"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-06-21T12:59:15.959Z"
+  },
+  "__v": 0
+}]

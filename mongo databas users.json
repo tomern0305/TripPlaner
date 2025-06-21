@@ -1,0 +1,27 @@
+[{
+  "_id": {
+    "$oid": "685181fe20acf99360c24b0e"
+  },
+  "name": "Almog Asia",
+  "email": "almogtest@gmail.com",
+  "password": "$2b$10$v0SuRsnK2YqVQisOWJRlnu21GmxllgTKERxnLvVHnXzh84vOne1V.",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685182225430185ea8f462cc"
+  },
+  "name": "Zohar Marciano",
+  "email": "zohar123marciano@gmail.com",
+  "password": "$2b$10$i0c1qTfsA0amZwNj6OTtvec9Y90RjRZVfsUlz8G/gwFquMjlv2qw.",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "685609d43350180479ed1e79"
+  },
+  "name": "Tomer Natan",
+  "email": "tomernatan1@gmail.com",
+  "password": "$2b$10$9e69pkGDc6CKvjGb4fqAo.nb87w5FPw.zSx61Th.ngAswKAM0YMUm",
+  "__v": 0
+}]
