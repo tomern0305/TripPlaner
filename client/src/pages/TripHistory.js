@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function TripHistory() {
+  // State for the list of trips, loading/error status, and filter values.
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -11,6 +12,7 @@ function TripHistory() {
   const [countrySearch, setCountrySearch] = useState('');
   const navigate = useNavigate();
 
+  // Fetch the trip history when the component mounts.
   useEffect(() => {
     fetchTripHistory();
   }, []);
@@ -47,6 +49,7 @@ function TripHistory() {
     }
   };
 
+  // A simple utility function to format date strings for display.
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -56,20 +59,21 @@ function TripHistory() {
     });
   };
 
-  // Filtering logic
+  // This is where the client-side filtering logic is applied.
+  // The `filteredTrips` array is derived from the original `trips` state based on the current filter settings.
   const today = new Date();
   const filteredTrips = trips.filter(trip => {
-    // Trip type filter
+    // Filter by trip type.
     if (tripTypeFilter !== 'all' && trip.tripType.toLowerCase() !== tripTypeFilter) {
       return false;
     }
-    // Date filter
+    // Filter by date (past or future).
     if (dateFilter !== 'all') {
       const tripDate = new Date(trip.tripDate);
       if (dateFilter === 'past' && tripDate >= today) return false;
       if (dateFilter === 'future' && tripDate < today) return false;
     }
-    // Country search filter
+    // Filter by a case-insensitive search of the country name.
     if (countrySearch.trim() !== '' && !trip.country.toLowerCase().includes(countrySearch.toLowerCase())) {
       return false;
     }
@@ -92,7 +96,7 @@ function TripHistory() {
   return (
     <div className="trip-history-page">
       <h2>Trip History</h2>
-      {/* Filter/Search Controls */}
+      {/* The controls for filtering the trip history list. */}
       <div className="trip-history-filters" style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
         <div>
           <label htmlFor="tripTypeFilter"><strong>Type:</strong> </label>
@@ -122,6 +126,7 @@ function TripHistory() {
           />
         </div>
       </div>
+      {/* The grid of trip cards is rendered using the `filteredTrips` array. */}
       <div className="trip-history-grid">
         {filteredTrips.map(trip => (
           <div key={trip.tripId} className="trip-card">
@@ -147,6 +152,8 @@ function TripHistory() {
           </div>
         ))}
       </div>
+      {/* This section provides a helpful message if no trips are visible,
+          distinguishing between having no trips at all and having no trips that match the current filters. */}
       {filteredTrips.length === 0 && (
         <div className="no-trips">
           <p>{trips.length === 0 ? 'No trips found in history.' : 'No trips match your current filters.'}</p>

@@ -6,7 +6,9 @@ import L from 'leaflet';
 import axios from 'axios';
 import polyline from 'polyline';
 
-// Fix for default marker icons in Leaflet with React
+// --- Leaflet Icon Fix ---
+// A common issue with React-Leaflet and Webpack is the misconfiguration of default marker icon paths.
+// This block of code manually resets the icon URLs to a CDN source, ensuring markers display correctly.
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -14,6 +16,10 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
+// --- Map Utility Component ---
+// This component is a workaround to programmatically change the map's center and zoom level.
+// The `useMap` hook can only be used by children of `<MapContainer>`, so we create this small component
+// to listen for changes to the `center` prop and call `map.setView` accordingly.
 function ChangeMapView({ center }) {
   const map = useMap();
   useEffect(() => {
@@ -22,9 +28,10 @@ function ChangeMapView({ center }) {
   return null;
 }
 
-const ORS_API_KEY = process.env.REACT_APP_ORS_API_KEY;
 
-// Utility to fetch route from OpenRouteService
+// This function acts as a proxy to our backend's OpenRouteService endpoint.
+// It fetches the geographical coordinates for a route between two points, which are then used to draw polylines on the map.
+// Using a backend proxy keeps the ORS API key secure.
 async function fetchORSRoute(start, end, profile = 'foot-walking') {
   const url = `http://localhost:5000/api/trip/ors-route`;
   try {
@@ -43,7 +50,7 @@ async function fetchORSRoute(start, end, profile = 'foot-walking') {
       response.data.routes[0] &&
       response.data.routes[0].geometry
     ) {
-      // Decode the polyline geometry
+      // The ORS API returns an encoded polyline string, which we decode into a series of [lat, lng] coordinates.
       const coords = polyline.decode(response.data.routes[0].geometry);
       return coords;
     } else {
@@ -56,29 +63,37 @@ async function fetchORSRoute(start, end, profile = 'foot-walking') {
     } else {
       console.error('ORS route error', err);
     }
-    return [start, end]; // fallback to straight line
+    return [start, end]; // As a fallback, return a straight line between the points.
   }
 }
 
+// --- TripView Component ---
+// This component is responsible for fetching and displaying the details of a single, previously saved trip.
+// It retrieves the trip ID from the URL parameters.
 export default function TripView() {
   const { tripId } = useParams();
   const navigate = useNavigate();
+  
+  // State for storing trip data, loading/error status, and map elements.
   const [trip, setTrip] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [mapCenter, setMapCenter] = useState([31.7683, 35.2137]);
+  const [mapCenter, setMapCenter] = useState([31.7683, 35.2137]); // Default center
   const [markers, setMarkers] = useState([]);
   const [polylines, setPolylines] = useState([]);
+
+  // State for weather information.
   const [weatherData, setWeatherData] = useState(null);
   const [weatherLoading, setWeatherLoading] = useState(false);
   const [weatherError, setWeatherError] = useState('');
 
+  // The main effect hook that triggers fetching the trip data when the component mounts or the tripId changes.
   useEffect(() => {
     fetchTrip();
     // eslint-disable-next-line
   }, [tripId]);
 
-  // Fetch weather forecast when trip is loaded
+  // Fetches the weather forecast automatically once the trip data has been successfully loaded.
   useEffect(() => {
     if (trip && trip.city && trip.country && trip.tripDate) {
       fetchWeatherForecast();
@@ -86,6 +101,9 @@ export default function TripView() {
     // eslint-disable-next-line
   }, [trip]);
 
+  // --- Data Fetching and Processing ---
+
+  // Fetches the complete trip data from the backend using the tripId.
   const fetchTrip = async () => {
     setLoading(true);
     setError('');
@@ -103,27 +121,34 @@ export default function TripView() {
       });
       if (response.data.success) {
         setTrip(response.data.trip);
-        // Prepare map data
+        
+        // --- Map Data Preparation ---
+        // Once the trip data is fetched, we process it to generate the necessary markers and polylines for the map.
+        // This logic is very similar to the one in TripPlan.js.
         const tripData = response.data.trip.tripData;
         const allMarkers = [];
         const allPolylines = [];
-        // Helper to get ORS profile
+        
+        // Helper to determine the travel profile for the routing API.
         const getProfile = () => (response.data.trip.tripType === 'bike' ? 'cycling-regular' : 'foot-walking');
-        // Find main start/end location
+        
+        // Identify the main start and end points of the entire trip to handle circular routes.
         const mainStart = tripData.days[0].cities[0];
         const mainEnd = tripData.days[tripData.days.length - 1].cities[tripData.days[tripData.days.length - 1].cities.length - 1];
         const isCircular = mainStart.coordinates[0] === mainEnd.coordinates[0] && mainStart.coordinates[1] === mainEnd.coordinates[1];
-        // Add main start-end pin
+        
+        // Add a primary marker for the start/end location.
         allMarkers.push({
           position: mainStart.coordinates,
           title: 'Start-End Location',
           isMain: true
         });
-        // Add stopping point pins for each day (except last if circular)
+
+        // Add markers for intermediate stopping points (end of each day).
         tripData.days.forEach((day, dayIndex) => {
           // Last city of the day
           const lastCity = day.cities[day.cities.length - 1];
-          // Only add if not the main start/end (for circular trips, skip last day)
+          // Avoid adding redundant markers for the final destination on circular trips.
           if (
             dayIndex !== tripData.days.length - 1 || !isCircular
           ) {
@@ -140,7 +165,8 @@ export default function TripView() {
             }
           }
         });
-        // Build all polylines for all days using actual routes from OpenRouteService
+
+        // Asynchronously build the route polylines for each day by fetching data from OpenRouteService.
         async function buildRoutes() {
           for (const [dayIndex, day] of tripData.days.entries()) {
             // Build the full route polyline for the day by combining all segments
@@ -150,7 +176,7 @@ export default function TripView() {
               const end = day.cities[i + 1].coordinates;
               // Fetch the actual route from OpenRouteService for each segment
               const segment = await fetchORSRoute(start, end, getProfile());
-              // Avoid duplicate points between segments
+              // Prevent duplicate coordinate points where segments connect.
               if (fullRoute.length > 0 && segment.length > 0 && fullRoute[fullRoute.length - 1][0] === segment[0][0] && fullRoute[fullRoute.length - 1][1] === segment[0][1]) {
                 fullRoute = fullRoute.concat(segment.slice(1));
               } else {
@@ -160,7 +186,7 @@ export default function TripView() {
             if (fullRoute.length > 1) {
               allPolylines.push({
                 positions: fullRoute,
-                color: dayIndex === 0 ? '#ff4444' : '#4444ff',
+                color: dayIndex === 0 ? '#ff4444' : '#4444ff', // Different colors for different days
                 weight: 3,
                 opacity: 0.7,
                 day: day.day
@@ -171,6 +197,8 @@ export default function TripView() {
         await buildRoutes();
         setMarkers(allMarkers);
         setPolylines(allPolylines);
+
+        // Center the map on the starting location of the trip.
         if (tripData.days[0] && tripData.days[0].cities[0]) {
           setMapCenter(tripData.days[0].cities[0].coordinates);
         }
@@ -184,6 +212,7 @@ export default function TripView() {
     }
   };
 
+  // Fetches the weather forecast from the backend for the trip's location and date.
   const fetchWeatherForecast = async () => {
     if (!trip || !trip.city || !trip.country || !trip.tripDate) {
       setWeatherError('Trip information is required to fetch weather forecast.');
@@ -214,6 +243,8 @@ export default function TripView() {
     }
   };
 
+  // --- Conditional Rendering ---
+  // Display loading or error messages before rendering the main content.
   if (loading) return <div className="loading">Loading trip...</div>;
   if (error) return <div className="error-message">{error}</div>;
   if (!trip) return null;
@@ -221,6 +252,7 @@ export default function TripView() {
   return (
     <div className="trip-view-page">
       <div className="trip-view-content">
+        {/* Displays the primary trip details, such as destination, date, and type. */}
         <div className="trip-details">
           <div className="trip-header">
             {trip.countryFlag && (
@@ -233,6 +265,7 @@ export default function TripView() {
               <p><strong>Created:</strong> {new Date(trip.createdAt).toLocaleDateString()}</p>
             </div>
           </div>
+          {/* Renders the detailed itinerary for each day of the trip. */}
           {trip.tripData && trip.tripData.days.map((day, index) => (
             <div key={index} className="day-route">
               <h4>Day {day.day}</h4>
@@ -255,7 +288,8 @@ export default function TripView() {
               </div>
             </div>
           ))}
-          {/* Weather Forecast Display */}
+          {/* This section handles the complex logic of displaying the correct weather information
+              based on whether the trip date is in the past, present, or future. */}
           <div className="weather-section">
             <h3>Weather Forecast</h3>
             <div className="weather-content">
@@ -264,7 +298,7 @@ export default function TripView() {
                 const today = new Date();
                 const tripDateObj = new Date(trip.tripDate);
                 const daysDiff = Math.ceil((tripDateObj - today) / (1000 * 60 * 60 * 24));
-                // Only show loading spinner for daysDiff >= 0
+                // Show a loading spinner only if the date is in the future.
                 if (weatherLoading && daysDiff >= 0) {
                   return (
                     <div className="weather-loading">
@@ -272,7 +306,7 @@ export default function TripView() {
                     </div>
                   );
                 }
-                // Only show error/retry for 0-3 days
+                // Show an error and a retry button if fetching fails for a near-future date.
                 if (weatherError && daysDiff >= 0 && daysDiff <= 3) {
                   return (
                     <div className="weather-error">
@@ -287,7 +321,7 @@ export default function TripView() {
                     </div>
                   );
                 }
-                // 0-3 days: show actual forecast
+                // For dates within the forecast range, display the detailed forecast card.
                 if (weatherData && !weatherData.message && daysDiff >= 0 && daysDiff <= 3) {
                   return (
                     <div className="weather-card">
@@ -335,7 +369,7 @@ export default function TripView() {
                     </div>
                   );
                 }
-                // 4+ days: always show current weather as reference (no error)
+                // For dates further in the future, display a message and the current weather as a reference.
                 if (daysDiff >= 4) {
                   return (
                     <div className="weather-message">
@@ -362,7 +396,8 @@ export default function TripView() {
                     </div>
                   );
                 }
-                // Past dates: only show historical weather if available, else only show unavailable message
+                // For dates in the past, attempt to show historical weather if available,
+                // otherwise show an "unavailable" message.
                 if (daysDiff < 0) {
                   if (weatherData && !weatherData.message) {
                     // If API provides historical weather
@@ -422,6 +457,7 @@ export default function TripView() {
                 }
                 return null;
               })()}
+              {/* A placeholder is shown before any weather data is loaded or requested. */}
               {!weatherData && !weatherLoading && !weatherError && (
                 <div className="weather-placeholder">
                   <p>Weather forecast will be displayed here once available.</p>
@@ -437,8 +473,9 @@ export default function TripView() {
             </div>
           </div>
         </div>
+        {/* Renders the Leaflet map with all markers and route polylines. */}
         <div className="map-container" style={{ position: 'relative', marginTop: 24 }}>
-          {/* Legend for multi-day trips */}
+          {/* A legend is displayed for multi-day trips to clarify the route colors. */}
           {trip && trip.tripData && trip.tripData.days && trip.tripData.days.length > 1 && (
             <div style={{
               position: 'absolute',
@@ -479,7 +516,9 @@ export default function TripView() {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
+            {/* This component handles map view changes. */}
             <ChangeMapView center={mapCenter} />
+            {/* Renders the route polylines on the map. */}
             {polylines.map((polyline, index) => (
               <Polyline
                 key={index}
@@ -489,6 +528,7 @@ export default function TripView() {
                 opacity={polyline.opacity}
               />
             ))}
+            {/* Renders the markers for start/end and intermediate points. */}
             {markers.map((marker, index) => (
               <Marker key={index} position={marker.position}>
                 <Popup>
@@ -502,6 +542,7 @@ export default function TripView() {
             ))}
           </MapContainer>
         </div>
+        {/* A button to navigate back to the previous page (likely the trip history). */}
         <div className="trip-view-back-btn-container">
           <button className="button" onClick={() => navigate(-1)}>
             &larr; Back

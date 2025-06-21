@@ -4,6 +4,7 @@ import axios from 'axios';
 import '../App.css';
 
 export default function Dashboard() {
+  // State for user data, their most recent trip, loading status, and errors.
   const [user, setUser] = useState(null);
   const [lastTrip, setLastTrip] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,7 +18,8 @@ export default function Dashboard() {
       return;
     }
 
-    // Fetch user data and last trip
+    // Fetch user data and trip history concurrently for a faster loading experience.
+    // Promise.all is used to wait for both API calls to complete.
     Promise.all([
       axios.get('http://localhost:5000/api/me', {
         headers: { Authorization: `Bearer ${token}` }
@@ -28,12 +30,14 @@ export default function Dashboard() {
     ])
     .then(([userRes, tripRes]) => {
       setUser(userRes.data);
+      // If the user has a trip history, set the most recent one for display.
       if (tripRes.data.success && tripRes.data.trips.length > 0) {
         setLastTrip(tripRes.data.trips[0]); // Get the most recent trip
       }
     })
     .catch((err) => {
       console.error('Error fetching dashboard data:', err);
+      // If the token is invalid or expired (401), log the user out.
       if (err.response?.status === 401) {
         localStorage.removeItem('token');
         navigate('/login');
@@ -51,6 +55,7 @@ export default function Dashboard() {
     navigate('/login');
   };
 
+  // A simple utility function to format date strings for display.
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -60,6 +65,7 @@ export default function Dashboard() {
     });
   };
 
+  // Display a loading message while data is being fetched.
   if (loading) {
     return (
       <div className="container">
@@ -68,6 +74,7 @@ export default function Dashboard() {
     );
   }
 
+  // Display an error message if data fetching fails.
   if (error) {
     return (
       <div className="container">
@@ -105,10 +112,11 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* Last Trip Section */}
+        {/* This section conditionally renders based on whether the user has a previous trip. */}
         {lastTrip ? (
           <div className="last-trip-section">
             <h2 className="section-title">Your Last Trip</h2>
+            {/* The 'featured-trip' card highlights the most recent trip. */}
             <div className="trip-card featured-trip">
               <div className="flag-title-group">
                 {lastTrip.countryFlag && (
@@ -142,6 +150,7 @@ export default function Dashboard() {
             </div>
           </div>
         ) : (
+          // If there are no trips, a call-to-action is displayed instead.
           <div className="no-trips-section">
             <h2 className="section-title">Start Your Journey</h2>
             <div className="no-trips-card">

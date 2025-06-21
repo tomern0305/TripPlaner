@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
 });
 
-// Ensure email is always saved in lowercase
+// This pre-save hook ensures that all email addresses are stored in lowercase.
+// This is a common practice to prevent case-sensitivity issues with email-based logins and signups.
 userSchema.pre('save', function(next) {
   if (this.email) {
     this.email = this.email.toLowerCase();
