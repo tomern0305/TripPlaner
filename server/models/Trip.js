@@ -20,6 +20,17 @@ const tripSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  // The country of the trip.
+  country: {
+    type: String,
+    required: true
+  },
+  // The city of the trip.
+  city: {
+    type: String,
+    required: true
+  },
+
   // The type of trip, restricted to either 'bike' or 'trek'.
   tripType: {
     type: String,
