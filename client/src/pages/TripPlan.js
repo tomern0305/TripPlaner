@@ -153,157 +153,8 @@ function TripPlan() {
     }
   };
 
-  async function fetchORSRoute(start, end, profile = 'foot-walking') {
-  const url = `http://localhost:5000/api/trip/ors-route`;
-  try {
-    const response = await axios.post(url, { start, end, profile });
 
-    if (
-      response.data &&
-      response.data.routes &&
-      response.data.routes[0] &&
-      response.data.routes[0].geometry
-    ) {
-      const polyline = response.data.routes[0].geometry;
-      const coords = decodePolyline(polyline); // assuming decodePolyline exists
-      return coords;
-    } else {
-      console.error('ORS API returned unexpected structure:', response.data);
-      return [start, end]; // fallback
-    }
-  } catch (error) {
-    console.error('ORS route error:', error);
-    return [start, end]; // fallback
-  }
-}
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError('');
-  setLoading(true);
-  setTripData(null);
-  setMarkers([]);
-  setPolylines([]);
-  setTripSaved(false);
-  setSaveError('');
-  setSaveSuccess('');
-
-  try {
-    // First validate the country input.
-    const countryValidation = await validateCountry(country);
-    if (!countryValidation.isValid) {
-      setError(`No country found with the name "${country}". Please check the country name and try again.`);
-      setLoading(false);
-      return;
-    }
-
-   // Then validate the city, restricted to the country code
-    const cityValidation = await validateCity(city, countryValidation.countryCode);
-    if (!cityValidation.isValid) {
-      setError(`Could not find "${city}" in ${country}. Please check the city name and try again.`);
-      setLoading(false);
-      return;
-    }
-
-     // Call the LLM-based trip planning API
-    const response = await axios.post('http://localhost:5000/api/trip/plan', {
-      country,
-      city,
-      tripType,
-      tripDate
-    });
-
-    if (response.data.success) {
-      const trip = response.data.tripData;
-      setTripData(trip);
-
-      // Store the submitted values for display
-      setSubmittedCountry(country);
-      setSubmittedCity(city);
-      setSubmittedTripType(tripType);
-      setSubmittedTripDate(tripDate);
-
-      // Process the trip data to create markers and polylines for the map
-      const allMarkers = [];
-      const allPolylines = [];
-
-      const getProfile = () => (tripType === 'bike' ? 'cycling-regular' : 'foot-walking');
-      const mainStart = trip.days[0].cities[0];
-      const mainEnd = trip.days[trip.days.length - 1].cities[trip.days[trip.days.length - 1].cities.length - 1];
-      const isCircular = mainStart.coordinates[0] === mainEnd.coordinates[0] && mainStart.coordinates[1] === mainEnd.coordinates[1];
-
-      allMarkers.push({
-        position: mainStart.coordinates,
-        title: 'Start-End Location',
-        isMain: true
-      });
-
-      trip.days.forEach((day, dayIndex) => {
-        const lastCity = day.cities[day.cities.length - 1];
-        if (dayIndex !== trip.days.length - 1 || !isCircular) {
-          if (lastCity.coordinates[0] !== mainStart.coordinates[0] || lastCity.coordinates[1] !== mainStart.coordinates[1]) {
-            allMarkers.push({
-              position: lastCity.coordinates,
-              title: `Stopping point - end of day ${day.day}`,
-              isMain: false
-            });
-          }
-        }
-      });
-
-      // This async function iterates through each day and each segment of the trip,
-      // fetching the actual route from ORS and constructing the polylines to be drawn on the map.
-      async function buildRoutes() {
-        for (const [dayIndex, day] of trip.days.entries()) {
-          let fullRoute = [];
-          for (let i = 0; i < day.cities.length - 1; i++) {
-            const start = day.cities[i].coordinates;
-            const end = day.cities[i + 1].coordinates;
-            const segment = await fetchORSRoute(start, end, getProfile());
-            if (fullRoute.length > 0 && segment.length > 0 && fullRoute[fullRoute.length - 1][0] === segment[0][0] && fullRoute[fullRoute.length - 1][1] === segment[0][1]) {
-              fullRoute = fullRoute.concat(segment.slice(1));
-            } else {
-              fullRoute = fullRoute.concat(segment);
-            }
-          }
-          if (fullRoute.length > 1) {
-            allPolylines.push({
-              positions: fullRoute,
-              color: dayIndex === 0 ? '#ff4444' : '#4444ff',
-              weight: 3,
-              opacity: 0.7,
-              day: day.day
-            });
-          }
-        }
-      }
-
-      // Execute the route building and update the component's state.
-      await buildRoutes();
-      setMarkers(allMarkers);
-      setPolylines(allPolylines);
-
-      // Center the map on the trip's starting location.
-      if (trip.days[0] && trip.days[0].cities[0]) {
-        setMapCenter(trip.days[0].cities[0].coordinates);
-      }
-
-      // Fetch country flag (but do not save trip yet)
-      const flag = await fetchCountryFlag(country);
-      setCountryFlag(flag);
-
-    } else {
-      setError('Failed to generate trip plan. Please try again.');
-    }
-  } catch (error) {
-    console.error('Error planning trip:', error);
-    setError('Failed to plan trip. Please check your connection and try again.');
-  } finally {
-    setLoading(false);
-  }
-};
-
-/*
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -413,7 +264,7 @@ function TripPlan() {
       setLoading(false);
     }
   };
-  */
+
 
   // Function to save trip to database
   const handleSaveTrip = async () => {
