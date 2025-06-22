@@ -189,7 +189,7 @@ function TripPlan() {
   setSaveSuccess('');
 
   try {
-    // Step 1: Validate the country input.
+    // First validate the country input.
     const countryValidation = await validateCountry(country);
     if (!countryValidation.isValid) {
       setError(`No country found with the name "${country}". Please check the country name and try again.`);
@@ -197,7 +197,7 @@ function TripPlan() {
       return;
     }
 
-    // Step 2: Validate the city input, using the country code from the previous step.
+   // Then validate the city, restricted to the country code
     const cityValidation = await validateCity(city, countryValidation.countryCode);
     if (!cityValidation.isValid) {
       setError(`Could not find "${city}" in ${country}. Please check the city name and try again.`);
@@ -205,7 +205,7 @@ function TripPlan() {
       return;
     }
 
-    // Step 3: Call the backend API to generate the trip plan using the LLM.
+     // Call the LLM-based trip planning API
     const response = await axios.post('http://localhost:5000/api/trip/plan', {
       country,
       city,
@@ -217,13 +217,13 @@ function TripPlan() {
       const trip = response.data.tripData;
       setTripData(trip);
 
-      // Step 4: Store the submitted form values to decouple form state from the displayed results.
+      // Store the submitted values for display
       setSubmittedCountry(country);
       setSubmittedCity(city);
       setSubmittedTripType(tripType);
       setSubmittedTripDate(tripDate);
 
-      // Step 5: Process the trip data to create markers and polylines for the map.
+      // Process the trip data to create markers and polylines for the map
       const allMarkers = [];
       const allPolylines = [];
 
@@ -278,17 +278,17 @@ function TripPlan() {
         }
       }
 
-      // Step 6: Execute the route building and update the component's state.
+      // Execute the route building and update the component's state.
       await buildRoutes();
       setMarkers(allMarkers);
       setPolylines(allPolylines);
 
-      // Step 7: Center the map on the trip's starting location.
+      // Center the map on the trip's starting location.
       if (trip.days[0] && trip.days[0].cities[0]) {
         setMapCenter(trip.days[0].cities[0].coordinates);
       }
 
-      // Step 8: Fetch country flag (but do not save trip yet)
+      // Fetch country flag (but do not save trip yet)
       const flag = await fetchCountryFlag(country);
       setCountryFlag(flag);
 
