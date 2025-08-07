@@ -56,17 +56,11 @@ web-vitals
 
 ---
 
-## 🖼️ Unsplash API Setup (for Images)
+## 🔒 Security Update
 
-1. Create a free developer account on [Unsplash](https://unsplash.com/developers).
-2. Generate an **Access Key** for your application.
-3. In the project root (`TripPlanner/client`), create a `.env` file and add the following line:
+> 🔒 **Important:** The client no longer requires a `.env` file as all API keys are now securely stored on the server side. This includes the Unsplash API key for country flag images.
 
-```env
-REACT_APP_UNSPLASH_ACCESS_KEY=your_unsplash_access_key_here
-```
-
-> 🔐 **Do not share your API key publicly**. The `.env` file should not be committed to version control.
+The client now communicates with the server through proxy endpoints to ensure API keys remain secure and are never exposed to the client-side code.
 
 ---
 
@@ -88,8 +82,9 @@ Your browser will open at:
 
 - 🔐 Register / log in
 - 📌 Plan trips, view history, and trip details
-- 🖼️ Display location-based images using Unsplash API
+- 🖼️ Display location-based images using server-proxied Unsplash API
 - 🌐 Backend communication via RESTful APIs
+- 🔒 Secure API key handling through server proxy endpoints
 
 ---
 

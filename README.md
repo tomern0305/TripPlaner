@@ -35,12 +35,14 @@ Ensure the following tools are installed on your system:
 
 You must register and obtain **API keys** from the following services:
 
-| Service               | Purpose                 | Get Key From                                |
-|-----------------------|--------------------------|----------------------------------------------|
-| Unsplash              | City/country images      | [Unsplash Developers](https://unsplash.com/developers) |
-| GROQ (optional)       | AI features (if used)    | [GROQ Console](https://console.groq.com/keys) |
-| OpenRouteService (ORS)| Route calculation        | [ORS Signup](https://openrouteservice.org/dev/#/signup) |
-| WeatherAPI            | Weather data             | [WeatherAPI Signup](https://www.weatherapi.com/signup.aspx) |
+| Service               | Purpose                 | Get Key From                                | Storage Location |
+|-----------------------|--------------------------|----------------------------------------------|------------------|
+| Unsplash              | City/country images      | [Unsplash Developers](https://unsplash.com/developers) | Server |
+| GROQ (optional)       | AI features (if used)    | [GROQ Console](https://console.groq.com/keys) | Server |
+| OpenRouteService (ORS)| Route calculation        | [ORS Signup](https://openrouteservice.org/dev/#/signup) | Server |
+| WeatherAPI            | Weather data             | [WeatherAPI Signup](https://www.weatherapi.com/signup.aspx) | Server |
+
+> 🔒 **Security Note:** All API keys are stored securely on the server side to prevent client-side exposure.
 
 ---
 
@@ -52,7 +54,7 @@ You must register and obtain **API keys** from the following services:
 git clone https://github.com/tomern0305/trip-planner.git
 cd trip-planner
 ```
-## currently un avilable(the project is private) 
+## currently un avilable(the project is private)
 ---
 
 ## 🛠️ Server Setup (Backend)
@@ -78,6 +80,7 @@ JWT_SECRET=your_super_secret_key
 GROQ_API_KEY=your_groq_api_key
 ORS_API_KEY=your_ors_api_key
 WEATHER_API_KEY=your_weather_api_key
+UNSPLASH_ACCESS_KEY=your_unsplash_access_key
 ```
 
 ### Start the server:
@@ -102,12 +105,6 @@ npm install polyline
 npm install react-leaflet
 ```
 
-### Create `.env` in `/client` with the following:
-
-```env
-REACT_APP_UNSPLASH_ACCESS_KEY=your_unsplash_access_key
-```
-
 ### Start the client:
 
 ```bash
@@ -115,6 +112,8 @@ npm start
 ```
 
 Client runs at: [http://localhost:3000](http://localhost:3000)
+
+> 🔒 **Security Update:** The client no longer requires a `.env` file as all API keys are now securely stored on the server.
 
 ---
 
@@ -133,12 +132,21 @@ Client runs at: [http://localhost:3000](http://localhost:3000)
 - `GET /trip/:tripId` – Get trip by ID
 - `GET /test-auth` – Auth check (JWT)
 - `GET /decode-token` – Decode JWT (debug)
+- `GET /country-flag/:countryName` – Get country flag (proxy to Unsplash)
 
 > 🔐 All protected routes require the header:  
 > `Authorization: Bearer <your_token>`
 
 ---
 
+## 🔒 Security Features
+
+- **Server-side API Key Storage:** All API keys are stored securely on the server
+- **Proxy Endpoints:** Client requests are proxied through the server to protect API keys
+- **JWT Authentication:** Secure user authentication with JSON Web Tokens
+- **CORS Protection:** Cross-origin requests are properly configured
+
+---
 
 ## 📚 Useful Docs
 
