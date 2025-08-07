@@ -147,22 +147,33 @@ function App() {
             ) : (
               // Protected navigation for authenticated users
               <>
-                <div className="nav-links-left">
-                  <Link to="/trip-plan" className="nav-link">Trip Plan</Link>
-                  <Link to="/trip-history" className="nav-link">Trip History</Link>
-                </div>
-                <div className="user-section">
-                  {username && <span className="username">Welcome, {username}</span>}
-                  <button onClick={handleLogout} className="logout-button">Logout</button>
-                </div>
+                <Link to="/trip-plan" className="nav-link">Trip Plan</Link>
+                <Link to="/trip-history" className="nav-link">Trip History</Link>
               </>
             )}
-            
-            {/* Theme Toggle Button */}
-            <button onClick={toggleDarkMode} className="dark-mode-toggle">
-              {isDarkMode ? '☀️' : '🌙'}
-            </button>
           </div>
+
+          {/* Right side elements - User section and theme toggle */}
+          {isLoggedIn && (
+            <div className="nav-right">
+              <div className="user-section">
+                {username && <span className="username">Welcome, {username}</span>}
+                <button onClick={handleLogout} className="logout-button">Logout</button>
+              </div>
+              <button onClick={toggleDarkMode} className="dark-mode-toggle">
+                {isDarkMode ? '☀️' : '🌙'}
+              </button>
+            </div>
+          )}
+
+          {/* Theme toggle for non-logged in users */}
+          {!isLoggedIn && (
+            <div className="nav-right">
+              <button onClick={toggleDarkMode} className="dark-mode-toggle">
+                {isDarkMode ? '☀️' : '🌙'}
+              </button>
+            </div>
+          )}
         </nav>
 
         {/* Main Content Area */}
