@@ -5,82 +5,188 @@ const User = require('../models/User');
 
 const router = express.Router();
 
+/**
+ * User Registration Endpoint
+ * 
+ * POST /api/register
+ * 
+ * Creates a new user account with the provided credentials.
+ * The password is securely hashed before storage, and a JWT token
+ * is immediately issued for automatic login after registration.
+ * 
+ * Request Body:
+ * - name: User's full name (required)
+ * - email: User's email address (required, must be unique)
+ * - password: User's password (required, will be hashed)
+ * 
+ * Response:
+ * - 201: User created successfully with JWT token
+ * - 400: Email already exists or validation error
+ * - 500: Server error during registration
+ */
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
   
-  // Normalize email to lowercase to prevent duplicate accounts with different casing.
+  // Normalize email to lowercase to prevent duplicate accounts with different casing
   const normalizedEmail = email.toLowerCase();
   
   try {
     // Check if user already exists (case-insensitive)
     const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
-      return res.status(400).json({ message: 'Email already exists' });
+      return res.status(400).json({ 
+        message: 'Email already exists',
+        error: 'An account with this email address already exists'
+      });
     }
 
-    // Hash the password before saving it to the database for security.
+    // Hash the password using bcrypt with a salt rounds of 10
+    // This provides a good balance between security and performance
     const hashed = await bcrypt.hash(password, 10);
-    const user = new User({ name, email: normalizedEmail, password: hashed });
+    
+    // Create and save the new user
+    const user = new User({ 
+      name, 
+      email: normalizedEmail, 
+      password: hashed 
+    });
     await user.save();
 
-    // Use a fallback JWT secret for development if not set in environment variables.
-    // In production, a strong, unique secret must be set.
+    // Generate JWT token for immediate authentication
+    // Use environment variable for secret, with fallback for development
     const jwtSecret = process.env.JWT_SECRET || 'fallback-secret-key';
     
-    // Sign a new JWT token for the registered user.
-    // The token contains user identifiers and is set to expire in 2 hours.
+    // Create token with user information and 2-hour expiration
     const token = jwt.sign({ 
       id: user._id, 
       userId: user._id, 
       email: user.email 
     }, jwtSecret, { expiresIn: '2h' });
-    res.status(201).json({ token, name: user.name });
+    
+    // Return success response with token and user name
+    res.status(201).json({ 
+      token, 
+      name: user.name,
+      message: 'Account created successfully'
+    });
   } catch (err) {
-    res.status(500).json({ message: 'Registration failed' });
+    console.error('Registration error:', err);
+    res.status(500).json({ 
+      message: 'Registration failed',
+      error: 'Unable to create account. Please try again.'
+    });
   }
 });
 
+/**
+ * User Login Endpoint
+ * 
+ * POST /api/login
+ * 
+ * Authenticates a user with their email and password.
+ * If credentials are valid, a JWT token is issued for session management.
+ * 
+ * Request Body:
+ * - email: User's email address (required)
+ * - password: User's password (required)
+ * 
+ * Response:
+ * - 200: Login successful with JWT token
+ * - 401: Invalid credentials
+ * - 500: Server error during authentication
+ */
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   
-  // Normalize email to ensure consistent lookups.
+  // Normalize email to ensure consistent lookups
   const normalizedEmail = email.toLowerCase();
   
   try {
+    // Find user by email (case-insensitive)
     const user = await User.findOne({ email: normalizedEmail });
-    if (!user) return res.status(401).json({ message: 'Email not found' });
+    if (!user) {
+      return res.status(401).json({ 
+        message: 'Email not found',
+        error: 'No account found with this email address'
+      });
+    }
 
-    // Compare the provided password with the hashed password in the database.
+    // Compare the provided password with the hashed password in the database
     const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(401).json({ message: 'Invalid password' });
+    if (!match) {
+      return res.status(401).json({ 
+        message: 'Invalid password',
+        error: 'Incorrect password. Please try again.'
+      });
+    }
 
-    // Use a fallback JWT secret for development if not set in environment variables.
+    // Generate JWT token for authenticated session
     const jwtSecret = process.env.JWT_SECRET || 'fallback-secret-key';
     
-    // Sign a new JWT token for the logged-in user.
+    // Create token with user information and 2-hour expiration
     const token = jwt.sign({ 
       id: user._id, 
       userId: user._id, 
       email: user.email 
     }, jwtSecret, { expiresIn: '2h' });
-    res.json({ token, name: user.name });
-  } catch {
-    res.status(500).json({ message: 'Server error' });
+    
+    // Return success response with token and user name
+    res.json({ 
+      token, 
+      name: user.name,
+      message: 'Login successful'
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ 
+      message: 'Server error',
+      error: 'Authentication failed. Please try again.'
+    });
+  }
+});
+
+const authMiddleware = require('../middleware/auth');
+
+/**
+ * Get Current User Information
+ * 
+ * GET /api/me
+ * 
+ * Retrieves the current user's profile information based on the JWT token.
+ * This endpoint is protected and requires valid authentication.
+ * 
+ * Headers:
+ * - Authorization: Bearer <JWT_TOKEN> (required)
+ * 
+ * Response:
+ * - 200: User information retrieved successfully
+ * - 401: Unauthorized (invalid or missing token)
+ * - 404: User not found
+ * - 500: Server error
+ */
+router.get('/me', authMiddleware, async (req, res) => {
+  try {
+    // Find user by ID from the authenticated token
+    const user = await User.findById(req.userId).select('name email');
+    if (!user) {
+      return res.status(404).json({ 
+        error: 'User not found',
+        message: 'The authenticated user account no longer exists'
+      });
+    }
+    
+    res.json({
+      id: user._id,
+      name: user.name,
+      email: user.email
+    });
+  } catch (error) {
+    console.error('Get user error:', error);
+    res.status(500).json({ 
+      error: 'Server error',
+      message: 'Unable to retrieve user information'
+    });
   }
 });
 
 module.exports = router;
-
-const authMiddleware = require('../middleware/auth');
-
-// This route provides a way for the client to get the current user's details
-// based on the provided JWT token. It uses the authMiddleware to protect the route.
-router.get('/me', authMiddleware, async (req, res) => {
-  try {
-    const user = await User.findById(req.userId).select('name email');
-    if (!user) return res.status(404).json({ error: 'User not found' });
-    res.json(user);
-  } catch {
-    res.status(500).json({ error: 'Server error' });
-  }
-});

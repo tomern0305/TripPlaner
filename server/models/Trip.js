@@ -1,70 +1,136 @@
 const mongoose = require('mongoose');
 
-// Defines the schema for a 'Trip' document in the MongoDB database.
-// This model stores all the information related to a single trip plan.
+/**
+ * Trip Schema Definition
+ * 
+ * Defines the data structure for trip plans in the Trip Planner application.
+ * This schema stores comprehensive trip information including user association,
+ * geographical details, route planning data, and metadata for trip management.
+ * 
+ * Design Philosophy:
+ * - Denormalized user email for efficient querying without joins
+ * - Unique trip identifiers for secure access control
+ * - Flexible trip data structure to accommodate different trip types
+ * - Comprehensive metadata for trip organization and display
+ */
 const tripSchema = new mongoose.Schema({
-  // A reference to the User who created the trip.
+  // Reference to the User who created the trip
+  // This establishes the ownership relationship between users and their trips
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
+    index: true // Optimize queries by user
   },
-  // The email of the user, denormalized for easier querying of trip history.
+  
+  // Denormalized user email for efficient trip history queries
+  // This eliminates the need for joins when fetching user-specific trips
   userEmail: {
     type: String,
-    required: true
+    required: true,
+    index: true // Optimize queries by email
   },
-  // A custom, unique identifier for the trip.
+  
+  // Unique identifier for the trip, used in URLs and API endpoints
+  // Format: {userEmail}_{timestamp}_{randomString} for guaranteed uniqueness
   tripId: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    index: true // Optimize trip lookups
   },
-  // The country of the trip.
+  
+  // Country where the trip takes place
   country: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
-  // The city of the trip.
+  
+  // City where the trip starts and ends
   city: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
 
-  // The type of trip, restricted to either 'bike' or 'trek'.
+  // Type of trip activity - restricts to supported trip types
   tripType: {
     type: String,
-    enum: ['bike', 'trek'],
+    enum: ['bike', 'trek'], // Only these trip types are supported
     required: true
   },
-  // The date of the trip.
+  
+  // Planned date for the trip
   tripDate: {
     type: String,
     required: true
   },
-  // The URL of the country's flag image.
+  
+  // URL of the country's flag image for visual display
   countryFlag: {
     type: String
   },
-  // The detailed trip plan data, including daily itineraries.
-  // This is a nested object containing arrays of daily plans.
+  
+  /**
+   * Detailed trip plan data containing the complete itinerary
+   * This nested structure stores daily routes with coordinates, distances, and timing
+   * 
+   * Structure:
+   * - days: Array of daily itineraries
+   *   - day: Day number (1, 2, etc.)
+   *   - cities: Array of waypoints with names and coordinates
+   *   - distances: Array of distances between consecutive points
+   *   - totalDistance: Total distance for the day
+   *   - estimatedTime: Estimated duration for the day
+   */
   tripData: {
     days: [{
-      day: Number,
+      day: {
+        type: Number,
+        required: true
+      },
       cities: [{
-        name: String,
-        coordinates: [Number, Number]
+        name: {
+          type: String,
+          required: true
+        },
+        coordinates: {
+          type: [Number], // [latitude, longitude]
+          required: true,
+          validate: {
+            validator: function(coords) {
+              return coords.length === 2 && 
+                     coords[0] >= -90 && coords[0] <= 90 && // Latitude bounds
+                     coords[1] >= -180 && coords[1] <= 180; // Longitude bounds
+            },
+            message: 'Coordinates must be valid [latitude, longitude] pairs'
+          }
+        }
       }],
-      distances: [String],
-      totalDistance: String,
-      estimatedTime: String
+      distances: [String], // Array of distance strings (e.g., "5.2 km")
+      totalDistance: String, // Total daily distance
+      estimatedTime: String // Estimated daily duration
     }]
   },
-  // A timestamp for when the trip document was created.
+  
+  // Timestamp for when the trip was created
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
+    index: true // Optimize chronological queries
   }
+}, {
+  // Add timestamps for creation and updates
+  timestamps: true
 });
+
+/**
+ * Compound Index for Efficient Trip Queries
+ * 
+ * This index optimizes the most common query pattern: finding trips by user email
+ * and sorting by creation date (most recent first).
+ */
+tripSchema.index({ userEmail: 1, createdAt: -1 });
 
 module.exports = mongoose.model('Trip', tripSchema); 

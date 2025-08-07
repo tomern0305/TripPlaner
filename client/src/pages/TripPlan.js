@@ -5,9 +5,36 @@ import L from 'leaflet';
 import axios from 'axios';
 import polyline from 'polyline';
 
-// --- Leaflet Icon Fix ---
-// A common issue with React-Leaflet and Webpack is the misconfiguration of default marker icon paths.
-// This block of code manually resets the icon URLs to a CDN source, ensuring markers display correctly.
+/**
+ * Trip Planning Component
+ * 
+ * Comprehensive trip planning interface that combines AI-powered route generation
+ * with interactive map visualization and weather forecasting.
+ * 
+ * Features:
+ * - Interactive form for trip preferences
+ * - AI-powered route generation using LLM services
+ * - Real-time map visualization with Leaflet
+ * - Route validation using OpenRouteService
+ * - Weather forecasting integration
+ * - Trip saving and persistence
+ * - Country flag display for visual appeal
+ * 
+ * Technical Architecture:
+ * - React hooks for state management
+ * - Leaflet for map rendering and interaction
+ * - Axios for API communication
+ * - Polyline decoding for route visualization
+ * - Form validation and error handling
+ */
+
+/**
+ * Leaflet Icon Configuration
+ * 
+ * Fixes common React-Leaflet icon path issues by explicitly setting
+ * icon URLs to CDN sources. This ensures markers display correctly
+ * across different build environments.
+ */
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -15,10 +42,17 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-// --- Map Utility Component ---
-// This component is a workaround to programmatically change the map's center and zoom level.
-// The `useMap` hook can only be used by children of `<MapContainer>`, so we create this small component
-// to listen for changes to the `center` prop and call `map.setView` accordingly.
+/**
+ * Map View Controller Component
+ * 
+ * Utility component that programmatically controls map center and zoom level.
+ * This is necessary because the useMap hook can only be used by children
+ * of MapContainer components.
+ * 
+ * @param {Object} props - Component props
+ * @param {Array} props.center - [latitude, longitude] coordinates for map center
+ * @returns {null} This component doesn't render anything visible
+ */
 function ChangeMapView({ center }) {
   const map = useMap();
   useEffect(() => {
@@ -27,47 +61,78 @@ function ChangeMapView({ center }) {
   return null;
 }
 
+/**
+ * Main Trip Planning Component
+ * 
+ * Provides a comprehensive interface for creating and visualizing trip plans.
+ * Manages complex state for form inputs, map visualization, trip data,
+ * and weather information.
+ */
 function TripPlan() {
   // --- State Management ---
-  // Form input state
+  
+  /**
+   * Form Input State
+   * Manages user input for trip planning preferences
+   */
   const [country, setCountry] = useState('');
   const [city, setCity] = useState('');
   const [tripType, setTripType] = useState('');
   const [tripDate, setTripDate] = useState('');
 
-  // Map-related state
+  /**
+   * Map Visualization State
+   * Controls map display, markers, and route polylines
+   */
   const [mapCenter, setMapCenter] = useState([31.7683, 35.2137]); // Default to Jerusalem
   const [markers, setMarkers] = useState([]);
   const [polylines, setPolylines] = useState([]);
   
-  // Trip data and status state
+  /**
+   * Trip Data State
+   * Manages generated trip information and processing status
+   */
   const [tripData, setTripData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [countryFlag, setCountryFlag] = useState(null);
 
-  // Saving trip state
+  /**
+   * Trip Persistence State
+   * Controls saving functionality and user feedback
+   */
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
   const [saveSuccess, setSaveSuccess] = useState('');
   const [tripSaved, setTripSaved] = useState(false);
   
-  // We store submitted form values separately to prevent the UI from updating
-  // with new form inputs before a new trip is generated. This ensures the displayed
-  // trip details and weather match the generated plan.
+  /**
+   * Submitted Form State
+   * Stores the form values that were used to generate the current trip.
+   * This prevents UI updates from new form inputs before trip regeneration,
+   * ensuring displayed trip details and weather match the generated plan.
+   */
   const [submittedCountry, setSubmittedCountry] = useState('');
   const [submittedCity, setSubmittedCity] = useState('');
   const [submittedTripType, setSubmittedTripType] = useState('');
   const [submittedTripDate, setSubmittedTripDate] = useState('');
 
-  // Weather forecast state
+  /**
+   * Weather Information State
+   * Manages weather forecast data and loading states
+   */
   const [weatherData, setWeatherData] = useState(null);
   const [weatherLoading, setWeatherLoading] = useState(false);
   const [weatherError, setWeatherError] = useState('');
 
-  // --- API and Side Effects ---
+  // --- Side Effects ---
 
-  // Fetches the weather forecast automatically once a trip plan is successfully generated.
+  /**
+   * Weather Fetching Effect
+   * 
+   * Automatically fetches weather forecast when a trip plan is successfully generated.
+   * This ensures weather information is always available for the displayed trip.
+   */
   useEffect(() => {
     if (submittedCity && submittedCountry && submittedTripDate && tripData) {
       fetchWeatherForecast();
@@ -75,7 +140,15 @@ function TripPlan() {
     // eslint-disable-next-line
   }, [submittedCity, submittedCountry, submittedTripDate, tripData]);
 
-  // Fetches a country flag image from the Unsplash API for visual flair.
+  /**
+   * Fetch Country Flag
+   * 
+   * Retrieves a country flag image from the Unsplash API for visual enhancement.
+   * This adds visual appeal to trip displays by showing relevant country flags.
+   * 
+   * @param {string} countryName - Name of the country to fetch flag for
+   * @returns {string|null} URL of the flag image or null if not found
+   */
   const fetchCountryFlag = async (countryName) => {
     try {
       const response = await axios.get(
@@ -97,50 +170,65 @@ function TripPlan() {
     }
   };
 
-  // Validates the user-entered country name against the Nominatim geocoding service.
-  // This helps ensure the country is real and retrieves its country code for more specific city searches.
+  /**
+   * Validate Country Name
+   * 
+   * Validates user-entered country names using the Nominatim geocoding service.
+   * This ensures that only valid, recognized countries are used for trip planning
+   * and retrieves the country code for more specific city searches.
+   * 
+   * @param {string} countryName - The country name to validate
+   * @returns {Object} Validation result with country information
+   */
   const validateCountry = async (countryName) => {
-  try {
-    const response = await axios.get(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-        countryName
-      )}&limit=1&addressdetails=1`
-    );
+    try {
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          countryName
+        )}&limit=1&addressdetails=1`
+      );
 
-    console.log("COUNTRY RESPONSE:", response.data);
+      console.log("COUNTRY RESPONSE:", response.data);
 
-    if (
-      response.data.length > 0
-    ) {
-      const location = response.data[0];
-      const code = location.address?.country_code?.toUpperCase();
-      const name = location.address?.country;
+      if (response.data.length > 0) {
+        const location = response.data[0];
+        const code = location.address?.country_code?.toUpperCase();
+        const name = location.address?.country;
 
-      if (code && name) {
+        if (code && name) {
+          return {
+            isValid: true,
+            displayName: location.display_name,
+            countryCode: code,
+          };
+        }
+
+        // Fallback for cases where address details are incomplete
         return {
           isValid: true,
           displayName: location.display_name,
-          countryCode: code,
+          countryCode: 'IL', // Default fallback, should be enhanced with name-based detection
         };
       }
 
-      // fallback אם אין address – עדיין מחזירים את התוצאה
-      return {
-        isValid: true,
-        displayName: location.display_name,
-        countryCode: 'IL', // ברירת מחדל זמנית, שימי כאן בדיקה לפי השם אם צריך
-      };
+      return { isValid: false };
+    } catch (error) {
+      console.error('Error validating country:', error);
+      return { isValid: false };
     }
+  };
 
-    return { isValid: false };
-  } catch (error) {
-    console.error('Error validating country:', error);
-    return { isValid: false };
-  }
-};
-
-  // Validates the user-entered city name, constrained by the previously validated country code.
-  // This improves accuracy by preventing, for example, "Paris, Texas" from being found when "France" was entered.
+  /**
+   * Validate City Name
+   * 
+   * Validates user-entered city names within a specific country using the Nominatim geocoding service.
+   * This improves accuracy by constraining searches to the previously validated country,
+   * preventing false matches (e.g., "Paris, Texas" when "France" was entered).
+   * 
+   * @param {string} cityName - The city name to validate
+   * @param {string} countryCode - The country code for context
+   * @returns {Object} Validation result with city information and coordinates
+   */
   const validateCity = async (cityName, countryCode) => {
     if (!countryCode) return { isValid: false };
     try {
@@ -173,9 +261,21 @@ function TripPlan() {
 
   // --- Map and Routing Logic ---
 
-  // This function acts as a proxy to our backend's OpenRouteService endpoint.
-  // It fetches the geographical coordinates for a route between two points, which are then used to draw polylines on the map.
-  // Using a backend proxy keeps the ORS API key secure.
+  /**
+   * Fetch ORS Route
+   * 
+   * Retrieves route data from OpenRouteService through our backend proxy.
+   * This function fetches geographical coordinates for routes between two points,
+   * which are then used to draw polylines on the map for route visualization.
+   * 
+   * Using a backend proxy keeps the ORS API key secure and prevents exposure
+   * to the client-side application.
+   * 
+   * @param {Array} start - Starting coordinates [latitude, longitude]
+   * @param {Array} end - Ending coordinates [latitude, longitude]
+   * @param {string} profile - Routing profile ('foot-walking', 'cycling-regular', etc.)
+   * @returns {Array} Array of coordinate pairs for route visualization
+   */
   async function fetchORSRoute(start, end, profile = 'foot-walking') {
     const url = `http://localhost:5000/api/trip/ors-route`;
     try {

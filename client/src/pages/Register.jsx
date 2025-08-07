@@ -3,17 +3,54 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../App.css';
 
+/**
+ * Register Component
+ * 
+ * Provides user registration functionality with form validation and error handling.
+ * This component creates new user accounts and automatically logs users in
+ * upon successful registration.
+ * 
+ * Features:
+ * - Form validation and error display
+ * - Password visibility toggle
+ * - Automatic redirection for already authenticated users
+ * - User-friendly error messages
+ * - Responsive design with accessibility features
+ * - Automatic login after successful registration
+ * 
+ * @param {Object} props - Component props
+ * @param {Function} props.onLogin - Callback function called after successful registration/login
+ */
 export default function Register({ onLogin }) {
-  // State for form inputs, password visibility, and error messages.
+  // --- State Management ---
+  
+  /**
+   * Form Input State
+   * Manages the current values of name, email, and password fields
+   */
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
+  /**
+   * UI State
+   * Controls password visibility and error message display
+   */
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  
+  // Navigation hook for programmatic routing
   const navigate = useNavigate();
 
-  // This effect checks if a user is already logged in by looking for a token.
-  // If a token exists, it redirects the user to the dashboard to prevent them from seeing the register page again.
+  // --- Side Effects ---
+
+  /**
+   * Authentication Check Effect
+   * 
+   * Checks if a user is already authenticated on component mount.
+   * If a valid token exists, redirects to dashboard to prevent
+   * authenticated users from accessing the registration page.
+   */
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -21,23 +58,38 @@ export default function Register({ onLogin }) {
     }
   }, [navigate]);
 
-  // Handles the form submission to the register API endpoint.
+  // --- Event Handlers ---
+
+  /**
+   * Form Submission Handler
+   * 
+   * Processes the registration form submission by sending user data to the server.
+   * Handles successful registration, automatic login, and error responses.
+   * 
+   * @param {Event} e - Form submission event
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(''); // Clear any previous errors
+    
     try {
-      const response = await axios.post('http://localhost:5000/api/register', { name, email, password });
+      // Send registration request to server
+      const response = await axios.post('http://localhost:5000/api/register', { 
+        name, 
+        email, 
+        password 
+      });
       
-      // Upon successful registration, the user is automatically logged in.
-      // The token and username are stored in localStorage.
+      // Upon successful registration, user is automatically logged in
+      // Store authentication data in localStorage
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('username', response.data.name);
       
-      // Call the `onLogin` prop to update the parent component's state (in App.js).
+      // Update parent component state and navigate to dashboard
       if (onLogin) onLogin(response.data.name);
       navigate('/dashboard');
     } catch (err) {
-      // Provides user-friendly error messages based on the API response.
+      // Handle different types of registration errors
       const errorMessage = err.response?.data?.message;
       if (errorMessage === 'Email already exists') {
         setError('This email is already registered. Please use a different email or try logging in.');
@@ -47,15 +99,23 @@ export default function Register({ onLogin }) {
     }
   };
 
-  // Toggles the visibility of the password field.
+  /**
+   * Password Visibility Toggle
+   * 
+   * Switches between showing and hiding the password field
+   * to improve user experience and security awareness.
+   */
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  // --- JSX Rendering ---
   return (
     <div className="auth-container">
       <form onSubmit={handleSubmit} className="auth-form">
         <h1 className="page-title">Register</h1>
+        
+        {/* Name Input Field */}
         <div className="form-group">
           <input 
             type="text" 
@@ -64,8 +124,11 @@ export default function Register({ onLogin }) {
             onChange={(e) => setName(e.target.value)} 
             className="input" 
             required 
+            aria-label="Full name"
           />
         </div>
+        
+        {/* Email Input Field */}
         <div className="form-group">
           <input 
             type="email" 
@@ -74,8 +137,11 @@ export default function Register({ onLogin }) {
             onChange={(e) => setEmail(e.target.value)} 
             className="input" 
             required 
+            aria-label="Email address"
           />
         </div>
+        
+        {/* Password Input Field with Visibility Toggle */}
         <div className="form-group password-group">
           <input 
             type={showPassword ? "text" : "password"}
@@ -84,20 +150,29 @@ export default function Register({ onLogin }) {
             onChange={(e) => setPassword(e.target.value)} 
             className="input password-input" 
             required 
+            aria-label="Password"
           />
-          {/* A button to toggle password visibility appears when the user starts typing. */}
+          
+          {/* Password Visibility Toggle Button */}
           {password && (
             <button
               type="button"
               className="password-toggle"
               onClick={togglePasswordVisibility}
+              aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? '👁️' : '👁️‍🗨️'}
             </button>
           )}
         </div>
-        {error && <div className="error-message">{error}</div>}
-        <button type="submit" className="button">Register</button>
+        
+        {/* Error Message Display */}
+        {error && <div className="error-message" role="alert">{error}</div>}
+        
+        {/* Submit Button */}
+        <button type="submit" className="button">
+          Register
+        </button>
       </form>
     </div>
   );

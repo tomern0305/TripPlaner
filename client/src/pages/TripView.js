@@ -6,9 +6,34 @@ import L from 'leaflet';
 import axios from 'axios';
 import polyline from 'polyline';
 
-// --- Leaflet Icon Fix ---
-// A common issue with React-Leaflet and Webpack is the misconfiguration of default marker icon paths.
-// This block of code manually resets the icon URLs to a CDN source, ensuring markers display correctly.
+/**
+ * Trip View Component
+ * 
+ * Displays detailed information about a previously saved trip, including
+ * interactive map visualization, route details, and weather information.
+ * 
+ * Features:
+ * - Complete trip information display
+ * - Interactive map with route visualization
+ * - Weather forecast for trip location and date
+ * - Responsive design with loading states
+ * - Error handling and user feedback
+ * 
+ * Technical Architecture:
+ * - React hooks for state management
+ * - Leaflet for map rendering and interaction
+ * - Axios for API communication
+ * - Polyline decoding for route visualization
+ * - URL parameter extraction for trip identification
+ */
+
+/**
+ * Leaflet Icon Configuration
+ * 
+ * Fixes common React-Leaflet icon path issues by explicitly setting
+ * icon URLs to CDN sources. This ensures markers display correctly
+ * across different build environments.
+ */
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -16,10 +41,17 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-// --- Map Utility Component ---
-// This component is a workaround to programmatically change the map's center and zoom level.
-// The `useMap` hook can only be used by children of `<MapContainer>`, so we create this small component
-// to listen for changes to the `center` prop and call `map.setView` accordingly.
+/**
+ * Map View Controller Component
+ * 
+ * Utility component that programmatically controls map center and zoom level.
+ * This is necessary because the useMap hook can only be used by children
+ * of MapContainer components.
+ * 
+ * @param {Object} props - Component props
+ * @param {Array} props.center - [latitude, longitude] coordinates for map center
+ * @returns {null} This component doesn't render anything visible
+ */
 function ChangeMapView({ center }) {
   const map = useMap();
   useEffect(() => {
@@ -29,9 +61,21 @@ function ChangeMapView({ center }) {
 }
 
 
-// This function acts as a proxy to our backend's OpenRouteService endpoint.
-// It fetches the geographical coordinates for a route between two points, which are then used to draw polylines on the map.
-// Using a backend proxy keeps the ORS API key secure.
+/**
+ * Fetch ORS Route
+ * 
+ * Retrieves route data from OpenRouteService through our backend proxy.
+ * This function fetches geographical coordinates for routes between two points,
+ * which are then used to draw polylines on the map for route visualization.
+ * 
+ * Using a backend proxy keeps the ORS API key secure and prevents exposure
+ * to the client-side application.
+ * 
+ * @param {Array} start - Starting coordinates [latitude, longitude]
+ * @param {Array} end - Ending coordinates [latitude, longitude]
+ * @param {string} profile - Routing profile ('foot-walking', 'cycling-regular', etc.)
+ * @returns {Array} Array of coordinate pairs for route visualization
+ */
 async function fetchORSRoute(start, end, profile = 'foot-walking') {
   const url = `http://localhost:5000/api/trip/ors-route`;
   try {
@@ -67,33 +111,63 @@ async function fetchORSRoute(start, end, profile = 'foot-walking') {
   }
 }
 
-// --- TripView Component ---
-// This component is responsible for fetching and displaying the details of a single, previously saved trip.
-// It retrieves the trip ID from the URL parameters.
+/**
+ * Main Trip View Component
+ * 
+ * Displays comprehensive information about a previously saved trip,
+ * including interactive map visualization, route details, and weather data.
+ * 
+ * @returns {JSX.Element} The trip view interface
+ */
 export default function TripView() {
   const { tripId } = useParams();
   const navigate = useNavigate();
   
-  // State for storing trip data, loading/error status, and map elements.
+  // --- State Management ---
+  
+  /**
+   * Trip Data State
+   * Manages the trip information and loading status
+   */
   const [trip, setTrip] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  
+  /**
+   * Map Visualization State
+   * Controls map display, markers, and route polylines
+   */
   const [mapCenter, setMapCenter] = useState([31.7683, 35.2137]); // Default center
   const [markers, setMarkers] = useState([]);
   const [polylines, setPolylines] = useState([]);
 
-  // State for weather information.
+  /**
+   * Weather Information State
+   * Manages weather forecast data and loading states
+   */
   const [weatherData, setWeatherData] = useState(null);
   const [weatherLoading, setWeatherLoading] = useState(false);
   const [weatherError, setWeatherError] = useState('');
 
-  // The main effect hook that triggers fetching the trip data when the component mounts or the tripId changes.
+  // --- Side Effects ---
+
+  /**
+   * Trip Data Fetching Effect
+   * 
+   * Loads trip data when the component mounts or when the tripId changes.
+   * This ensures the component always displays the correct trip information.
+   */
   useEffect(() => {
     fetchTrip();
     // eslint-disable-next-line
   }, [tripId]);
 
-  // Fetches the weather forecast automatically once the trip data has been successfully loaded.
+  /**
+   * Weather Fetching Effect
+   * 
+   * Automatically fetches weather forecast when trip data is successfully loaded.
+   * This ensures weather information is available for the displayed trip.
+   */
   useEffect(() => {
     if (trip && trip.city && trip.country && trip.tripDate) {
       fetchWeatherForecast();

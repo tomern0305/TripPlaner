@@ -3,14 +3,53 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../App.css';
 
+/**
+ * Dashboard Component
+ * 
+ * Main landing page for authenticated users, providing an overview of their
+ * trip planning activity and quick access to key features.
+ * 
+ * Features:
+ * - User profile information display
+ * - Recent trip overview with quick access
+ * - Action buttons for common tasks
+ * - Responsive design with loading states
+ * - Error handling and user feedback
+ * 
+ * Data Management:
+ * - Fetches user profile and trip history concurrently
+ * - Displays most recent trip for quick access
+ * - Handles authentication errors gracefully
+ */
 export default function Dashboard() {
-  // State for user data, their most recent trip, loading status, and errors.
+  // --- State Management ---
+  
+  /**
+   * Data State
+   * Manages user information and trip data
+   */
   const [user, setUser] = useState(null);
   const [lastTrip, setLastTrip] = useState(null);
+  
+  /**
+   * UI State
+   * Controls loading indicators and error messages
+   */
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  
+  // Navigation hook for programmatic routing
   const navigate = useNavigate();
 
+  // --- Side Effects ---
+
+  /**
+   * Data Fetching Effect
+   * 
+   * Loads user profile and trip history data on component mount.
+   * Uses Promise.all for concurrent API calls to improve performance.
+   * Handles authentication errors and provides user feedback.
+   */
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -18,8 +57,7 @@ export default function Dashboard() {
       return;
     }
 
-    // Fetch user data and trip history concurrently for a faster loading experience.
-    // Promise.all is used to wait for both API calls to complete.
+    // Fetch user data and trip history concurrently for better performance
     Promise.all([
       axios.get('http://localhost:5000/api/me', {
         headers: { Authorization: `Bearer ${token}` }
@@ -30,14 +68,16 @@ export default function Dashboard() {
     ])
     .then(([userRes, tripRes]) => {
       setUser(userRes.data);
-      // If the user has a trip history, set the most recent one for display.
+      
+      // Set the most recent trip for display if available
       if (tripRes.data.success && tripRes.data.trips.length > 0) {
         setLastTrip(tripRes.data.trips[0]); // Get the most recent trip
       }
     })
     .catch((err) => {
       console.error('Error fetching dashboard data:', err);
-      // If the token is invalid or expired (401), log the user out.
+      
+      // Handle authentication errors by logging out the user
       if (err.response?.status === 401) {
         localStorage.removeItem('token');
         navigate('/login');
@@ -50,12 +90,29 @@ export default function Dashboard() {
     });
   }, [navigate]);
 
+  // --- Event Handlers ---
+
+  /**
+   * Logout Handler
+   * 
+   * Clears authentication data and redirects to login page.
+   * Used as a fallback when authentication fails.
+   */
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
   };
 
-  // A simple utility function to format date strings for display.
+  // --- Utility Functions ---
+
+  /**
+   * Date Formatting Utility
+   * 
+   * Converts date strings to a user-friendly format for display.
+   * 
+   * @param {string} dateString - ISO date string to format
+   * @returns {string} Formatted date string
+   */
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -65,7 +122,9 @@ export default function Dashboard() {
     });
   };
 
-  // Display a loading message while data is being fetched.
+  // --- Loading and Error States ---
+
+  // Display loading indicator while data is being fetched
   if (loading) {
     return (
       <div className="container">
@@ -74,7 +133,7 @@ export default function Dashboard() {
     );
   }
 
-  // Display an error message if data fetching fails.
+  // Display error message if data fetching fails
   if (error) {
     return (
       <div className="container">
@@ -83,6 +142,7 @@ export default function Dashboard() {
     );
   }
 
+  // --- JSX Rendering ---
   return (
     <div className="container">
       <div className="dashboard-content">
@@ -112,11 +172,12 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* This section conditionally renders based on whether the user has a previous trip. */}
+        {/* Recent Trip Section */}
         {lastTrip ? (
           <div className="last-trip-section">
             <h2 className="section-title">Your Last Trip</h2>
-            {/* The 'featured-trip' card highlights the most recent trip. */}
+            
+            {/* Featured Trip Card */}
             <div className="trip-card featured-trip">
               <div className="flag-title-group">
                 {lastTrip.countryFlag && (
@@ -128,11 +189,13 @@ export default function Dashboard() {
                 )}
                 <h3>{lastTrip.city}, {lastTrip.country}</h3>
               </div>
+              
               <div className="trip-details">
                 <p><strong>Type:</strong> {lastTrip.tripType}</p>
                 <p><strong>Date:</strong> {lastTrip.tripDate}</p>
                 <p><strong>Created:</strong> {formatDate(lastTrip.createdAt)}</p>
               </div>
+              
               <div className="trip-actions">
                 <button 
                   className="button"
@@ -150,7 +213,7 @@ export default function Dashboard() {
             </div>
           </div>
         ) : (
-          // If there are no trips, a call-to-action is displayed instead.
+          // Empty State for New Users
           <div className="no-trips-section">
             <h2 className="section-title">Start Your Journey</h2>
             <div className="no-trips-card">
