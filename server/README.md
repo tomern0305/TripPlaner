@@ -11,6 +11,8 @@ This is the **backend server** for the Trip Planner application. It provides a s
 - 🗃️ MongoDB storage via Mongoose
 - 🔑 Secure password hashing (bcrypt)
 - 🌐 CORS support for frontend communication
+- 🖼️ Secure API key management for external services
+- 🔒 Proxy endpoints to protect API keys from client exposure
 
 ---
 
@@ -51,6 +53,7 @@ JWT_SECRET=your_super_secret_key
 GROQ_API_KEY=your_groq_api_key_here
 ORS_API_KEY=your_openrouteservice_api_key_here
 WEATHER_API_KEY=your_weather_api_key_here
+UNSPLASH_ACCESS_KEY=your_unsplash_access_key_here
 ```
 
 ### 🔗 API Key Signup Links
@@ -58,6 +61,7 @@ WEATHER_API_KEY=your_weather_api_key_here
 - 🧠 [GROQ API](https://console.groq.com/keys)
 - 🗺️ [OpenRouteService (ORS)](https://openrouteservice.org/dev/#/signup)
 - 🌤️ [WeatherAPI](https://www.weatherapi.com/signup.aspx)
+- 🖼️ [Unsplash API](https://unsplash.com/developers)
 - 🛢️ [MongoDB Atlas (optional cloud DB)](https://www.mongodb.com/cloud/atlas/register)
 
 > 💡 **Never commit your `.env` file.** It contains sensitive credentials.
@@ -98,8 +102,26 @@ By default, the server runs at:
 | GET    | `/api/trip/test-auth`           | Test authentication (JWT)                   |
 | GET    | `/api/trip/decode-token`        | Decode & inspect the JWT token              |
 
+### 🖼️ Media & External Services
+
+| Method | Endpoint                         | Description                                 |
+|--------|----------------------------------|---------------------------------------------|
+| GET    | `/api/trip/country-flag/:countryName` | Get country flag image (proxy to Unsplash) |
+| POST   | `/api/trip/ors-route`           | Get route data (proxy to OpenRouteService) |
+| POST   | `/api/trip/weather`             | Get weather forecast (proxy to WeatherAPI) |
+
 > 🛡️ All protected routes require the header:  
 > `Authorization: Bearer <your_token_here>`
+
+---
+
+## 🔒 Security Features
+
+- **Server-side API Key Storage:** All external API keys are stored securely on the server
+- **Proxy Endpoints:** Client requests are proxied through the server to protect API keys
+- **JWT Authentication:** Secure user authentication with JSON Web Tokens
+- **CORS Protection:** Cross-origin requests are properly configured
+- **Input Validation:** All user inputs are validated before processing
 
 ---
 
@@ -130,3 +152,4 @@ By default, the server runs at:
   tripData: Object,     // route, days, distances, etc.
   createdAt: Date
 }
+```
