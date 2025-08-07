@@ -79,16 +79,11 @@ function TripPlan() {
   const fetchCountryFlag = async (countryName) => {
     try {
       const response = await axios.get(
-        `https://api.unsplash.com/search/photos?query=${encodeURIComponent(countryName + ' flag')}&per_page=1`,
-        {
-          headers: {
-            'Authorization': `Client-ID ${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}`
-          }
-        }
+        `http://localhost:5000/api/trip/country-flag/${encodeURIComponent(countryName)}`
       );
       
-      if (response.data.results && response.data.results.length > 0) {
-        return response.data.results[0].urls.small;
+      if (response.data.success && response.data.flagUrl) {
+        return response.data.flagUrl;
       }
       return null;
     } catch (error) {

@@ -574,4 +574,43 @@ router.post('/ors-route', async (req, res) => {
   }
 });
 
+// Proxy endpoint for fetching country flags from Unsplash
+// This keeps the Unsplash API key secure on the server side
+router.get('/country-flag/:countryName', async (req, res) => {
+  try {
+    const { countryName } = req.params;
+    
+    if (!countryName) {
+      return res.status(400).json({ error: 'Country name is required' });
+    }
+
+    const response = await axios.get(
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(countryName + ' flag')}&per_page=1`,
+      {
+        headers: {
+          'Authorization': `Client-ID ${process.env.UNSPLASH_ACCESS_KEY}`
+        }
+      }
+    );
+    
+    if (response.data.results && response.data.results.length > 0) {
+      res.json({
+        success: true,
+        flagUrl: response.data.results[0].urls.small
+      });
+    } else {
+      res.json({
+        success: false,
+        message: 'No flag image found for this country'
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching country flag:', error);
+    res.status(500).json({ 
+      error: 'Failed to fetch country flag',
+      details: error.response?.data || error.message
+    });
+  }
+});
+
 module.exports = router; 
