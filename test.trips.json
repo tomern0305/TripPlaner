@@ -1,0 +1,1077 @@
+[{
+  "_id": {
+    "$oid": "689a0fcc1a48b24a6858811d"
+  },
+  "userId": {
+    "$oid": "685181fe20acf99360c24b0e"
+  },
+  "userEmail": "almogtest@gmail.com",
+  "tripId": "almogtest@gmail.com_1754927052501_61lxt5ong",
+  "tripName": "Trip to tel-aviv! very fun!",
+  "tripDescription": "This is an amazing trip :)",
+  "country": "israel",
+  "city": "tel aviv",
+  "tripType": "trek",
+  "tripDate": "2025-08-13",
+  "countryFlag": "https://images.unsplash.com/photo-1621874098652-168c080d322f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxpc3JhZWwlMjBmbGFnfGVufDB8fHx8MTc1NDkyNzA1MXww&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Tel Aviv",
+            "coordinates": [
+              32.0719,
+              34.7833
+            ],
+            "_id": {
+              "$oid": "689a0fcc1a48b24a6858811f"
+            }
+          },
+          {
+            "name": "HaYarkon Park",
+            "coordinates": [
+              32.0953,
+              34.8067
+            ],
+            "_id": {
+              "$oid": "689a0fcc1a48b24a68588120"
+            }
+          },
+          {
+            "name": "Eitan Aviation Memorial",
+            "coordinates": [
+              32.1134,
+              34.7949
+            ],
+            "_id": {
+              "$oid": "689a0fcc1a48b24a68588121"
+            }
+          },
+          {
+            "name": "The Yitzhak Rabin Center",
+            "coordinates": [
+              32.0864,
+              34.7944
+            ],
+            "_id": {
+              "$oid": "689a0fcc1a48b24a68588122"
+            }
+          },
+          {
+            "name": "Tel Aviv Museum of Art",
+            "coordinates": [
+              32.0747,
+              34.7863
+            ],
+            "_id": {
+              "$oid": "689a0fcc1a48b24a68588123"
+            }
+          },
+          {
+            "name": "Tel Aviv",
+            "coordinates": [
+              32.0719,
+              34.7833
+            ],
+            "_id": {
+              "$oid": "689a0fcc1a48b24a68588124"
+            }
+          }
+        ],
+        "distances": [
+          "4.25 km",
+          "3.37 km",
+          "3.78 km",
+          "2.17 km",
+          "0.45 km"
+        ],
+        "totalDistance": "14.02 km",
+        "estimatedTime": "2.80 hours",
+        "_id": {
+          "$oid": "689a0fcc1a48b24a6858811e"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-08-11T15:44:12.509Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-11T15:44:12.509Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "689a1754af5edc4c891ef027"
+  },
+  "userId": {
+    "$oid": "689a1056a03aa19b4326a985"
+  },
+  "userEmail": "tomer@gmail.com",
+  "tripId": "tomer@gmail.com_1754928980043_xnztm4tm9",
+  "tripName": "Trip to the capital",
+  "tripDescription": "fun fun fun!",
+  "country": "israel",
+  "city": "jerusalem",
+  "tripType": "trek",
+  "tripDate": "2025-08-12",
+  "countryFlag": "https://images.unsplash.com/photo-1621874098652-168c080d322f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxpc3JhZWwlMjBmbGFnfGVufDB8fHx8MTc1NDkyNzA1MXww&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Jerusalem",
+            "coordinates": [
+              31.7833,
+              35.2167
+            ],
+            "_id": {
+              "$oid": "689a1754af5edc4c891ef029"
+            }
+          },
+          {
+            "name": "Givat HaMivtar",
+            "coordinates": [
+              31.7943,
+              35.2286
+            ],
+            "_id": {
+              "$oid": "689a1754af5edc4c891ef02a"
+            }
+          },
+          {
+            "name": "French Hill",
+            "coordinates": [
+              31.8028,
+              35.2381
+            ],
+            "_id": {
+              "$oid": "689a1754af5edc4c891ef02b"
+            }
+          },
+          {
+            "name": "Hebrew University",
+            "coordinates": [
+              31.7944,
+              35.2464
+            ],
+            "_id": {
+              "$oid": "689a1754af5edc4c891ef02c"
+            }
+          },
+          {
+            "name": "Mount Scopus",
+            "coordinates": [
+              31.7944,
+              35.2547
+            ],
+            "_id": {
+              "$oid": "689a1754af5edc4c891ef02d"
+            }
+          },
+          {
+            "name": "Jerusalem",
+            "coordinates": [
+              31.7833,
+              35.2167
+            ],
+            "_id": {
+              "$oid": "689a1754af5edc4c891ef02e"
+            }
+          }
+        ],
+        "distances": [
+          "2.19 km",
+          "1.65 km",
+          "1.71 km",
+          "0.96 km",
+          "5.43 km"
+        ],
+        "totalDistance": "11.95 km",
+        "estimatedTime": "2.39 hours",
+        "_id": {
+          "$oid": "689a1754af5edc4c891ef028"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-08-11T16:16:20.054Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-11T16:16:20.054Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "689a1e11c674d29094eeabe3"
+  },
+  "userId": {
+    "$oid": "689a1056a03aa19b4326a985"
+  },
+  "userEmail": "tomer@gmail.com",
+  "tripId": "tomer@gmail.com_1754930705839_tc22wxtxv",
+  "tripName": "sushi trip",
+  "tripDescription": "",
+  "country": "japan",
+  "city": "nagasaki",
+  "tripType": "trek",
+  "tripDate": "2025-08-12",
+  "countryFlag": "https://images.unsplash.com/photo-1627045513738-b30a564a6dd2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxqYXBhbiUyMGZsYWd8ZW58MHx8fHwxNzU0OTMwNjc3fDA&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Nagasaki",
+            "coordinates": [
+              32.7743,
+              129.8833
+            ],
+            "_id": {
+              "$oid": "689a1e11c674d29094eeabe5"
+            }
+          },
+          {
+            "name": "Nagasaki Peace Park",
+            "coordinates": [
+              32.7833,
+              129.8622
+            ],
+            "_id": {
+              "$oid": "689a1e11c674d29094eeabe6"
+            }
+          },
+          {
+            "name": "Hypocenter Park",
+            "coordinates": [
+              32.7733,
+              129.8597
+            ],
+            "_id": {
+              "$oid": "689a1e11c674d29094eeabe7"
+            }
+          },
+          {
+            "name": "Nagasaki Museum of History and Culture",
+            "coordinates": [
+              32.7589,
+              129.8758
+            ],
+            "_id": {
+              "$oid": "689a1e11c674d29094eeabe8"
+            }
+          },
+          {
+            "name": "Nagasaki",
+            "coordinates": [
+              32.7743,
+              129.8833
+            ],
+            "_id": {
+              "$oid": "689a1e11c674d29094eeabe9"
+            }
+          }
+        ],
+        "distances": [
+          "3.16 km",
+          "1.36 km",
+          "3.77 km",
+          "2.33 km"
+        ],
+        "totalDistance": "10.61 km",
+        "estimatedTime": "2.12 hours",
+        "_id": {
+          "$oid": "689a1e11c674d29094eeabe4"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-08-11T16:45:05.846Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-11T16:45:05.846Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "689a1e6cc674d29094eeabed"
+  },
+  "userId": {
+    "$oid": "689a1056a03aa19b4326a985"
+  },
+  "userEmail": "tomer@gmail.com",
+  "tripId": "tomer@gmail.com_1754930796576_bckn3y4l3",
+  "tripName": "fun trip",
+  "tripDescription": "",
+  "country": "china",
+  "city": "Beijing",
+  "tripType": "trek",
+  "tripDate": "2025-08-14",
+  "countryFlag": "https://images.unsplash.com/photo-1718928516680-fd5f1f38bbbc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxjaGluYSUyMGZsYWd8ZW58MHx8fHwxNzU0OTMwNzgzfDA&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Beijing",
+            "coordinates": [
+              39.9042,
+              116.4074
+            ],
+            "_id": {
+              "$oid": "689a1e6cc674d29094eeabef"
+            }
+          },
+          {
+            "name": "Jingshan Park",
+            "coordinates": [
+              39.9223,
+              116.3904
+            ],
+            "_id": {
+              "$oid": "689a1e6cc674d29094eeabf0"
+            }
+          },
+          {
+            "name": "Beihai Park",
+            "coordinates": [
+              39.9273,
+              116.3833
+            ],
+            "_id": {
+              "$oid": "689a1e6cc674d29094eeabf1"
+            }
+          },
+          {
+            "name": "Di'anmen Street",
+            "coordinates": [
+              39.9353,
+              116.3742
+            ],
+            "_id": {
+              "$oid": "689a1e6cc674d29094eeabf2"
+            }
+          },
+          {
+            "name": "Beijing",
+            "coordinates": [
+              39.9042,
+              116.4074
+            ],
+            "_id": {
+              "$oid": "689a1e6cc674d29094eeabf3"
+            }
+          }
+        ],
+        "distances": [
+          "3.54 km",
+          "1.14 km",
+          "1.84 km",
+          "6.40 km"
+        ],
+        "totalDistance": "12.93 km",
+        "estimatedTime": "2.59 hours",
+        "_id": {
+          "$oid": "689a1e6cc674d29094eeabee"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-08-11T16:46:36.578Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-11T16:46:36.578Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "689a1f94c674d29094eeabf7"
+  },
+  "userId": {
+    "$oid": "689a1056a03aa19b4326a985"
+  },
+  "userEmail": "tomer@gmail.com",
+  "tripId": "tomer@gmail.com_1754931092965_a61d05q3j",
+  "tripName": "germany trip",
+  "tripDescription": "",
+  "country": "germany",
+  "city": "Berlin",
+  "tripType": "bike",
+  "tripDate": "2025-08-15",
+  "countryFlag": "https://images.unsplash.com/photo-1663493955721-110e7e1ae36c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxnZXJtYW55JTIwZmxhZ3xlbnwwfHx8fDE3NTQ5MzEwNzV8MA&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Berlin",
+            "coordinates": [
+              52.52,
+              13.405
+            ],
+            "_id": {
+              "$oid": "689a1f94c674d29094eeabf9"
+            }
+          },
+          {
+            "name": "Pankow",
+            "coordinates": [
+              52.6333,
+              13.4333
+            ],
+            "_id": {
+              "$oid": "689a1f94c674d29094eeabfa"
+            }
+          },
+          {
+            "name": "Französisch Buchholz",
+            "coordinates": [
+              52.6167,
+              13.4667
+            ],
+            "_id": {
+              "$oid": "689a1f94c674d29094eeabfb"
+            }
+          },
+          {
+            "name": "Karow",
+            "coordinates": [
+              52.6167,
+              13.4833
+            ],
+            "_id": {
+              "$oid": "689a1f94c674d29094eeabfc"
+            }
+          },
+          {
+            "name": "Buch",
+            "coordinates": [
+              52.6333,
+              13.5
+            ],
+            "_id": {
+              "$oid": "689a1f94c674d29094eeabfd"
+            }
+          },
+          {
+            "name": "Bernau bei Berlin",
+            "coordinates": [
+              52.7,
+              13.5833
+            ],
+            "_id": {
+              "$oid": "689a1f94c674d29094eeabfe"
+            }
+          }
+        ],
+        "distances": [
+          "15.46 km",
+          "4.85 km",
+          "1.41 km",
+          "2.40 km",
+          "12.24 km"
+        ],
+        "totalDistance": "36.36 km",
+        "estimatedTime": "2.17 hours",
+        "_id": {
+          "$oid": "689a1f94c674d29094eeabf8"
+        }
+      },
+      {
+        "day": 2,
+        "cities": [
+          {
+            "name": "Bernau bei Berlin",
+            "coordinates": [
+              52.7,
+              13.5833
+            ],
+            "_id": {
+              "$oid": "689a1f94c674d29094eeac00"
+            }
+          },
+          {
+            "name": "Lindenberg",
+            "coordinates": [
+              52.7167,
+              13.5333
+            ],
+            "_id": {
+              "$oid": "689a1f94c674d29094eeac01"
+            }
+          },
+          {
+            "name": "Malchow",
+            "coordinates": [
+              52.7167,
+              13.4667
+            ],
+            "_id": {
+              "$oid": "689a1f94c674d29094eeac02"
+            }
+          },
+          {
+            "name": "Weißensee",
+            "coordinates": [
+              52.5667,
+              13.4667
+            ],
+            "_id": {
+              "$oid": "689a1f94c674d29094eeac03"
+            }
+          },
+          {
+            "name": "Prenzlauer Berg",
+            "coordinates": [
+              52.5333,
+              13.4167
+            ],
+            "_id": {
+              "$oid": "689a1f94c674d29094eeac04"
+            }
+          },
+          {
+            "name": "Berlin",
+            "coordinates": [
+              52.52,
+              13.405
+            ],
+            "_id": {
+              "$oid": "689a1f94c674d29094eeac05"
+            }
+          }
+        ],
+        "distances": [
+          "7.09 km",
+          "5.16 km",
+          "23.45 km",
+          "6.24 km",
+          "2.13 km"
+        ],
+        "totalDistance": "44.07 km",
+        "estimatedTime": "2.73 hours",
+        "_id": {
+          "$oid": "689a1f94c674d29094eeabff"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-08-11T16:51:32.967Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-11T16:51:32.967Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "689a35b12c498df23cd8d716"
+  },
+  "userId": {
+    "$oid": "685181fe20acf99360c24b0e"
+  },
+  "userEmail": "almogtest@gmail.com",
+  "tripId": "almogtest@gmail.com_1754936753550_uvin9djs9",
+  "tripName": "Trip to the capital of Italy",
+  "tripDescription": "eating pizza is a must here",
+  "country": "Itali",
+  "city": "Rom",
+  "tripType": "trek",
+  "tripDate": "2025-08-18",
+  "countryFlag": "https://images.unsplash.com/photo-1577213355833-f57a75867b9d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxJdGFsaSUyMGZsYWd8ZW58MHx8fHwxNzU0OTM2Njk2fDA&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Rom",
+            "coordinates": [
+              41.9028,
+              12.4964
+            ],
+            "_id": {
+              "$oid": "689a35b12c498df23cd8d718"
+            }
+          },
+          {
+            "name": "Villa Borghese",
+            "coordinates": [
+              41.9133,
+              12.4903
+            ],
+            "_id": {
+              "$oid": "689a35b12c498df23cd8d719"
+            }
+          },
+          {
+            "name": "Pincio Hill",
+            "coordinates": [
+              41.9153,
+              12.4833
+            ],
+            "_id": {
+              "$oid": "689a35b12c498df23cd8d71a"
+            }
+          },
+          {
+            "name": "Spanish Steps",
+            "coordinates": [
+              41.9056,
+              12.4862
+            ],
+            "_id": {
+              "$oid": "689a35b12c498df23cd8d71b"
+            }
+          },
+          {
+            "name": "Trevi Fountain",
+            "coordinates": [
+              41.9018,
+              12.4932
+            ],
+            "_id": {
+              "$oid": "689a35b12c498df23cd8d71c"
+            }
+          },
+          {
+            "name": "Rom",
+            "coordinates": [
+              41.9028,
+              12.4964
+            ],
+            "_id": {
+              "$oid": "689a35b12c498df23cd8d71d"
+            }
+          }
+        ],
+        "distances": [
+          "1.75 km",
+          "0.79 km",
+          "1.44 km",
+          "1.13 km",
+          "0.51 km"
+        ],
+        "totalDistance": "5.62 km",
+        "estimatedTime": "1.12 hours",
+        "_id": {
+          "$oid": "689a35b12c498df23cd8d717"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-08-11T18:25:53.558Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-11T18:25:53.558Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "689a36102c498df23cd8d721"
+  },
+  "userId": {
+    "$oid": "685181fe20acf99360c24b0e"
+  },
+  "userEmail": "almogtest@gmail.com",
+  "tripId": "almogtest@gmail.com_1754936848939_3a9ga79vc",
+  "tripName": "Family trip 2025",
+  "tripDescription": "Trip to the capital of Germany",
+  "country": "Germany",
+  "city": "Berlin",
+  "tripType": "bike",
+  "tripDate": "2025-08-17",
+  "countryFlag": "https://images.unsplash.com/photo-1663493955721-110e7e1ae36c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxHZXJtYW55JTIwZmxhZ3xlbnwwfHx8fDE3NTQ5MzY3OTF8MA&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Berlin",
+            "coordinates": [
+              52.52,
+              13.405
+            ],
+            "_id": {
+              "$oid": "689a36102c498df23cd8d723"
+            }
+          },
+          {
+            "name": "Prenzlauer Berg",
+            "coordinates": [
+              52.5333,
+              13.4167
+            ],
+            "_id": {
+              "$oid": "689a36102c498df23cd8d724"
+            }
+          },
+          {
+            "name": "Weißensee",
+            "coordinates": [
+              52.5667,
+              13.4667
+            ],
+            "_id": {
+              "$oid": "689a36102c498df23cd8d725"
+            }
+          },
+          {
+            "name": "Malchow",
+            "coordinates": [
+              52.6333,
+              13.4833
+            ],
+            "_id": {
+              "$oid": "689a36102c498df23cd8d726"
+            }
+          },
+          {
+            "name": "Wartenberg",
+            "coordinates": [
+              52.7,
+              13.5167
+            ],
+            "_id": {
+              "$oid": "689a36102c498df23cd8d727"
+            }
+          },
+          {
+            "name": "Karow",
+            "coordinates": [
+              52.6167,
+              13.4667
+            ],
+            "_id": {
+              "$oid": "689a36102c498df23cd8d728"
+            }
+          }
+        ],
+        "distances": [
+          "2.04 km",
+          "6.18 km",
+          "10.62 km",
+          "12.74 km",
+          "14.06 km"
+        ],
+        "totalDistance": "45.63 km",
+        "estimatedTime": "2.78 hours",
+        "_id": {
+          "$oid": "689a36102c498df23cd8d722"
+        }
+      },
+      {
+        "day": 2,
+        "cities": [
+          {
+            "name": "Karow",
+            "coordinates": [
+              52.6167,
+              13.4667
+            ],
+            "_id": {
+              "$oid": "689a36102c498df23cd8d72a"
+            }
+          },
+          {
+            "name": "Pankow",
+            "coordinates": [
+              52.6333,
+              13.4
+            ],
+            "_id": {
+              "$oid": "689a36102c498df23cd8d72b"
+            }
+          },
+          {
+            "name": "Reinickendorf",
+            "coordinates": [
+              52.5667,
+              13.35
+            ],
+            "_id": {
+              "$oid": "689a36102c498df23cd8d72c"
+            }
+          },
+          {
+            "name": "Gesundbrunnen",
+            "coordinates": [
+              52.55,
+              13.3833
+            ],
+            "_id": {
+              "$oid": "689a36102c498df23cd8d72d"
+            }
+          },
+          {
+            "name": "Mitte",
+            "coordinates": [
+              52.5167,
+              13.3833
+            ],
+            "_id": {
+              "$oid": "689a36102c498df23cd8d72e"
+            }
+          },
+          {
+            "name": "Berlin",
+            "coordinates": [
+              52.52,
+              13.405
+            ],
+            "_id": {
+              "$oid": "689a36102c498df23cd8d72f"
+            }
+          }
+        ],
+        "distances": [
+          "8.34 km",
+          "10.56 km",
+          "4.25 km",
+          "4.67 km",
+          "1.61 km"
+        ],
+        "totalDistance": "29.43 km",
+        "estimatedTime": "1.78 hours",
+        "_id": {
+          "$oid": "689a36102c498df23cd8d729"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-08-11T18:27:28.941Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-11T18:27:28.941Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "689a36592c498df23cd8d733"
+  },
+  "userId": {
+    "$oid": "685181fe20acf99360c24b0e"
+  },
+  "userEmail": "almogtest@gmail.com",
+  "tripId": "almogtest@gmail.com_1754936921607_gazokk0k0",
+  "tripName": "Boys trip",
+  "tripDescription": "Dont forget to bring a coat!",
+  "country": "Russia",
+  "city": "Moskva",
+  "tripType": "trek",
+  "tripDate": "2025-08-20",
+  "countryFlag": "https://images.unsplash.com/photo-1676286155904-b0800262ed00?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxSdXNzaWElMjBmbGFnfGVufDB8fHx8MTc1NDkzNjg4OHww&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Moskva",
+            "coordinates": [
+              55.7558,
+              37.6176
+            ],
+            "_id": {
+              "$oid": "689a36592c498df23cd8d735"
+            }
+          },
+          {
+            "name": "Alexander Garden",
+            "coordinates": [
+              55.7553,
+              37.6173
+            ],
+            "_id": {
+              "$oid": "689a36592c498df23cd8d736"
+            }
+          },
+          {
+            "name": "Bolshoi Theatre",
+            "coordinates": [
+              55.7603,
+              37.6186
+            ],
+            "_id": {
+              "$oid": "689a36592c498df23cd8d737"
+            }
+          },
+          {
+            "name": "Hermitage Garden",
+            "coordinates": [
+              55.7667,
+              37.5947
+            ],
+            "_id": {
+              "$oid": "689a36592c498df23cd8d738"
+            }
+          },
+          {
+            "name": "Tverskoy Boulevard",
+            "coordinates": [
+              55.7647,
+              37.6047
+            ],
+            "_id": {
+              "$oid": "689a36592c498df23cd8d739"
+            }
+          },
+          {
+            "name": "Moskva",
+            "coordinates": [
+              55.7558,
+              37.6176
+            ],
+            "_id": {
+              "$oid": "689a36592c498df23cd8d73a"
+            }
+          }
+        ],
+        "distances": [
+          "0.14 km",
+          "0.75 km",
+          "2.21 km",
+          "0.84 km",
+          "1.37 km"
+        ],
+        "totalDistance": "5.32 km",
+        "estimatedTime": "1.06 hours",
+        "_id": {
+          "$oid": "689a36592c498df23cd8d734"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-08-11T18:28:41.608Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-11T18:28:41.608Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "689a36d82c498df23cd8d73c"
+  },
+  "userId": {
+    "$oid": "685181fe20acf99360c24b0e"
+  },
+  "userEmail": "almogtest@gmail.com",
+  "tripId": "almogtest@gmail.com_1754937048611_eguyk2ph0",
+  "tripName": "South Korea trip",
+  "tripDescription": "good vibes",
+  "country": "South Korea",
+  "city": "Seoul",
+  "tripType": "trek",
+  "tripDate": "2025-08-13",
+  "countryFlag": "https://images.unsplash.com/photo-1619179834700-7a886aac80cc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NjU3MjJ8MHwxfHNlYXJjaHwxfHxTb3V0aCUyMEtvcmVhJTIwZmxhZ3xlbnwwfHx8fDE3NTQ5MzY5ODB8MA&ixlib=rb-4.1.0&q=80&w=400",
+  "tripData": {
+    "days": [
+      {
+        "day": 1,
+        "cities": [
+          {
+            "name": "Seoul",
+            "coordinates": [
+              37.5683,
+              126.9977
+            ],
+            "_id": {
+              "$oid": "689a36d82c498df23cd8d73e"
+            }
+          },
+          {
+            "name": "Bugaksan Mountain",
+            "coordinates": [
+              37.5904,
+              126.9934
+            ],
+            "_id": {
+              "$oid": "689a36d82c498df23cd8d73f"
+            }
+          },
+          {
+            "name": "Changdeokgung Palace",
+            "coordinates": [
+              37.5782,
+              126.9941
+            ],
+            "_id": {
+              "$oid": "689a36d82c498df23cd8d740"
+            }
+          },
+          {
+            "name": "Jongmyo Shrine",
+            "coordinates": [
+              37.5722,
+              126.9972
+            ],
+            "_id": {
+              "$oid": "689a36d82c498df23cd8d741"
+            }
+          },
+          {
+            "name": "Insa-dong",
+            "coordinates": [
+              37.5732,
+              126.9906
+            ],
+            "_id": {
+              "$oid": "689a36d82c498df23cd8d742"
+            }
+          },
+          {
+            "name": "Seoul",
+            "coordinates": [
+              37.5683,
+              126.9977
+            ],
+            "_id": {
+              "$oid": "689a36d82c498df23cd8d743"
+            }
+          }
+        ],
+        "distances": [
+          "3.82 km",
+          "1.94 km",
+          "1.11 km",
+          "0.68 km",
+          "1.15 km"
+        ],
+        "totalDistance": "8.71 km",
+        "estimatedTime": "1.74 hours",
+        "_id": {
+          "$oid": "689a36d82c498df23cd8d73d"
+        }
+      }
+    ]
+  },
+  "createdAt": {
+    "$date": "2025-08-11T18:30:48.613Z"
+  },
+  "updatedAt": {
+    "$date": "2025-08-11T18:30:48.613Z"
+  },
+  "__v": 0
+}]
