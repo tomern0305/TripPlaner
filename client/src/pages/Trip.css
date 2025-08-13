@@ -835,6 +835,7 @@ label {
   display: flex;
   flex-direction: column;
   min-height: 400px;
+  width: 100%;
 }
 
 .trip-card:hover {
@@ -853,10 +854,11 @@ label {
   gap: 1.5rem;
   min-height: 0;
   flex: 1;
+  width: 100%;
 }
 
 .trip-card .country-flag-small {
-  width: 300px;
+  width: 40%;
   height: 100%;
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
