@@ -40,7 +40,7 @@ export default function Dashboard() {
       })
     ])
     .then(([userRes, tripRes]) => {
-      setUser(userRes.data);
+      setUser(userRes.data.user);
       
       // Process trip data if available
       if (tripRes.data.success && tripRes.data.trips.length > 0) {
